@@ -1,0 +1,17 @@
+{
+	"name": "newbattingtable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Baseball"
+		},
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "batting1"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

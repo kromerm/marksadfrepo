@@ -1,0 +1,35 @@
+{
+	"name": "Baseball 2 Adv Stats",
+	"properties": {
+		"description": "Let's now create the advanced Bill James Sabermetrics stats",
+		"folder": {
+			"name": "Baseball"
+		},
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "SQLDBBaseball2",
+					"type": "DatasetReference"
+				},
+				"name": "source1",
+				"script": "source(output(BA as double,OBP as double,SLG as double,TB as integer,birthYear as string,birthMonth as string,birthDay as string,birthCountry as string,birthState as string,birthCity as string,deathYear as string,deathMonth as string,deathDay as string,deathCountry as string,deathState as string,deathCity as string,nameFirst as string,nameLast as string,nameGiven as string,weight as string,height as string,bats as string,throws as string,debut as string,finalGame as string,retroID as string,bbrefID as string,playerID as string,yearID as string,stint as string,teamID as string,lgID as string,G as integer,AB as integer,R as integer,H as integer,H2B as integer,H3B as integer,HR as integer,RBI as integer,SB as integer,CS as integer,BB as integer,SO as integer,IBB as integer,HBP as integer,SH as integer,SF as integer,GIDP as integer),allowSchemaDrift: false,validateSchema: false) ~> source1"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "DWSabermetrics",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "RunsCreated sink(saveMode:'overwrite' , mapColumn(BA,OBP,SLG,TB,birthYear,birthMonth,birthDay,birthCountry,birthState,birthCity,deathYear,deathMonth,deathDay,deathCountry,deathState,deathCity,nameFirst,nameLast,nameGiven,weight,height,bats,throws,debut,finalGame,retroID,bbrefID,playerID,yearID,stint,teamID,lgID,G,AB,R,H,H2B,H3B,HR,RBI,SB,CS,BB,SO,IBB,HBP,SH,SF,GIDP,RunsCreated)) ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "RunsCreated",
+				"script": "source1 derive(RunsCreated = round(  ((H + BB) * TB) / (AB + BB), 3)) ~> RunsCreated"
+			}
+		]
+	}
+}

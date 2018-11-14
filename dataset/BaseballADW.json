@@ -1,0 +1,17 @@
+{
+	"name": "BaseballADW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDW1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Baseball"
+		},
+		"type": "AzureSqlDWTable",
+		"typeProperties": {
+			"tableName": "BaseballBatting"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

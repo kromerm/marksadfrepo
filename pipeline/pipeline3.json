@@ -1,0 +1,36 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Baseball 2 Adv Stats",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Baseball 2 Adv Stats",
+						"type": "DataFlowReference"
+					},
+					"linkedService": {
+						"referenceName": "ADBOCT15",
+						"type": "LinkedServiceReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "MyAzureBlobLinkedService",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "mycontainer/staging"
+					}
+				}
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

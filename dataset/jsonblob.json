@@ -1,0 +1,41 @@
+{
+	"name": "jsonblob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MyAzureBlobLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "_id",
+				"type": "String"
+			},
+			{
+				"name": "city",
+				"type": "String"
+			},
+			{
+				"name": "loc",
+				"type": "String"
+			},
+			{
+				"name": "pop",
+				"type": "Int64"
+			},
+			{
+				"name": "state",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "setOfObjects"
+			},
+			"fileName": "zips.json",
+			"folderPath": "mycontainer/SampleData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

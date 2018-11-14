@@ -1,0 +1,11 @@
+{
+	"name": "AzureSqlDWTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDW1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlDWTable"
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

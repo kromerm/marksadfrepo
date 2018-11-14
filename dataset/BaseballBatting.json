@@ -1,0 +1,118 @@
+{
+	"name": "BaseballBatting",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Baseball"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "playerID",
+				"type": "String"
+			},
+			{
+				"name": "yearID",
+				"type": "String"
+			},
+			{
+				"name": "stint",
+				"type": "String"
+			},
+			{
+				"name": "teamID",
+				"type": "String"
+			},
+			{
+				"name": "lgID",
+				"type": "String"
+			},
+			{
+				"name": "G",
+				"type": "String"
+			},
+			{
+				"name": "AB",
+				"type": "String"
+			},
+			{
+				"name": "R",
+				"type": "String"
+			},
+			{
+				"name": "H",
+				"type": "String"
+			},
+			{
+				"name": "H2B",
+				"type": "String"
+			},
+			{
+				"name": "H3B",
+				"type": "String"
+			},
+			{
+				"name": "HR",
+				"type": "String"
+			},
+			{
+				"name": "RBI",
+				"type": "String"
+			},
+			{
+				"name": "SB",
+				"type": "String"
+			},
+			{
+				"name": "CS",
+				"type": "String"
+			},
+			{
+				"name": "BB",
+				"type": "String"
+			},
+			{
+				"name": "SO",
+				"type": "String"
+			},
+			{
+				"name": "IBB",
+				"type": "String"
+			},
+			{
+				"name": "HBP",
+				"type": "String"
+			},
+			{
+				"name": "SH",
+				"type": "String"
+			},
+			{
+				"name": "SF",
+				"type": "String"
+			},
+			{
+				"name": "GIDP",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": "Batting.csv",
+			"folderPath": "mycontainer/SampleData/baseball"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

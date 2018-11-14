@@ -1,0 +1,53 @@
+{
+	"name": "invokedPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyBlobtoBlob",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "BlobSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureBlob1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CADOutput",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"sourceBlobContainer": {
+				"type": "String"
+			},
+			"sinkBlobContainer": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PipelineController"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

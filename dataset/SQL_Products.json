@@ -1,0 +1,119 @@
+{
+	"name": "SQL_Products",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ETL"
+		},
+		"type": "SqlServerTable",
+		"structure": [
+			{
+				"name": "ProductID",
+				"type": "Int32"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "ProductNumber",
+				"type": "String"
+			},
+			{
+				"name": "MakeFlag",
+				"type": "Boolean"
+			},
+			{
+				"name": "FinishedGoodsFlag",
+				"type": "Boolean"
+			},
+			{
+				"name": "Color",
+				"type": "String"
+			},
+			{
+				"name": "SafetyStockLevel",
+				"type": "Int16"
+			},
+			{
+				"name": "ReorderPoint",
+				"type": "Int16"
+			},
+			{
+				"name": "StandardCost",
+				"type": "Decimal"
+			},
+			{
+				"name": "ListPrice",
+				"type": "Decimal"
+			},
+			{
+				"name": "Size",
+				"type": "String"
+			},
+			{
+				"name": "SizeUnitMeasureCode",
+				"type": "String"
+			},
+			{
+				"name": "WeightUnitMeasureCode",
+				"type": "String"
+			},
+			{
+				"name": "Weight",
+				"type": "Decimal"
+			},
+			{
+				"name": "DaysToManufacture",
+				"type": "Int32"
+			},
+			{
+				"name": "ProductLine",
+				"type": "String"
+			},
+			{
+				"name": "Class",
+				"type": "String"
+			},
+			{
+				"name": "Style",
+				"type": "String"
+			},
+			{
+				"name": "ProductSubcategoryID",
+				"type": "Int32"
+			},
+			{
+				"name": "ProductModelID",
+				"type": "Int32"
+			},
+			{
+				"name": "SellStartDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "SellEndDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "DiscontinuedDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "rowguid",
+				"type": "Guid"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[Production].[Product]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

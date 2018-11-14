@@ -1,0 +1,25 @@
+{
+	"name": "DB Test 2",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "AzureSqlDWTable3",
+					"type": "DatasetReference"
+				},
+				"name": "source1",
+				"script": "source(output(Name as string,ProdCount as long),allowSchemaDrift: false,validateSchema: false) ~> source1"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "AzureSqlDWTable3",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "source1 sink(saveMode:'append' , mapColumn(digit = Name)) ~> sink1"
+			}
+		]
+	}
+}

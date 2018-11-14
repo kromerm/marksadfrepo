@@ -1,0 +1,17 @@
+{
+	"name": "DWSabermetrics",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDW1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Baseball"
+		},
+		"type": "AzureSqlDWTable",
+		"typeProperties": {
+			"tableName": "Sabermetrics"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

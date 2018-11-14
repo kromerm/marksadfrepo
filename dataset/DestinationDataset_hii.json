@@ -1,0 +1,27 @@
+{
+	"name": "DestinationDataset_hii",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Copy"
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "_committed_2034928433163805213",
+			"folderPath": "mycontainer/output/sample"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

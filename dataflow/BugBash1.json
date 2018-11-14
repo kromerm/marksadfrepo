@@ -1,0 +1,70 @@
+{
+	"name": "BugBash1",
+	"properties": {
+		"folder": {
+			"name": "Bug Bashes"
+		},
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "SQLDB_SalesHeader",
+					"type": "DatasetReference"
+				},
+				"name": "SourceSalesHeader",
+				"script": "source(output(SalesOrderID as integer,RevisionNumber as string,OrderDate as date,DueDate as date,ShipDate as date,Status as string,OnlineOrderFlag as boolean,SalesOrderNumber as string,PurchaseOrderNumber as string,AccountNumber as string,CustomerID as integer,ShipToAddressID as integer,BillToAddressID as integer,ShipMethod as string,CreditCardApprovalCode as string,SubTotal as decimal(10,0),TaxAmt as decimal(10,0),Freight as decimal(10,0),TotalDue as decimal(10,0),Comment as string,rowguid as string,ModifiedDate as date),allowSchemaDrift: false,validateSchema: false) ~> SourceSalesHeader"
+			},
+			{
+				"dataset": {
+					"referenceName": "SQLDB_SalesDetail",
+					"type": "DatasetReference"
+				},
+				"name": "SourceSalesDetail",
+				"script": "source(output(SalesOrderID as integer,SalesOrderDetailID as integer,OrderQty as short,ProductID as integer,UnitPrice as decimal(10,0),UnitPriceDiscount as decimal(10,0),LineTotal as decimal(10,0),rowguid as string,ModifiedDate as date),allowSchemaDrift: false,validateSchema: false) ~> SourceSalesDetail"
+			},
+			{
+				"dataset": {
+					"referenceName": "SQLDB_Products",
+					"type": "DatasetReference"
+				},
+				"name": "SourceProduct",
+				"script": "source(output(ProductID as integer,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as decimal(10,0),Size as string,Weight as decimal(10,0),ProductCategoryID as integer,ProductModelID as integer,SellStartDate as date,SellEndDate as date,DiscontinuedDate as date,ThumbNailPhoto as string,ThumbnailPhotoFileName as string,rowguid as string,ModifiedDate as date),allowSchemaDrift: false,validateSchema: false) ~> SourceProduct"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "ADW_FactSales",
+					"type": "DatasetReference"
+				},
+				"name": "SinkFactSales",
+				"script": "Join1 sink(saveMode:'overwrite' , mapColumn(OrderTotal,RevisionNumber,OrderDate,DueDate,ShipDate,Status,OnlineOrderFlag,SalesOrderNumber,PurchaseOrderNumber,AccountNumber,CustomerID,ShipToAddressID,BillToAddressID,ShipMethod,CreditCardApprovalCode,SubTotal,TaxAmt,Freight,TotalDue,Comment,rowguid,ModifiedDate)) ~> SinkFactSales"
+			},
+			{
+				"dataset": {
+					"referenceName": "ADW_DimProduct",
+					"type": "DatasetReference"
+				},
+				"name": "sinkDimProd",
+				"script": "Aggregate2 sink(saveMode:'overwrite' , mapColumn(Name,ProdCount)) ~> sinkDimProd"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Aggregate1",
+				"script": "SourceSalesDetail aggregate(groupBy(SalesOrderID = SalesOrderID),OrderTotal = sum(LineTotal)) ~> Aggregate1"
+			},
+			{
+				"name": "Join1",
+				"script": "Aggregate1, SourceSalesHeader join(Aggregate1@SalesOrderID == SourceSalesHeader@SalesOrderID,joinType:'inner',broadcast: 'none')~> Join1"
+			},
+			{
+				"name": "Join2",
+				"script": "SourceSalesDetail, SourceProduct join(SourceSalesDetail@ProductID == SourceProduct@ProductID,joinType:'inner',broadcast: 'none')~> Join2"
+			},
+			{
+				"name": "Aggregate2",
+				"script": "Join2 aggregate(groupBy(Name = Name),ProdCount = sum(1)) ~> Aggregate2"
+			}
+		]
+	}
+}

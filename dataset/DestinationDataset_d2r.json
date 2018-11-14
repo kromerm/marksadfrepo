@@ -1,0 +1,21 @@
+{
+	"name": "DestinationDataset_d2r",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Copy"
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "ParquetFormat"
+			},
+			"fileName": "myout.parquet",
+			"folderPath": "mycontainer/output/parquet"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

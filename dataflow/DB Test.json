@@ -1,0 +1,25 @@
+{
+	"name": "DB Test",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "ADW_DimProduct",
+					"type": "DatasetReference"
+				},
+				"name": "source1",
+				"script": "source(output(ProdName as string,ProdCount as long),allowSchemaDrift: false,validateSchema: false) ~> source1"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "ADW_DimProduct",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "source1 sink(saveMode:'append' , mapColumn(ProdName,ProdCount)) ~> sink1"
+			}
+		]
+	}
+}

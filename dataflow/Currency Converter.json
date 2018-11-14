@@ -1,0 +1,62 @@
+{
+	"name": "Currency Converter",
+	"properties": {
+		"description": "Sample demo data flow to convert currencies",
+		"folder": {
+			"name": "Demos"
+		},
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "CurrencyDatasetUSD",
+					"type": "DatasetReference"
+				},
+				"name": "USDCurrency",
+				"script": "source(output(PreviousConversionRate as double,Country as string,DateTime1 as string,CurrentConversionRate as double),allowSchemaDrift: false,validateSchema: false) ~> USDCurrency"
+			},
+			{
+				"dataset": {
+					"referenceName": "CurrencyDatasetCAD",
+					"type": "DatasetReference"
+				},
+				"name": "CADSource",
+				"script": "source(output(PreviousConversionRate as double,Country as string,DateTime1 as string,CurrentConversionRate as double),allowSchemaDrift: true,validateSchema: false) ~> CADSource"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "USDOutput",
+					"type": "DatasetReference"
+				},
+				"name": "USDSink",
+				"script": "ConditionalSplit1@USD sink(saveMode:'overwrite' ,partitionBy('hash', 1)) ~> USDSink"
+			},
+			{
+				"dataset": {
+					"referenceName": "CADOutput",
+					"type": "DatasetReference"
+				},
+				"name": "CADSink",
+				"script": "ConditionalSplit1@CAD sink(saveMode:'overwrite' ,partitionBy('hash', 1)) ~> CADSink"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Union",
+				"description": "The Union combines 2 streams together",
+				"script": "USDCurrency, CADSource union(byName: true)~> Union"
+			},
+			{
+				"name": "NewCurrencyColumn",
+				"description": "Create a new calculated column from currency rate",
+				"script": "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn"
+			},
+			{
+				"name": "ConditionalSplit1",
+				"description": "Split the data on state to create 2 streams",
+				"script": "NewCurrencyColumn split(Country == 'USD',Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)"
+			}
+		]
+	}
+}

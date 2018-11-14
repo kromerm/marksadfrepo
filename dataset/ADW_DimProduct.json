@@ -1,0 +1,17 @@
+{
+	"name": "ADW_DimProduct",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDW1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ETL"
+		},
+		"type": "AzureSqlDWTable",
+		"typeProperties": {
+			"tableName": "DimProduct_makromer"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

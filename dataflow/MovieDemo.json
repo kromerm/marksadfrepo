@@ -1,0 +1,38 @@
+{
+	"name": "MovieDemo",
+	"properties": {
+		"folder": {
+			"name": "Demos"
+		},
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "movie_dataflow_source",
+					"type": "DatasetReference"
+				},
+				"name": "Movies",
+				"script": "source(output(movieId as string,title as string,genres as string),allowSchemaDrift: false,validateSchema: false) ~> Movies"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "AzureSqlDWTable2",
+					"type": "DatasetReference"
+				},
+				"name": "Output",
+				"script": "MoviesAfter1980 sink(saveMode:'overwrite' ) ~> Output"
+			}
+		],
+		"transformations": [
+			{
+				"name": "MoviesYear",
+				"script": "Movies derive(year = toInteger(trim(right(title, 6), '()')),title = toString(left(title, length(title)-6))) ~> MoviesYear"
+			},
+			{
+				"name": "MoviesAfter1980",
+				"script": "MoviesYear filter(year > 1980) ~> MoviesAfter1980"
+			}
+		]
+	}
+}

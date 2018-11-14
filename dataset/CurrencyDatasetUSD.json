@@ -1,0 +1,44 @@
+{
+	"name": "CurrencyDatasetUSD",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MyAzureBlobLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Demos"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "PreviousConversionRate",
+				"type": "Double"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "DateTime1",
+				"type": "DateTime"
+			},
+			{
+				"name": "CurrentConversionRate",
+				"type": "Double"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": "\t",
+				"rowDelimiter": "",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "Currency_USD.txt",
+			"folderPath": "mycontainer/SampleData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

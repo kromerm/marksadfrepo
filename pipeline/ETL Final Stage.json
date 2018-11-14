@@ -1,0 +1,100 @@
+{
+	"name": "ETL Final Stage",
+	"properties": {
+		"activities": [
+			{
+				"name": "Dsitribute Data",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": false
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowPolyBase": false,
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "movie_dataflow_source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlDWTable2",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Refresh Cubes",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Dsitribute Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"url": "http://www.yahoo.com",
+					"method": "GET"
+				}
+			},
+			{
+				"name": "Send Email Notices",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Dsitribute Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"url": "http://www.yahoo.com",
+					"method": "GET"
+				}
+			}
+		],
+		"parameters": {
+			"issuccess": {
+				"type": "Int",
+				"defaultValue": 1
+			}
+		},
+		"folder": {
+			"name": "PipelineController"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

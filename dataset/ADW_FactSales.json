@@ -1,0 +1,17 @@
+{
+	"name": "ADW_FactSales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDW1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ETL"
+		},
+		"type": "AzureSqlDWTable",
+		"typeProperties": {
+			"tableName": "FactSales_makromer"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

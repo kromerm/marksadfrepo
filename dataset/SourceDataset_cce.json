@@ -1,0 +1,73 @@
+{
+	"name": "SourceDataset_cce",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "customerID",
+				"type": "String"
+			},
+			{
+				"name": "companyName",
+				"type": "String"
+			},
+			{
+				"name": "contactName",
+				"type": "String"
+			},
+			{
+				"name": "contactTitle",
+				"type": "String"
+			},
+			{
+				"name": "address.street",
+				"type": "String"
+			},
+			{
+				"name": "address.city",
+				"type": "String"
+			},
+			{
+				"name": "address.region",
+				"type": "String"
+			},
+			{
+				"name": "address.postalCode",
+				"type": "String"
+			},
+			{
+				"name": "address.country",
+				"type": "String"
+			},
+			{
+				"name": "address.phone",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat",
+				"filePattern": "arrayOfObjects",
+				"jsonPathDefinition": {
+					"customerID": "$.['customerID']",
+					"companyName": "$.['companyName']",
+					"contactName": "$.['contactName']",
+					"contactTitle": "$.['contactTitle']",
+					"address.street": "$.['address']['street']",
+					"address.city": "$.['address']['city']",
+					"address.region": "$.['address']['region']",
+					"address.postalCode": "$.['address']['postalCode']",
+					"address.country": "$.['address']['country']",
+					"address.phone": "$.['address']['phone']"
+				}
+			},
+			"fileName": "customers.json",
+			"folderPath": "mycontainer/SampleData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,40 @@
+{
+	"name": "masterPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "MyExecutePipelineActivity",
+				"type": "ExecutePipeline",
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "invokedPipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"sourceBlobContainer": {
+							"value": "@pipeline().parameters.masterSourceBlobContainer",
+							"type": "Expression"
+						},
+						"sinkBlobCountainer": {
+							"value": "@pipeline().parameters.masterSinkBlobContainer",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"masterSourceBlobContainer": {
+				"type": "String"
+			},
+			"masterSinkBlobContainer": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PipelineController"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

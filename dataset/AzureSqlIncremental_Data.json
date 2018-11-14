@@ -1,0 +1,31 @@
+{
+	"name": "AzureSqlIncremental_Data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Incremental"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "PersonID",
+				"type": "Int32"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Age",
+				"type": "Int32"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[data_source_table]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

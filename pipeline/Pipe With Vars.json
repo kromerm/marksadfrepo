@@ -1,0 +1,34 @@
+{
+	"name": "Pipe With Vars",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set Variable1",
+				"type": "SetVariable",
+				"typeProperties": {
+					"variableName": "myarray",
+					"value": [
+						"abc"
+					]
+				}
+			},
+			{
+				"name": "Append Variable1",
+				"type": "AppendVariable",
+				"typeProperties": {
+					"variableName": "myarray",
+					"value": "abc"
+				}
+			}
+		],
+		"variables": {
+			"myarray": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "PipelineController"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
