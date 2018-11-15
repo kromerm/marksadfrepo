@@ -7,8 +7,8 @@
 					"referenceName": "salesdrift",
 					"type": "DatasetReference"
 				},
-				"name": "source1",
-				"script": "source(allowSchemaDrift: true,validateSchema: false) ~> source1"
+				"name": "source",
+				"script": "source(allowSchemaDrift: true,validateSchema: false) ~> source"
 			}
 		],
 		"sinks": [
@@ -24,7 +24,7 @@
 		"transformations": [
 			{
 				"name": "AddTax",
-				"script": "source1 derive(each(match(name == 'COGS' || name == 'Cost'), $$+'_with_tax' = round(toDouble(trim($$,'$')) * 1.09,2))) ~> AddTax"
+				"script": "source derive(each(match(name == 'COGS' || name == 'Cost'), $$+'_with_tax' = round(toDouble(trim($$,'$')) * 1.09,2))) ~> AddTax"
 			},
 			{
 				"name": "CleanTotal",
