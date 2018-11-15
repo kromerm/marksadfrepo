@@ -1,6 +1,9 @@
 {
-	"name": "ScheamDrift",
+	"name": "SchemaDrift",
 	"properties": {
+		"folder": {
+			"name": "Demos"
+		},
 		"sources": [
 			{
 				"dataset": {

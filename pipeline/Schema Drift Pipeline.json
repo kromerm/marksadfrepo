@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "ScheamDrift",
+						"referenceName": "SchemaDrift",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
