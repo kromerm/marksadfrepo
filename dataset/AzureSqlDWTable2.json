@@ -5,7 +5,10 @@
 			"referenceName": "AzureSqlDW1",
 			"type": "LinkedServiceReference"
 		},
-		"type": "AzureSqlDWTable"
+		"type": "AzureSqlDWTable",
+		"typeProperties": {
+			"tableName": "batting"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
