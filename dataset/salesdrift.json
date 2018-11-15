@@ -15,9 +15,10 @@
 				"columnDelimiter": ",",
 				"rowDelimiter": "",
 				"nullValue": "\\N",
+				"encodingName": null,
 				"treatEmptyAsNull": true,
 				"skipLineCount": 0,
-				"firstRowAsHeader": false
+				"firstRowAsHeader": true
 			},
 			"fileName": "",
 			"folderPath": "mycontainer/SampleData/SchemaDrift"

@@ -14,11 +14,11 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Baseball 1 Basic Stats",
+						"referenceName": "ScheamDrift",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "octinteractive",
+						"referenceName": "novinteractive",
 						"type": "LinkedServiceReference"
 					},
 					"staging": {

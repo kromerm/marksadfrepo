@@ -1,5 +1,5 @@
 {
-	"name": "drfitout",
+	"name": "driftout",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "MyAzureBlobLinkedService",

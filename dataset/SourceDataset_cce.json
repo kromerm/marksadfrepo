@@ -5,6 +5,9 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Copy"
+		},
 		"type": "AzureBlob",
 		"structure": [
 			{
