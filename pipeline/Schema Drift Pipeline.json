@@ -14,11 +14,11 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "ScheamDrift",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "ADBOCT15",
+						"referenceName": "novinteractive",
 						"type": "LinkedServiceReference"
 					}
 				}
