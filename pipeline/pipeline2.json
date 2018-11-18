@@ -14,11 +14,11 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SchemaDrift",
+						"referenceName": "SCDType2",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "novinteractive",
+						"referenceName": "nov2",
 						"type": "LinkedServiceReference"
 					},
 					"staging": {
