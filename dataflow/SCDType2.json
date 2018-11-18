@@ -1,0 +1,43 @@
+{
+	"name": "SCDType2",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "SQLProducts",
+					"type": "DatasetReference"
+				},
+				"name": "SQLProducts",
+				"script": "source(output(ProductID as integer,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as decimal(10,0),Size as string,Weight as decimal(10,0),ProductCategoryID as integer,ProductModelID as integer,SellStartDate as timestamp,SellEndDate as timestamp,DiscontinuedDate as timestamp,ThumbNailPhoto as string,ThumbnailPhotoFileName as string,rowguid as string,ModifiedDate as timestamp),allowSchemaDrift: false,validateSchema: false) ~> SQLProducts"
+			},
+			{
+				"dataset": {
+					"referenceName": "DimProd",
+					"type": "DatasetReference"
+				},
+				"name": "DimProd",
+				"script": "source(output(ProductKey as integer,ProductAlternateKey as string,ProductSubcategoryKey as integer,WeightUnitMeasureCode as string,SizeUnitMeasureCode as string,EnglishProductName as string,SpanishProductName as string,FrenchProductName as string,StandardCost as decimal(10,0),FinishedGoodsFlag as boolean,Color as string,SafetyStockLevel as short,ReorderPoint as short,ListPrice as decimal(10,0),Size as string,SizeRange as string,Weight as double,DaysToManufacture as integer,ProductLine as string,DealerPrice as decimal(10,0),Class as string,Style as string,ModelName as string,EnglishDescription as string,FrenchDescription as string,ChineseDescription as string,ArabicDescription as string,HebrewDescription as string,ThaiDescription as string,GermanDescription as string,JapaneseDescription as string,TurkishDescription as string,StartDate as timestamp,EndDate as timestamp,Status as string),allowSchemaDrift: false,validateSchema: false) ~> DimProd"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "DimProd",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "SurrogateKey1 sink(saveMode:'overwrite' , mapColumn(ProductKey = ProductID,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,StandardCost = ProductModelID,FinishedGoodsFlag,Color = SellEndDate,SafetyStockLevel,ReorderPoint,ListPrice = ThumbnailPhotoFileName,Size = rowguid,SizeRange,Weight = ProductKey,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Lookup1",
+				"script": "SQLProducts, DimProd lookup(ProductNumber == ProductAlternateKey,broadcast: 'none')~> Lookup1"
+			},
+			{
+				"name": "SurrogateKey1",
+				"script": "Lookup1 keyGenerate(output(ProductID as long),startAt: 1000L) ~> SurrogateKey1"
+			}
+		]
+	}
+}
