@@ -47,7 +47,10 @@
 					}
 				]
 			}
-		]
+		],
+		"folder": {
+			"name": "Copy"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
