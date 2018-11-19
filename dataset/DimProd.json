@@ -2,7 +2,7 @@
 	"name": "DimProd",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "DWDimProd",
+			"referenceName": "AzureSqlDW1",
 			"type": "LinkedServiceReference"
 		},
 		"type": "AzureSqlDWTable",
