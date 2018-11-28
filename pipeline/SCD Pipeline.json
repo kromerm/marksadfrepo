@@ -1,0 +1,38 @@
+{
+	"name": "SCD Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "SCDType2",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SCDType2",
+						"type": "DataFlowReference"
+					},
+					"linkedService": {
+						"referenceName": "nov2",
+						"type": "LinkedServiceReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "mycontainer/staging"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Demos"
+		}
+	}
+}
