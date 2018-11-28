@@ -26,7 +26,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "SurrogateKey1 sink(saveMode:'overwrite' , mapColumn(ProductKey = ProductID,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,StandardCost = ProductModelID,FinishedGoodsFlag,Color = SellEndDate,SafetyStockLevel,ReorderPoint,ListPrice = ThumbnailPhotoFileName,Size = rowguid,SizeRange,Weight = ProductKey,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
+				"script": "SurrogateKey1 sink(saveMode:'overwrite' , mapColumn(ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,StandardCost = SQLProducts@StandardCost,FinishedGoodsFlag,Color = SQLProducts@Color,SafetyStockLevel,ReorderPoint,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,SizeRange,Weight = SQLProducts@Weight,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
 			}
 		],
 		"transformations": [
