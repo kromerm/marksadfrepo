@@ -2,16 +2,13 @@
 	"name": "SQLDB_FactSales",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
+			"referenceName": "AzureSqlDatabase2",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
 			"name": "ETL"
 		},
-		"type": "AzureSqlTable",
-		"typeProperties": {
-			"tableName": "salesprod"
-		}
+		"type": "AzureSqlTable"
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
