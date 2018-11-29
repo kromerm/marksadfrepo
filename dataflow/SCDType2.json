@@ -29,15 +29,15 @@
 			},
 			{
 				"name": "ConditionalSplit1",
-				"script": "Join1 split(isNull(ProductAlternateKey),disjoint: false) ~> ConditionalSplit1@(NewRow, ExistingMember)"
+				"script": "Select1 split(isNull(ProductAlternateKey),disjoint: false) ~> ConditionalSplit1@(NewRow, ExistingMember)"
 			},
 			{
 				"name": "SurrogateKey1",
-				"script": "Select1 keyGenerate(output(surrogatekey as long),startAt: 1L) ~> SurrogateKey1"
+				"script": "ConditionalSplit1@NewRow keyGenerate(output(surrogatekey as long),startAt: 1L) ~> SurrogateKey1"
 			},
 			{
 				"name": "Select1",
-				"script": "ConditionalSplit1@NewRow select(mapColumn(ProductID,Name,ProductNumber,Color = ConditionalSplit1@Color,StandardCost = ConditionalSplit1@StandardCost,ListPrice = ConditionalSplit1@ListPrice,Size = ConditionalSplit1@Size,Weight = ConditionalSplit1@Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> Select1"
+				"script": "Join1 select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> Select1"
 			}
 		]
 	}
