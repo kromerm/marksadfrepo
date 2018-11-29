@@ -29,7 +29,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "NameKey sink(saveMode:'append' , mapColumn(ProductKey = ProductID,EnglishProductName = Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,EndDate,Status)) ~> sink1"
+				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,EnglishProductName = Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status)) ~> sink1"
 			}
 		],
 		"transformations": [
@@ -50,8 +50,8 @@
 				"script": "LookupKeys select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> ColumnSelection"
 			},
 			{
-				"name": "NameKey",
-				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(surrogatekey))) ~> NameKey"
+				"name": "SetAttributes",
+				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(surrogatekey)),Status = 'Y',StartDate = currentDate()) ~> SetAttributes"
 			}
 		]
 	}
