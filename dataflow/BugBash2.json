@@ -41,11 +41,11 @@
 		"sinks": [
 			{
 				"dataset": {
-					"referenceName": "SQLDB_FactSales",
+					"referenceName": "ADW_FactSales",
 					"type": "DatasetReference"
 				},
 				"name": "SinkFactSales",
-				"script": "Join1 sink(saveMode:'overwrite' , mapColumn(Aggregate1@SalesOrderID,OrderTotal,RevisionNumber,OrderDate,DueDate,ShipDate,Status,OnlineOrderFlag,SalesOrderNumber,PurchaseOrderNumber,AccountNumber,CustomerID,ShipToAddressID,BillToAddressID,ShipMethod,CreditCardApprovalCode,SubTotal,TaxAmt,Freight,TotalDue,Comment,rowguid,ModifiedDate)) ~> SinkFactSales"
+				"script": "Join1 sink(saveMode:'overwrite' ) ~> SinkFactSales"
 			},
 			{
 				"dataset": {
