@@ -22,22 +22,36 @@
 				"script": "source(output(ProductKey as integer,ProductAlternateKey as string,ProductSubcategoryKey as integer,WeightUnitMeasureCode as string,SizeUnitMeasureCode as string,EnglishProductName as string,SpanishProductName as string,FrenchProductName as string,StandardCost as decimal(10,0),FinishedGoodsFlag as boolean,Color as string,SafetyStockLevel as short,ReorderPoint as short,ListPrice as decimal(10,0),Size as string,SizeRange as string,Weight as double,DaysToManufacture as integer,ProductLine as string,DealerPrice as decimal(10,0),Class as string,Style as string,ModelName as string,EnglishDescription as string,FrenchDescription as string,ChineseDescription as string,ArabicDescription as string,HebrewDescription as string,ThaiDescription as string,GermanDescription as string,JapaneseDescription as string,TurkishDescription as string,StartDate as timestamp,EndDate as timestamp,Status as string),allowSchemaDrift: false,validateSchema: false) ~> DimProd"
 			}
 		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "ADW_DimProduct",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "DerivedColumn1 sink(saveMode:'append' ) ~> sink1"
+			}
+		],
 		"transformations": [
 			{
-				"name": "Join1",
-				"script": "SQLProducts, DimProd join(ProductID == ProductKey,joinType:'left',broadcast: 'none')~> Join1"
+				"name": "LookupKeys",
+				"script": "SQLProducts, DimProd join(ProductID == ProductKey,joinType:'left',broadcast: 'none')~> LookupKeys"
 			},
 			{
 				"name": "ConditionalSplit1",
-				"script": "Select1 split(isNull(ProductAlternateKey),disjoint: false) ~> ConditionalSplit1@(NewRow, ExistingMember)"
+				"script": "ColumnSelection split(isNull(ProductAlternateKey),disjoint: false) ~> ConditionalSplit1@(NewRow, ExistingMember)"
 			},
 			{
 				"name": "SurrogateKey1",
 				"script": "ConditionalSplit1@NewRow keyGenerate(output(surrogatekey as long),startAt: 1L) ~> SurrogateKey1"
 			},
 			{
-				"name": "Select1",
-				"script": "Join1 select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> Select1"
+				"name": "ColumnSelection",
+				"script": "LookupKeys select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> ColumnSelection"
+			},
+			{
+				"name": "DerivedColumn1",
+				"script": "SurrogateKey1 derive(surrogatekey = surrogatekey) ~> DerivedColumn1"
 			}
 		]
 	}
