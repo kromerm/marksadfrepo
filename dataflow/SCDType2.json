@@ -29,7 +29,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,EnglishProductName = Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status,EndDate,TurkishDescription = EnglishProductName,JapaneseDescription = EnglishProductName,GermanDescription = EnglishProductName,ThaiDescription = EnglishProductName,HebrewDescription = EnglishProductName,ArabicDescription = EnglishProductName,ChineseDescription = EnglishProductName,FrenchDescription = EnglishProductName)) ~> sink1"
+				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,ReorderPoint,EnglishProductName = Name,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductAlternateKey = surrogatekey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status,EndDate,TurkishDescription = EnglishProductName,JapaneseDescription = EnglishProductName,GermanDescription = EnglishProductName,ThaiDescription = EnglishProductName,HebrewDescription = EnglishProductName,ArabicDescription = EnglishProductName,ChineseDescription = EnglishProductName,FrenchDescription = EnglishProductName,SafetyStockLevel,SpanishDescription = EnglishProductName)) ~> sink1"
 			}
 		],
 		"transformations": [
