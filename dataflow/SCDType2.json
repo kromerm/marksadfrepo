@@ -29,7 +29,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,EnglishProductName = Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status)) ~> sink1"
+				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,EnglishProductName = Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status,EndDate = nullvalue,TurkishDescription = nullvalue,JapaneseDescription = nullvalue,GermanDescription = nullvalue,ThaiDescription = nullvalue,HebrewDescription = nullvalue,ArabicDescription = nullvalue,ChineseDescription = nullvalue,FrenchDescription = nullvalue)) ~> sink1"
 			}
 		],
 		"transformations": [
@@ -51,7 +51,7 @@
 			},
 			{
 				"name": "SetAttributes",
-				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(surrogatekey)),Status = 'Y',StartDate = currentDate()) ~> SetAttributes"
+				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(surrogatekey)),Status = 'Y',StartDate = currentDate(),nullvalue = null()) ~> SetAttributes"
 			}
 		]
 	}
