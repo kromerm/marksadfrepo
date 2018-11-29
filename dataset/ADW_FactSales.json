@@ -9,6 +9,96 @@
 			"name": "ETL"
 		},
 		"type": "AzureSqlDWTable",
+		"structure": [
+			{
+				"name": "OrderTotal",
+				"type": "Decimal"
+			},
+			{
+				"name": "RevisionNumber",
+				"type": "String"
+			},
+			{
+				"name": "OrderDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "DueDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "ShipDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "OnlineOrderFlag",
+				"type": "Boolean"
+			},
+			{
+				"name": "SalesOrderNumber",
+				"type": "String"
+			},
+			{
+				"name": "PurchaseOrderNumber",
+				"type": "String"
+			},
+			{
+				"name": "AccountNumber",
+				"type": "String"
+			},
+			{
+				"name": "CustomerID",
+				"type": "Int32"
+			},
+			{
+				"name": "ShipToAddressID",
+				"type": "Int32"
+			},
+			{
+				"name": "BillToAddressID",
+				"type": "Int32"
+			},
+			{
+				"name": "ShipMethod",
+				"type": "String"
+			},
+			{
+				"name": "CreditCardApprovalCode",
+				"type": "String"
+			},
+			{
+				"name": "SubTotal",
+				"type": "Decimal"
+			},
+			{
+				"name": "TaxAmt",
+				"type": "Decimal"
+			},
+			{
+				"name": "Freight",
+				"type": "Decimal"
+			},
+			{
+				"name": "TotalDue",
+				"type": "Decimal"
+			},
+			{
+				"name": "Comment",
+				"type": "String"
+			},
+			{
+				"name": "rowguid",
+				"type": "String"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "DateTime"
+			}
+		],
 		"typeProperties": {
 			"tableName": "FactSales_makromer"
 		}
