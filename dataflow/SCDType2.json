@@ -29,7 +29,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "NameKey sink(saveMode:'append' , mapColumn(ProductID,Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey = surrogatekey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
+				"script": "NameKey sink(saveMode:'append' , mapColumn(ProductKey = ProductID,EnglishProductName = Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,EndDate,Status)) ~> sink1"
 			}
 		],
 		"transformations": [

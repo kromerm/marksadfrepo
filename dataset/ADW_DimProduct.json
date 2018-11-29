@@ -9,8 +9,150 @@
 			"name": "ETL"
 		},
 		"type": "AzureSqlDWTable",
+		"structure": [
+			{
+				"name": "ProductKey",
+				"type": "Int32"
+			},
+			{
+				"name": "ProductAlternateKey",
+				"type": "String"
+			},
+			{
+				"name": "ProductSubcategoryKey",
+				"type": "Int32"
+			},
+			{
+				"name": "WeightUnitMeasureCode",
+				"type": "String"
+			},
+			{
+				"name": "SizeUnitMeasureCode",
+				"type": "String"
+			},
+			{
+				"name": "EnglishProductName",
+				"type": "String"
+			},
+			{
+				"name": "SpanishProductName",
+				"type": "String"
+			},
+			{
+				"name": "FrenchProductName",
+				"type": "String"
+			},
+			{
+				"name": "StandardCost",
+				"type": "Decimal"
+			},
+			{
+				"name": "FinishedGoodsFlag",
+				"type": "Boolean"
+			},
+			{
+				"name": "Color",
+				"type": "String"
+			},
+			{
+				"name": "SafetyStockLevel",
+				"type": "Int16"
+			},
+			{
+				"name": "ReorderPoint",
+				"type": "Int16"
+			},
+			{
+				"name": "ListPrice",
+				"type": "Decimal"
+			},
+			{
+				"name": "Size",
+				"type": "String"
+			},
+			{
+				"name": "SizeRange",
+				"type": "String"
+			},
+			{
+				"name": "Weight",
+				"type": "Double"
+			},
+			{
+				"name": "DaysToManufacture",
+				"type": "Int32"
+			},
+			{
+				"name": "ProductLine",
+				"type": "String"
+			},
+			{
+				"name": "DealerPrice",
+				"type": "Decimal"
+			},
+			{
+				"name": "Class",
+				"type": "String"
+			},
+			{
+				"name": "Style",
+				"type": "String"
+			},
+			{
+				"name": "ModelName",
+				"type": "String"
+			},
+			{
+				"name": "EnglishDescription",
+				"type": "String"
+			},
+			{
+				"name": "FrenchDescription",
+				"type": "String"
+			},
+			{
+				"name": "ChineseDescription",
+				"type": "String"
+			},
+			{
+				"name": "ArabicDescription",
+				"type": "String"
+			},
+			{
+				"name": "HebrewDescription",
+				"type": "String"
+			},
+			{
+				"name": "ThaiDescription",
+				"type": "String"
+			},
+			{
+				"name": "GermanDescription",
+				"type": "String"
+			},
+			{
+				"name": "JapaneseDescription",
+				"type": "String"
+			},
+			{
+				"name": "TurkishDescription",
+				"type": "String"
+			},
+			{
+				"name": "StartDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "EndDate",
+				"type": "DateTime"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			}
+		],
 		"typeProperties": {
-			"tableName": "DimProduct_makromer"
+			"tableName": "DimProduct"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
