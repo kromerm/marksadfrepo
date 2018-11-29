@@ -45,7 +45,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "SinkFactSales",
-				"script": "Join1 sink(saveMode:'overwrite' ) ~> SinkFactSales"
+				"script": "Join1 sink(saveMode:'overwrite' , mapColumn(SalesOrderID = Aggregate1@SalesOrderID,OrderTotal,RevisionNumber,OrderDate,DueDate,ShipDate,Status,OnlineOrderFlag,SalesOrderNumber,PurchaseOrderNumber,AccountNumber,CustomerID,ShipToAddressID,BillToAddressID,ShipMethod,CreditCardApprovalCode,SubTotal,TaxAmt,Freight,TotalDue,Comment,rowguid,ModifiedDate)) ~> SinkFactSales"
 			},
 			{
 				"dataset": {
