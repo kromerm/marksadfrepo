@@ -14,6 +14,16 @@
 				"script": "source(allowSchemaDrift: true,validateSchema: false) ~> SalesSource1"
 			}
 		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "AzureBlob1",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "CleanTotal sink(saveMode:'overwrite' ) ~> sink1"
+			}
+		],
 		"transformations": [
 			{
 				"name": "AddTax",
