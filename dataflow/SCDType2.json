@@ -29,7 +29,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,ReorderPoint,EnglishProductName = Name,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductAlternateKey = surrogatekey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status,EndDate,TurkishDescription = EnglishProductName,JapaneseDescription = EnglishProductName,GermanDescription = EnglishProductName,ThaiDescription = EnglishProductName,HebrewDescription = EnglishProductName,ArabicDescription = EnglishProductName,ChineseDescription = EnglishProductName,FrenchDescription = EnglishProductName,SafetyStockLevel,SpanishDescription = EnglishProductName)) ~> sink1"
+				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,ReorderPoint,EnglishProductName,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductAlternateKey = surrogatekey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,FinishedGoodsFlag,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,StartDate,Status,EndDate,TurkishDescription = NullDesc,JapaneseDescription = NullDesc,GermanDescription = NullDesc,ThaiDescription = NullDesc,HebrewDescription = NullDesc,ArabicDescription = NullDesc,ChineseDescription = NullDesc,FrenchDescription = NullDesc,SafetyStockLevel,SpanishDescription = NullDesc)) ~> sink1"
 			}
 		],
 		"transformations": [
@@ -51,7 +51,7 @@
 			},
 			{
 				"name": "SetAttributes",
-				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(surrogatekey)),Status = 'Y',StartDate = currentDate(),EndDate = addMonths(currentDate(),1200)) ~> SetAttributes"
+				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(surrogatekey)),Status = 'Y',StartDate = currentDate(),EndDate = addMonths(currentDate(),1200),NullDesc = toString('  ')) ~> SetAttributes"
 			}
 		]
 	}
