@@ -29,7 +29,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = surrogatekey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,StandardCost,FinishedGoodsFlag,Color,SafetyStockLevel,ReorderPoint,ListPrice,Size,SizeRange,Weight,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
+				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,ProductAlternateKey = surrogatekey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,StandardCost,FinishedGoodsFlag,Color,SafetyStockLevel,ReorderPoint,ListPrice,Size,SizeRange,Weight,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
 			}
 		],
 		"transformations": [
