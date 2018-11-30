@@ -38,42 +38,6 @@
 			{
 				"name": "Weight",
 				"type": "Decimal"
-			},
-			{
-				"name": "ProductCategoryID",
-				"type": "Int32"
-			},
-			{
-				"name": "ProductModelID",
-				"type": "Int32"
-			},
-			{
-				"name": "SellStartDate",
-				"type": "DateTime"
-			},
-			{
-				"name": "SellEndDate",
-				"type": "DateTime"
-			},
-			{
-				"name": "DiscontinuedDate",
-				"type": "DateTime"
-			},
-			{
-				"name": "ThumbNailPhoto",
-				"type": "Byte[]"
-			},
-			{
-				"name": "ThumbnailPhotoFileName",
-				"type": "String"
-			},
-			{
-				"name": "rowguid",
-				"type": "Guid"
-			},
-			{
-				"name": "ModifiedDate",
-				"type": "DateTime"
 			}
 		],
 		"typeProperties": {

@@ -11,7 +11,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "SQLProducts",
-				"script": "source(output(ProductID as integer,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as decimal(10,0),Size as string,Weight as decimal(10,0),ProductCategoryID as integer,ProductModelID as integer,SellStartDate as timestamp,SellEndDate as timestamp,DiscontinuedDate as timestamp,ThumbNailPhoto as string,ThumbnailPhotoFileName as string,rowguid as string,ModifiedDate as timestamp),allowSchemaDrift: false,validateSchema: false) ~> SQLProducts"
+				"script": "source(output(ProductID as integer,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as decimal(10,0),Size as string,Weight as decimal(10,0)),allowSchemaDrift: false,validateSchema: false) ~> SQLProducts"
 			},
 			{
 				"dataset": {
@@ -47,7 +47,7 @@
 			},
 			{
 				"name": "ColumnSelection",
-				"script": "LookupKeys select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductCategoryID,ProductModelID,SellStartDate,SellEndDate,DiscontinuedDate,ThumbNailPhoto,ThumbnailPhotoFileName,rowguid,ModifiedDate,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> ColumnSelection"
+				"script": "LookupKeys select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> ColumnSelection"
 			},
 			{
 				"name": "SetAttributes",
