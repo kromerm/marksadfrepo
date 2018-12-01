@@ -5,6 +5,9 @@
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Misc"
+		},
 		"type": "AzureSqlTable"
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

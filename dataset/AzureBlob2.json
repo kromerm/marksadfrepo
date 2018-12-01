@@ -5,6 +5,9 @@
 			"referenceName": "MyAzureBlobLinkedService",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Misc"
+		},
 		"type": "AzureBlob",
 		"structure": [
 			{

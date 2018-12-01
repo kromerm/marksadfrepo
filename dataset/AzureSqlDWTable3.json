@@ -5,6 +5,9 @@
 			"referenceName": "AzureSqlDW1",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Misc"
+		},
 		"type": "AzureSqlDWTable",
 		"structure": [
 			{

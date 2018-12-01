@@ -30,7 +30,10 @@
 					}
 				}
 			}
-		]
+		],
+		"folder": {
+			"name": "Misc"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

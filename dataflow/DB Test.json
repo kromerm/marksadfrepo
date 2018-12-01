@@ -1,6 +1,9 @@
 {
 	"name": "DB Test",
 	"properties": {
+		"folder": {
+			"name": "Misc"
+		},
 		"sources": [
 			{
 				"dataset": {
