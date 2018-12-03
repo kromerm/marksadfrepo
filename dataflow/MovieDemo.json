@@ -11,7 +11,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "Movies",
-				"script": "source(output(movieId as string,title as string,genres as string),allowSchemaDrift: false,validateSchema: false) ~> Movies"
+				"script": "source(output(movieId as string,title as string,genres as string,dummy as string),allowSchemaDrift: true,validateSchema: false) ~> Movies"
 			}
 		],
 		"sinks": [
@@ -35,7 +35,11 @@
 			},
 			{
 				"name": "SplitGenres",
-				"script": "Movies derive(splitgenres = split(genres, '|')) ~> SplitGenres"
+				"script": "Filter1 derive(splitgenres = split(genres, '|')) ~> SplitGenres"
+			},
+			{
+				"name": "Filter1",
+				"script": "Movies filter(isNull(dummy)) ~> Filter1"
 			}
 		]
 	}
