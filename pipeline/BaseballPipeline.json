@@ -18,7 +18,7 @@
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "nov2",
+						"referenceName": "databricksJobCluster",
 						"type": "LinkedServiceReference"
 					},
 					"staging": {
