@@ -35,11 +35,7 @@
 			},
 			{
 				"name": "SplitGenres",
-				"script": "Filter1 derive(splitgenres = split(genres, '|')) ~> SplitGenres"
-			},
-			{
-				"name": "Filter1",
-				"script": "Movies filter(isNull(dummy)) ~> Filter1"
+				"script": "Movies derive(splitgenres = split(genres, '|')) ~> SplitGenres"
 			}
 		]
 	}
