@@ -1,0 +1,35 @@
+{
+	"name": "BaseballPipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Baseball 1 Norm Batting Stats",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Baseball 1 Norm Batting Stats",
+						"type": "DataFlowReference"
+					},
+					"linkedService": {
+						"referenceName": "databricksJobCluster",
+						"type": "LinkedServiceReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "mycontainer/staging"
+					}
+				}
+			}
+		]
+	}
+}
