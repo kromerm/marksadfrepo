@@ -4,7 +4,7 @@
 		"sources": [
 			{
 				"dataset": {
-					"referenceName": "AzureBlob3",
+					"referenceName": "Product_Blob",
 					"type": "DatasetReference"
 				},
 				"name": "source1",

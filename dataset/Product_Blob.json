@@ -1,5 +1,5 @@
 {
-	"name": "AzureBlob3",
+	"name": "Product_Blob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -25,7 +25,7 @@
 			},
 			{
 				"name": "StandardCost",
-				"type": "String"
+				"type": "Decimal"
 			},
 			{
 				"name": "ListPrice",
