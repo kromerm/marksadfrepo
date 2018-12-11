@@ -1,0 +1,11 @@
+{
+	"name": "pivotflow1",
+	"properties": {
+		"sources": [
+			{
+				"name": "source1",
+				"script": "source(allowSchemaDrift: true,validateSchema: false) ~> source1"
+			}
+		]
+	}
+}
