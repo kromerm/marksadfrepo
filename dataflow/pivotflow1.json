@@ -3,8 +3,12 @@
 	"properties": {
 		"sources": [
 			{
+				"dataset": {
+					"referenceName": "AzureBlob3",
+					"type": "DatasetReference"
+				},
 				"name": "source1",
-				"script": "source(allowSchemaDrift: true,validateSchema: false) ~> source1"
+				"script": "source(output(ProductID as string,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as string,Size as string,Weight as string,ProductCategoryID as string,ProductModelID as string,SellStartDate as string,SellEndDate as string,DiscontinuedDate as string,ThumbNailPhoto as string,ThumbnailPhotoFileName as string,rowguid as string,ModifiedDate as string),allowSchemaDrift: false,validateSchema: false) ~> source1"
 			}
 		]
 	}
