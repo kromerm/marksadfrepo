@@ -17,10 +17,6 @@
 						"referenceName": "Currency Converter",
 						"type": "DataFlowReference"
 					},
-					"linkedService": {
-						"referenceName": "octinteractive",
-						"type": "LinkedServiceReference"
-					},
 					"staging": {
 						"linkedService": {
 							"referenceName": "AzureBlobStorage1",
