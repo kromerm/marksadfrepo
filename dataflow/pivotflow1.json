@@ -15,6 +15,10 @@
 			{
 				"name": "Filter1",
 				"script": "source1 filter(StandardCost < 2.0) ~> Filter1"
+			},
+			{
+				"name": "Pivot1",
+				"script": "Filter1 pivot(columnNaming: '$N$V', lateral: true) ~> Pivot1"
 			}
 		]
 	}
