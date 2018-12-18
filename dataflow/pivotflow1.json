@@ -14,7 +14,7 @@
 		"transformations": [
 			{
 				"name": "PivotColorStandardCost",
-				"script": "ProductSource pivot(columnNaming: '$N$V', lateral: true) ~> PivotColorStandardCost"
+				"script": "ProductSource pivot(groupBy(Name), pivotBy(Color), sum(StandardCost), columnNaming: '$N$V', lateral: true) ~> PivotColorStandardCost"
 			}
 		]
 	}

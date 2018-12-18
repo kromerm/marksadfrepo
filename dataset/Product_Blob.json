@@ -25,7 +25,7 @@
 			},
 			{
 				"name": "StandardCost",
-				"type": "Decimal"
+				"type": "String"
 			},
 			{
 				"name": "ListPrice",
@@ -46,34 +46,6 @@
 			{
 				"name": "ProductModelID",
 				"type": "String"
-			},
-			{
-				"name": "SellStartDate",
-				"type": "String"
-			},
-			{
-				"name": "SellEndDate",
-				"type": "String"
-			},
-			{
-				"name": "DiscontinuedDate",
-				"type": "String"
-			},
-			{
-				"name": "ThumbNailPhoto",
-				"type": "String"
-			},
-			{
-				"name": "ThumbnailPhotoFileName",
-				"type": "String"
-			},
-			{
-				"name": "rowguid",
-				"type": "String"
-			},
-			{
-				"name": "ModifiedDate",
-				"type": "String"
 			}
 		],
 		"typeProperties": {
@@ -88,7 +60,7 @@
 				"skipLineCount": 0,
 				"firstRowAsHeader": true
 			},
-			"fileName": "Product1.csv",
+			"fileName": "Product2.csv",
 			"folderPath": "mycontainer/SampleData/AW"
 		}
 	}
