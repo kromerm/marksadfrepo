@@ -10,6 +10,16 @@
 				"name": "source1",
 				"script": "source(output(ProductID as string,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as string,Size as string,Weight as string,ProductCategoryID as string,ProductModelID as string,SellStartDate as string,SellEndDate as string,DiscontinuedDate as string,ThumbNailPhoto as string,ThumbnailPhotoFileName as string,rowguid as string,ModifiedDate as string),allowSchemaDrift: false,validateSchema: false) ~> source1"
 			}
+		],
+		"transformations": [
+			{
+				"name": "Pivot1",
+				"script": "source1 pivot(groupBy(Size, Color, ProductID, Name), pivotBy(Color, ['Black', 'Red', 'Blue', 'Multi']), CostSum = sum(StandardCost), columnNaming: '$N$V', lateral: true) ~> Pivot1"
+			},
+			{
+				"name": "Unpivot1",
+				"script": "Pivot1 unpivot(output(undefined as string), lateral: true, ignoreNullPivots: false) ~> Unpivot1"
+			}
 		]
 	}
 }
