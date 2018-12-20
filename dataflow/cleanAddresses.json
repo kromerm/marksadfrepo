@@ -1,0 +1,27 @@
+{
+	"name": "cleanAddresses",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Addresses_Blob",
+					"type": "DatasetReference"
+				},
+				"name": "AddressSource",
+				"script": "source(output(AddressID as string,Address1 as string,Address2 as string,City as string,Prop_4 as string,Prop_5 as string,Prop_6 as string,Prop_7 as string,Prop_8 as string),allowSchemaDrift: false,validateSchema: false) ~> AddressSource"
+			}
+		],
+		"sinks": [
+			{
+				"name": "sink1",
+				"script": "CleanAddress sink(saveMode:'overwrite' ) ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "CleanAddress",
+				"script": "AddressSource derive(each(match(type == 'string'), $$ + '_clean' = trim(trim($$, '.'), '  '))) ~> CleanAddress"
+			}
+		]
+	}
+}
