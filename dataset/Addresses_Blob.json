@@ -1,5 +1,5 @@
 {
-	"name": "Product_Description_Blob",
+	"name": "Addresses_Blob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
