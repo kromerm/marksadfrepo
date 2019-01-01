@@ -3,10 +3,6 @@
 	"properties": {
 		"sources": [
 			{
-				"dataset": {
-					"referenceName": "Product_Description_Blob",
-					"type": "DatasetReference"
-				},
 				"name": "source1",
 				"script": "source(output(AddressID as string,Address1 as string,Address2 as string,City as string,Prop_4 as string,Prop_5 as string,Prop_6 as string,Prop_7 as string,Prop_8 as string),allowSchemaDrift: true,validateSchema: false) ~> source1"
 			}
@@ -14,7 +10,7 @@
 		"transformations": [
 			{
 				"name": "CleanAddress",
-				"script": "source1 derive(each(match(type == 'string'), $$ + '_clean' = trim(trim($$, '.'), '  '))) ~> CleanAddress"
+				"script": "source1 derive(clean_address = regexReplace(Address1,'[ ]{2}|\\\\.',' ')) ~> CleanAddress"
 			}
 		]
 	}
