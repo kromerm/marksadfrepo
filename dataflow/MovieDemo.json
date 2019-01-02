@@ -35,7 +35,7 @@
 			},
 			{
 				"name": "SplitGenres",
-				"script": "Movies derive(splitgenres = split(genres, '|')) ~> SplitGenres"
+				"script": "Movies derive(splitgenres = 'a') ~> SplitGenres"
 			}
 		]
 	}
