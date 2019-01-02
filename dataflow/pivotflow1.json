@@ -13,8 +13,12 @@
 		],
 		"transformations": [
 			{
-				"name": "PivotColorStandardCost",
-				"script": "ProductSource pivot(groupBy(Name), pivotBy(Color), sum(StandardCost), columnNaming: '$N$V', lateral: true) ~> PivotColorStandardCost"
+				"name": "Pivot1",
+				"script": "source1 pivot(groupBy(ProductID, Name), pivotBy(Color, ['Black', 'Red', 'Blue', 'Multi']), CostSum = sum(StandardCost), columnNaming: '$N$V', lateral: true) ~> Pivot1"
+			},
+			{
+				"name": "Unpivot1",
+				"script": "Pivot1 unpivot(output(Color as string), ungroupBy(ProductID, Name), lateral: true, ignoreNullPivots: false) ~> Unpivot1"
 			}
 		]
 	}

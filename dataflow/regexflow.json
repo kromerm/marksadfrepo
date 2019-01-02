@@ -1,0 +1,59 @@
+{
+	"name": "regexflow",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Addresses_Blob",
+					"type": "DatasetReference"
+				},
+				"name": "IncomingAddresses",
+				"script": "source(output(AddressID as string,Address1 as string,Address2 as string,City as string,Prop_4 as string,Prop_5 as string,Prop_6 as string,Prop_7 as string,Prop_8 as string),allowSchemaDrift: true,validateSchema: false) ~> IncomingAddresses"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "A_G",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "ConditionalSplit1@AThruG sink(saveMode:'overwrite' ) ~> sink1"
+			},
+			{
+				"dataset": {
+					"referenceName": "H_P",
+					"type": "DatasetReference"
+				},
+				"name": "sink2",
+				"script": "ConditionalSplit1@HThruP sink(saveMode:'overwrite' ) ~> sink2"
+			},
+			{
+				"dataset": {
+					"referenceName": "Q_Z",
+					"type": "DatasetReference"
+				},
+				"name": "sink3",
+				"script": "ConditionalSplit1@QThruZ sink(saveMode:'overwrite' ) ~> sink3"
+			},
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sink4",
+				"script": "ConditionalSplit1@other sink(saveMode:'overwrite' ) ~> sink4"
+			}
+		],
+		"transformations": [
+			{
+				"name": "CleanAddress",
+				"script": "IncomingAddresses derive(clean_address = regexReplace(Address1,`[ ]{2}|\\.`,' '),house_num = regex_extract(Address1, `^(\\d+)`, 1)) ~> CleanAddress"
+			},
+			{
+				"name": "ConditionalSplit1",
+				"script": "CleanAddress split(rlike(City,'^[A-G]'),\r\nrlike(City,'^[H-P]'),\r\nrlike(City,'^[Q-Z]'),disjoint: false) ~> ConditionalSplit1@(AThruG, HThruP, QThruZ, other)"
+			}
+		]
+	}
+}
