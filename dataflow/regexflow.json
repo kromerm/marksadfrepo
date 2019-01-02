@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "regexflow",
 	"properties": {
 		"sources": [
 			{
@@ -15,6 +15,10 @@
 			{
 				"name": "CleanAddress",
 				"script": "source1 derive(clean_address = regexReplace(Address1,'[ ]{2}|\\\\.',' ')) ~> CleanAddress"
+			},
+			{
+				"name": "ConditionalSplit1",
+				"script": "CleanAddress split(rlike(City,'^[A-G]'),ERROR_FUNCTION(''),disjoint: false) ~> ConditionalSplit1@(AThruG, , other)"
 			}
 		]
 	}
