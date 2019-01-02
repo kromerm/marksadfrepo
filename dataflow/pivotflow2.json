@@ -1,0 +1,29 @@
+{
+	"name": "pivotflow2",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Product_Blob",
+					"type": "DatasetReference"
+				},
+				"name": "ProductSource",
+				"script": "source(output(ProductID as string,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as string,Size as string,Weight as string,ProductCategoryID as string,ProductModelID as string),allowSchemaDrift: false,validateSchema: false) ~> ProductSource"
+			}
+		],
+		"transformations": [
+			{
+				"name": "PivotColorStandardCost",
+				"script": "ProductSource pivot(groupBy(Name, ProductID), pivotBy(Color), CostSum = sum(StandardCost), columnNaming: '$N$V', lateral: true) ~> PivotColorStandardCost"
+			},
+			{
+				"name": "ProductSourceBranch",
+				"script": "ProductSource select(mapColumn(ProductID2 = ProductID,Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID))~> ProductSourceBranch"
+			},
+			{
+				"name": "Join1",
+				"script": "PivotColorStandardCost, ProductSourceBranch join(ProductID == ProductID2,joinType:'inner',broadcast: 'none')~> Join1"
+			}
+		]
+	}
+}

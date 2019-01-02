@@ -46,34 +46,6 @@
 			{
 				"name": "ProductModelID",
 				"type": "String"
-			},
-			{
-				"name": "SellStartDate",
-				"type": "String"
-			},
-			{
-				"name": "SellEndDate",
-				"type": "String"
-			},
-			{
-				"name": "DiscontinuedDate",
-				"type": "String"
-			},
-			{
-				"name": "ThumbNailPhoto",
-				"type": "String"
-			},
-			{
-				"name": "ThumbnailPhotoFileName",
-				"type": "String"
-			},
-			{
-				"name": "rowguid",
-				"type": "String"
-			},
-			{
-				"name": "ModifiedDate",
-				"type": "String"
 			}
 		],
 		"typeProperties": {
