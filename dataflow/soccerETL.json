@@ -1,0 +1,15 @@
+{
+	"name": "soccerETL",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "soccer_events",
+					"type": "DatasetReference"
+				},
+				"name": "SpecifySchema",
+				"script": "source(allowSchemaDrift: false,\n\tvalidateSchema: false) ~> SpecifySchema"
+			}
+		]
+	}
+}
