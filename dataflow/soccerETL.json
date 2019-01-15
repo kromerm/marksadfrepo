@@ -22,11 +22,15 @@
 		"transformations": [
 			{
 				"name": "DictionaryMapping1",
-				"script": "SpecifySchemaExtract derive(eventTypeMap = case(\r\n    event_type == '0','Announcement',\r\n    event_type == '1','Attempt',\r\n    event_type == '2','Corner',\r\n    event_type == '3','Foul',\r\n    event_type == '4','Yellow Card',\r\n    event_type == '5','Second yellow card',\r\n    event_type == '6','Red card',\r\n    event_type == '7','Substitution',\r\n    event_type == '8','Free kick won',\r\n    event_type == '9','Offside',\r\n    event_type == '10','Hand ball',\r\n    event_type == '11','Penalty conceded',\r\n    event_type == '99', 'NA'\r\n)) ~> DictionaryMapping1"
+				"script": "SpecifySchemaExtract derive(eventTypeMap = case(\r\n    event_type == '0','Announcement',\r\n    event_type == '1','Attempt',\r\n    event_type == '2','Corner',\r\n    event_type == '3','Foul',\r\n    event_type == '4','Yellow Card',\r\n    event_type == '5','Second yellow card',\r\n    event_type == '6','Red card',\r\n    event_type == '7','Substitution',\r\n    event_type == '8','Free kick won',\r\n    event_type == '9','Offside',\r\n    event_type == '10','Hand ball',\r\n    event_type == '11','Penalty conceded',\r\n    event_type == '99', 'NA'\r\n),\n\t\ttime = toInteger(time)) ~> DictionaryMapping1"
 			},
 			{
-				"name": "DictionaryMapping2",
-				"script": "DictionaryMapping1, locationMap lookup(location == Type,\n\tbroadcast: 'none')~> DictionaryMapping2"
+				"name": "JoinStringDataViaLookup",
+				"script": "DictionaryMapping1, locationMap lookup(location == Type,\n\tbroadcast: 'none')~> JoinStringDataViaLookup"
+			},
+			{
+				"name": "TimeBins",
+				"script": "JoinStringDataViaLookup window(over(time),\n\tasc(event_type, true),\n\tTimeBin = ERROR_FUNCTION('')) ~> TimeBins"
 			}
 		]
 	}
