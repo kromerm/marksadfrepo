@@ -25,12 +25,12 @@
 				"script": "prodSource, paramsFile lookup(Color == ParamColor,\n\tbroadcast: 'none')~> getParams"
 			},
 			{
-				"name": "Filter1",
-				"script": "getParams filter(Color == ParamColor) ~> Filter1"
+				"name": "FilterRows",
+				"script": "getParams filter(Color == ParamColor) ~> FilterRows"
 			},
 			{
-				"name": "Aggregate1",
-				"script": "Filter1 aggregate(groupBy(Color),\n\tAverageStandardCostByColor = '$'+toString(round(avg(StandardCost),2))) ~> Aggregate1"
+				"name": "AggregateStandardCost",
+				"script": "FilterRows aggregate(groupBy(Color),\n\tAverageStandardCostByColor = '$'+toString(round(avg(StandardCost),2))) ~> AggregateStandardCost"
 			}
 		]
 	}
