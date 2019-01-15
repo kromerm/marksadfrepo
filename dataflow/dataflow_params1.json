@@ -1,0 +1,23 @@
+{
+	"name": "dataflow_params1",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Product_Blob",
+					"type": "DatasetReference"
+				},
+				"name": "prodSource",
+				"script": "source(output(\n\t\tProductID as string,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as string,\n\t\tListPrice as string,\n\t\tSize as string,\n\t\tWeight as string,\n\t\tProductCategoryID as string,\n\t\tProductModelID as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> prodSource"
+			},
+			{
+				"dataset": {
+					"referenceName": "blob_params",
+					"type": "DatasetReference"
+				},
+				"name": "paramsFile",
+				"script": "source(output(\n\t\tParamColor as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> paramsFile"
+			}
+		]
+	}
+}
