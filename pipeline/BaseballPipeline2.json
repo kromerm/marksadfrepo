@@ -18,7 +18,7 @@
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "adb5",
+						"referenceName": "adb5_jan_eastus",
 						"type": "LinkedServiceReference"
 					},
 					"staging": {
