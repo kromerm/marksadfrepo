@@ -17,10 +17,6 @@
 						"referenceName": "Baseball 2 Adv Stats",
 						"type": "DataFlowReference"
 					},
-					"linkedService": {
-						"referenceName": "adb5",
-						"type": "LinkedServiceReference"
-					},
 					"staging": {
 						"linkedService": {
 							"referenceName": "MyAzureBlobLinkedService",

@@ -16,10 +16,6 @@
 					"dataflow": {
 						"referenceName": "SchemaDrift",
 						"type": "DataFlowReference"
-					},
-					"linkedService": {
-						"referenceName": "novinteractive",
-						"type": "LinkedServiceReference"
 					}
 				}
 			}
