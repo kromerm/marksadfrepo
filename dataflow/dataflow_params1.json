@@ -1,6 +1,9 @@
 {
 	"name": "dataflow_params1",
 	"properties": {
+		"folder": {
+			"name": "Params"
+		},
 		"sources": [
 			{
 				"dataset": {

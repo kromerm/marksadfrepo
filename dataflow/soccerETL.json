@@ -1,6 +1,9 @@
 {
 	"name": "soccerETL",
 	"properties": {
+		"folder": {
+			"name": "Soccer"
+		},
 		"sources": [
 			{
 				"dataset": {
