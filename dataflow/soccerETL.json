@@ -33,7 +33,7 @@
 			},
 			{
 				"name": "TimeBins",
-				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = ERROR_FUNCTION('')) ~> TimeBins"
+				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = nTile()) ~> TimeBins"
 			},
 			{
 				"name": "ColumnSelectionNaming",
