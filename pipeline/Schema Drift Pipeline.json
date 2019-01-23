@@ -16,6 +16,10 @@
 					"dataflow": {
 						"referenceName": "SchemaDrift",
 						"type": "DataFlowReference"
+					},
+					"linkedService": {
+						"referenceName": "JAN2019EAST",
+						"type": "LinkedServiceReference"
 					}
 				}
 			}
