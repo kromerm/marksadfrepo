@@ -39,7 +39,7 @@
 			},
 			{
 				"name": "TimeBins",
-				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = nTile(10)) ~> TimeBins"
+				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = nTile()) ~> TimeBins"
 			},
 			{
 				"name": "ColumnSelectionNaming",
