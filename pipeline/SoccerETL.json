@@ -1,9 +1,9 @@
 {
-	"name": "BaseballPipeline2",
+	"name": "SoccerETL",
 	"properties": {
 		"activities": [
 			{
-				"name": "Baseball 1 Norm Batting Stats",
+				"name": "soccerETL",
 				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -14,25 +14,15 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Baseball 1 Norm Batting Stats",
+						"referenceName": "soccerETL",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "adb5_jan_eastus",
+						"referenceName": "JAN2019EAST",
 						"type": "LinkedServiceReference"
-					},
-					"staging": {
-						"linkedService": {
-							"referenceName": "AzureBlobStorage1",
-							"type": "LinkedServiceReference"
-						},
-						"folderPath": "mycontainer/staging"
 					}
 				}
 			}
-		],
-		"folder": {
-			"name": "Demos"
-		}
+		]
 	}
 }
