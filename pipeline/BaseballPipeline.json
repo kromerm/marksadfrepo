@@ -17,6 +17,10 @@
 						"referenceName": "Baseball 1 Norm Batting Stats",
 						"type": "DataFlowReference"
 					},
+					"linkedService": {
+						"referenceName": "JAN2019EAST",
+						"type": "LinkedServiceReference"
+					},
 					"staging": {
 						"linkedService": {
 							"referenceName": "AzureBlobStorage1",
