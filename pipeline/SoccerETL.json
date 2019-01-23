@@ -14,12 +14,19 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "soccerETL",
+						"referenceName": "Baseball 1 Basic Stats",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
 						"referenceName": "JAN2019EAST",
 						"type": "LinkedServiceReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "mycontainer/staging"
 					}
 				}
 			}
