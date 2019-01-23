@@ -22,6 +22,12 @@
 				"script": "source(output(\n\t\tType as string,\n\t\tName as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> locationMap"
 			}
 		],
+		"sinks": [
+			{
+				"name": "sink1",
+				"script": "TimeBins sink(saveMode:'overwrite') ~> sink1"
+			}
+		],
 		"transformations": [
 			{
 				"name": "DictionaryMapping1",
@@ -33,7 +39,7 @@
 			},
 			{
 				"name": "TimeBins",
-				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = nTile()) ~> TimeBins"
+				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = nTile(10)) ~> TimeBins"
 			},
 			{
 				"name": "ColumnSelectionNaming",
