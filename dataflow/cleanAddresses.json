@@ -13,6 +13,10 @@
 		],
 		"sinks": [
 			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
 				"name": "sink1",
 				"script": "CleanAddress sink(saveMode:'overwrite' ) ~> sink1"
 			}

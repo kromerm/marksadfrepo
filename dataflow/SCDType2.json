@@ -51,7 +51,7 @@
 			},
 			{
 				"name": "SetAttributes",
-				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(1)),Status = 'Y',StartDate = currentDate(),EndDate = addMonths(currentDate(),1200),NullDesc = toString('  '),mybit = 0) ~> SetAttributes"
+				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(1)),Status = 'Y',StartDate = currentDate(),EndDate = 1200,NullDesc = toString('  '),mybit = 0) ~> SetAttributes"
 			}
 		]
 	}

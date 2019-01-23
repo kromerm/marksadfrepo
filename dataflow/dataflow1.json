@@ -1,0 +1,15 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "jsonblob",
+					"type": "DatasetReference"
+				},
+				"name": "source1",
+				"script": "source(output(id as string,city as string,loc as string,pop as long,state as string),allowSchemaDrift: false,validateSchema: false) ~> source1"
+			}
+		]
+	}
+}

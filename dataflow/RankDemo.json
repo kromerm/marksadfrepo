@@ -1,0 +1,20 @@
+{
+	"name": "RankDemo",
+	"properties": {
+		"folder": {
+			"name": "Demos"
+		},
+		"sources": [
+			{
+				"name": "source1",
+				"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "SurrogateKey1",
+				"script": "source1 keyGenerate(output(undefined as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+			}
+		]
+	}
+}

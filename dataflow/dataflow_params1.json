@@ -1,0 +1,40 @@
+{
+	"name": "dataflow_params1",
+	"properties": {
+		"folder": {
+			"name": "Params"
+		},
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Product_Blob",
+					"type": "DatasetReference"
+				},
+				"name": "prodSource",
+				"script": "source(output(\n\t\tProductID as string,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(10,0),\n\t\tListPrice as string,\n\t\tSize as string,\n\t\tWeight as string,\n\t\tProductCategoryID as string,\n\t\tProductModelID as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> prodSource"
+			},
+			{
+				"dataset": {
+					"referenceName": "blob_params",
+					"type": "DatasetReference"
+				},
+				"name": "paramsFile",
+				"script": "source(output(\n\t\tParamColor as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> paramsFile"
+			}
+		],
+		"transformations": [
+			{
+				"name": "getParams",
+				"script": "prodSource, paramsFile lookup(Color == ParamColor,\n\tbroadcast: 'none')~> getParams"
+			},
+			{
+				"name": "FilterRows",
+				"script": "getParams filter(Color == ParamColor) ~> FilterRows"
+			},
+			{
+				"name": "AggregateStandardCost",
+				"script": "FilterRows aggregate(groupBy(Color),\n\tAverageStandardCostByColor = '$'+toString(round(avg(StandardCost),2))) ~> AggregateStandardCost"
+			}
+		]
+	}
+}

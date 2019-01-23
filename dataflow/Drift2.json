@@ -21,7 +21,7 @@
 			},
 			{
 				"name": "CleanTotal",
-				"script": "AddTax derive(each(match(locate('with_tax',name) > 0), $$ = left('$'+toString($$)+'00',locate('.', $$)+3))) ~> CleanTotal"
+				"script": "AddTax derive(each(match(locate('with_tax',name) > 0\r\n\r\n), $$ = left('$'+toString($$)+'00',locate('.', $$)+3))) ~> CleanTotal"
 			}
 		]
 	}
