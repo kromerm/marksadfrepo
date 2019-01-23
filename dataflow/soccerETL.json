@@ -24,8 +24,12 @@
 		],
 		"sinks": [
 			{
-				"name": "sink1",
-				"script": "TimeBins sink(saveMode:'overwrite') ~> sink1"
+				"dataset": {
+					"referenceName": "newbattingtable",
+					"type": "DatasetReference"
+				},
+				"name": "sinkToDW",
+				"script": "TimeBins sink(saveMode:'overwrite') ~> sinkToDW"
 			}
 		],
 		"transformations": [

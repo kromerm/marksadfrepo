@@ -1,6 +1,9 @@
 {
 	"name": "Windows",
 	"properties": {
+		"folder": {
+			"name": "Demos"
+		},
 		"sources": [
 			{
 				"dataset": {
