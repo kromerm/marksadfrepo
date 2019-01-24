@@ -29,11 +29,15 @@
 			},
 			{
 				"name": "FilterRows",
-				"script": "getParams filter(Color == ParamColor) ~> FilterRows"
+				"script": "Select1 filter(Color == ParamColor) ~> FilterRows"
 			},
 			{
 				"name": "AggregateStandardCost",
 				"script": "FilterRows aggregate(groupBy(Color),\n\tAverageStandardCostByColor = '$'+toString(round(avg(StandardCost),2))) ~> AggregateStandardCost"
+			},
+			{
+				"name": "Select1",
+				"script": "getParams select(mapColumn(\n\t\tProductID,\n\t\tName,\n\t\tProductNumber,\n\t\tColor,\n\t\tStandardCost,\n\t\tListPrice,\n\t\tSize,\n\t\tWeight,\n\t\tProductCategoryID,\n\t\tProductModelID,\n\t\tParamColor\n\t))~> Select1"
 			}
 		]
 	}

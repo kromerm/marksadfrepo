@@ -14,11 +14,11 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "regexflow",
+						"referenceName": "TaxiDemo",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
-						"referenceName": "adb5_jan_eastus",
+						"referenceName": "JAN2019B",
 						"type": "LinkedServiceReference"
 					}
 				}
