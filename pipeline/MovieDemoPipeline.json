@@ -16,10 +16,6 @@
 						"referenceName": "MovieDemo",
 						"type": "DataFlowReference"
 					},
-					"linkedService": {
-						"referenceName": "MyDataBricksLinkedService",
-						"type": "LinkedServiceReference"
-					},
 					"staging": {
 						"linkedService": {
 							"referenceName": "AzureBlobStorage1",
