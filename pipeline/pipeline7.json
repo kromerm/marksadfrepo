@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "regexflow",
+						"referenceName": "Baseball 1 Basic Stats",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
