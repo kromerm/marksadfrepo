@@ -1,0 +1,71 @@
+{
+	"name": "TaxiDataSQLDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TaxiDataSQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "medallion",
+				"type": "String"
+			},
+			{
+				"name": "hack_license",
+				"type": "String"
+			},
+			{
+				"name": "vendor_id",
+				"type": "String"
+			},
+			{
+				"name": "rate_code",
+				"type": "String"
+			},
+			{
+				"name": "store_and_fwd_flag",
+				"type": "String"
+			},
+			{
+				"name": "pickup_datetime",
+				"type": "String"
+			},
+			{
+				"name": "dropoff_datetime",
+				"type": "String"
+			},
+			{
+				"name": "passenger_count",
+				"type": "Int32"
+			},
+			{
+				"name": "trip_time_in_secs",
+				"type": "Int64"
+			},
+			{
+				"name": "trip_distance",
+				"type": "Double"
+			},
+			{
+				"name": "pickup_longitude",
+				"type": "Double"
+			},
+			{
+				"name": "pickup_latitude",
+				"type": "Double"
+			},
+			{
+				"name": "dropoff_longitude",
+				"type": "Double"
+			},
+			{
+				"name": "dropoff_latitude",
+				"type": "Double"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[TripData]"
+		}
+	}
+}

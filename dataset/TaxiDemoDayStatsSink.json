@@ -20,7 +20,7 @@
 				"firstRowAsHeader": true
 			},
 			"fileName": "",
-			"folderPath": "mycontainer/output/dayout"
+			"folderPath": "mycontainer/output/taxipaymentout"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
