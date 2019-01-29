@@ -40,11 +40,11 @@
 		"transformations": [
 			{
 				"name": "Lookup1",
-				"script": "sourceFlights, sourceAirlines lookup(AIRLINE_ID == toInteger(Code),\n\tbroadcast: 'both')~> Lookup1"
+				"script": "sourceFlights, sourceAirlines lookup(AIRLINE_ID == toInteger(Code),\n\tbroadcast: 'none')~> Lookup1"
 			},
 			{
 				"name": "Lookup2",
-				"script": "Lookup1, sourceAirports lookup(ORIGIN_AIRPORT_ID == toInteger(sourceAirports@Code),\n\tbroadcast: 'both')~> Lookup2"
+				"script": "Lookup1, sourceAirports lookup(ORIGIN_AIRPORT_ID == toInteger(sourceAirports@Code),\n\tbroadcast: 'none')~> Lookup2"
 			},
 			{
 				"name": "Aggregate1",
