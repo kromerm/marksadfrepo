@@ -34,7 +34,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "Aggregate1 sink(mapColumn(\n\t\tcarrier = CARRIER,\n\t\tyear = YEAR,\n\t\tdelays = totalDelays\n\t),\n\tsaveMode:'overwrite') ~> sink1"
+				"script": "Aggregate1 sink(mapColumn(\n\t\tcarrier = CARRIER,\n\t\tyear = YEAR,\n\t\tdelays = totalDelays\n\t),\n\tpartitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> sink1"
 			}
 		],
 		"transformations": [
@@ -48,7 +48,7 @@
 			},
 			{
 				"name": "Aggregate1",
-				"script": "Lookup2 aggregate(groupBy(CARRIER,\n\t\tYEAR),\n\ttotalDelays = sum(CARRIER_DELAY)) ~> Aggregate1"
+				"script": "Lookup2 aggregate(groupBy(CARRIER,\n\t\tYEAR),\n\ttotalDelays = sum(CARRIER_DELAY),\n\tpartitionBy('hash', 1)) ~> Aggregate1"
 			}
 		]
 	}
