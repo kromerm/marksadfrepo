@@ -1,0 +1,23 @@
+{
+	"name": "airports",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase3",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "Code",
+				"type": "String"
+			},
+			{
+				"name": "City_Airport",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[Airport]"
+		}
+	}
+}

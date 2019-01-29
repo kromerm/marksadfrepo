@@ -1,0 +1,163 @@
+{
+	"name": "AzureSqlTable3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase3",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "YEAR",
+				"type": "Int16"
+			},
+			{
+				"name": "MONTH",
+				"type": "Int16"
+			},
+			{
+				"name": "FL_DATE",
+				"type": "DateTime"
+			},
+			{
+				"name": "UNIQUE_CARRIER",
+				"type": "String"
+			},
+			{
+				"name": "AIRLINE_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "CARRIER",
+				"type": "String"
+			},
+			{
+				"name": "TAIL_NUM",
+				"type": "String"
+			},
+			{
+				"name": "FL_NUM",
+				"type": "Int32"
+			},
+			{
+				"name": "ORIGIN_AIRPORT_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "ORIGIN_AIRPORT_SEQ_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "ORIGIN_CITY_MARKET_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "DEST_AIRPORT_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "DEST_AIRPORT_SEQ_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "DEST_CITY_MARKET_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "DEP_TIME",
+				"type": "String"
+			},
+			{
+				"name": "DEP_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "DEP_DELAY_NEW",
+				"type": "Double"
+			},
+			{
+				"name": "TAXI_OUT",
+				"type": "Double"
+			},
+			{
+				"name": "WHEELS_OFF",
+				"type": "String"
+			},
+			{
+				"name": "WHEELS_ON",
+				"type": "String"
+			},
+			{
+				"name": "TAXI_IN",
+				"type": "Double"
+			},
+			{
+				"name": "ARR_TIME",
+				"type": "String"
+			},
+			{
+				"name": "ARR_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "ARR_DELAY_NEW",
+				"type": "Double"
+			},
+			{
+				"name": "CANCELLED",
+				"type": "Boolean"
+			},
+			{
+				"name": "CANCELLATION_CODE",
+				"type": "String"
+			},
+			{
+				"name": "ACTUAL_ELAPSED_TIME",
+				"type": "Double"
+			},
+			{
+				"name": "AIR_TIME",
+				"type": "Double"
+			},
+			{
+				"name": "FLIGHTS",
+				"type": "Int32"
+			},
+			{
+				"name": "DISTANCE",
+				"type": "Int32"
+			},
+			{
+				"name": "CARRIER_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "WEATHER_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "NAS_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "SECURITY_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "LATE_AIRCRAFT_DELAY",
+				"type": "Double"
+			},
+			{
+				"name": "DEST_CODE",
+				"type": "String"
+			},
+			{
+				"name": "ORIGIN_CODE",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[Flight]"
+		}
+	}
+}

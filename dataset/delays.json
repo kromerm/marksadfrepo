@@ -1,0 +1,27 @@
+{
+	"name": "delays",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase3",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "carrier",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "Int32"
+			},
+			{
+				"name": "delays",
+				"type": "Int32"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[delays]"
+		}
+	}
+}

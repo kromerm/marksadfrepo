@@ -1,0 +1,55 @@
+{
+	"name": "flightDF",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "AzureSqlTable3",
+					"type": "DatasetReference"
+				},
+				"name": "sourceFlights",
+				"script": "source(output(\n\t\tYEAR as short,\n\t\tMONTH as short,\n\t\tFL_DATE as timestamp,\n\t\tUNIQUE_CARRIER as string,\n\t\tAIRLINE_ID as integer,\n\t\tCARRIER as string,\n\t\tTAIL_NUM as string,\n\t\tFL_NUM as integer,\n\t\tORIGIN_AIRPORT_ID as integer,\n\t\tORIGIN_AIRPORT_SEQ_ID as integer,\n\t\tORIGIN_CITY_MARKET_ID as integer,\n\t\tDEST_AIRPORT_ID as integer,\n\t\tDEST_AIRPORT_SEQ_ID as integer,\n\t\tDEST_CITY_MARKET_ID as integer,\n\t\tDEP_TIME as string,\n\t\tDEP_DELAY as double,\n\t\tDEP_DELAY_NEW as double,\n\t\tTAXI_OUT as double,\n\t\tWHEELS_OFF as string,\n\t\tWHEELS_ON as string,\n\t\tTAXI_IN as double,\n\t\tARR_TIME as string,\n\t\tARR_DELAY as double,\n\t\tARR_DELAY_NEW as double,\n\t\tCANCELLED as boolean,\n\t\tCANCELLATION_CODE as string,\n\t\tACTUAL_ELAPSED_TIME as double,\n\t\tAIR_TIME as double,\n\t\tFLIGHTS as integer,\n\t\tDISTANCE as integer,\n\t\tCARRIER_DELAY as double,\n\t\tWEATHER_DELAY as double,\n\t\tNAS_DELAY as double,\n\t\tSECURITY_DELAY as double,\n\t\tLATE_AIRCRAFT_DELAY as double,\n\t\tDEST_CODE as string,\n\t\tORIGIN_CODE as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> sourceFlights"
+			},
+			{
+				"dataset": {
+					"referenceName": "airlines",
+					"type": "DatasetReference"
+				},
+				"name": "sourceAirlines",
+				"script": "source(output(\n\t\tCode as integer,\n\t\tAirline_Code as integer\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> sourceAirlines"
+			},
+			{
+				"dataset": {
+					"referenceName": "airports",
+					"type": "DatasetReference"
+				},
+				"name": "sourceAirports",
+				"script": "source(output(\n\t\tCode as string,\n\t\tCity_Airport as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> sourceAirports"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "delays",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "Aggregate1 sink(mapColumn(\n\t\tcarrier = CARRIER,\n\t\tyear = YEAR,\n\t\tdelays = totalDelays\n\t),\n\tsaveMode:'overwrite') ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Lookup1",
+				"script": "sourceFlights, sourceAirlines lookup(AIRLINE_ID == toInteger(Code),\n\tbroadcast: 'none')~> Lookup1"
+			},
+			{
+				"name": "Lookup2",
+				"script": "Lookup1, sourceAirports lookup(ORIGIN_AIRPORT_ID == toInteger(sourceAirports@Code),\n\tbroadcast: 'none')~> Lookup2"
+			},
+			{
+				"name": "Aggregate1",
+				"script": "Lookup2 aggregate(groupBy(CARRIER,\n\t\tYEAR),\n\ttotalDelays = sum(CARRIER_DELAY)) ~> Aggregate1"
+			}
+		]
+	}
+}
