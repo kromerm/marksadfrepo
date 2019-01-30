@@ -25,7 +25,7 @@
 		"sinks": [
 			{
 				"dataset": {
-					"referenceName": "driftout",
+					"referenceName": "AzureBlobBaseballOutput",
 					"type": "DatasetReference"
 				},
 				"name": "sinkToDW",
@@ -43,7 +43,7 @@
 			},
 			{
 				"name": "TimeBins",
-				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = rowNumber()) ~> TimeBins"
+				"script": "ColumnSelectionNaming window(over(time),\n\tasc(event_type2, true),\n\tTimeBins = nTile(10)) ~> TimeBins"
 			},
 			{
 				"name": "ColumnSelectionNaming",
