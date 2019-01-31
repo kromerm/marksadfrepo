@@ -19,6 +19,16 @@
 				"script": "source(output(\n\t\tdriverid as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tphone as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source"
 			}
 		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "Join1 sink(saveMode:'overwrite') ~> sink1"
+			}
+		],
 		"transformations": [
 			{
 				"name": "Join1",
