@@ -26,7 +26,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "Join1 sink(saveMode:'overwrite') ~> sink1"
+				"script": "Join1 sink(mapColumn(\n\t\tdriverid = source@driverid,\n\t\tProp_1,\n\t\tProp_2 = source@Prop_2,\n\t\tProp_3 = source@Prop_3,\n\t\tProp_4,\n\t\tProp_5,\n\t\tProp_6,\n\t\tphone,\n\t\tProp_0\n\t),\n\tsaveMode:'overwrite') ~> sink1"
 			}
 		],
 		"transformations": [
