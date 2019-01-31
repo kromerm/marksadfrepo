@@ -5,6 +5,9 @@
 			"referenceName": "TaxiDataSQLDB",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Demos"
+		},
 		"type": "AzureSqlTable",
 		"structure": [
 			{

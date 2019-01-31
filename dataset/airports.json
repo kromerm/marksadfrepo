@@ -5,6 +5,9 @@
 			"referenceName": "AzureSqlDatabase3",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Flights"
+		},
 		"type": "AzureSqlTable",
 		"structure": [
 			{
