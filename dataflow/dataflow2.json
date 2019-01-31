@@ -16,7 +16,13 @@
 					"type": "DatasetReference"
 				},
 				"name": "source",
-				"script": "source(output(\n\t\tProp_0 as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tProp_7 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source"
+				"script": "source(output(\n\t\tdriverid as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tphone as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Join1",
+				"script": "source, DriverShiftTrips join(source@driverid == DriverShiftTrips@driverid,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1"
 			}
 		]
 	}
