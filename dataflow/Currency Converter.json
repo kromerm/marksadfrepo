@@ -30,7 +30,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "USDSink",
-				"script": "ConditionalSplit1@USD sink(partitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> USDSink"
+				"script": "ConditionalSplit1@USD sink(mapColumn(\n\t\tPreviousConversionRate = ConditionalSplit1@PreviousConversionRate,\n\t\tCountry = ConditionalSplit1@Country,\n\t\tDateTime1 = ConditionalSplit1@DateTime1,\n\t\tCurrentConversionRate = ConditionalSplit1@CurrentConversionRate,\n\t\tNewCurrencyRate\n\t),\n\tpartitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> USDSink"
 			},
 			{
 				"dataset": {
@@ -38,7 +38,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "CADSink",
-				"script": "ConditionalSplit1@CAD sink(partitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> CADSink"
+				"script": "ConditionalSplit1@CAD sink(mapColumn(\n\t\tPreviousConversionRate = ConditionalSplit1@PreviousConversionRate,\n\t\tCountry = ConditionalSplit1@Country,\n\t\tDateTime1 = ConditionalSplit1@DateTime1,\n\t\tCurrentConversionRate = ConditionalSplit1@CurrentConversionRate,\n\t\tNewCurrencyRate\n\t),\n\tpartitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> CADSink"
 			}
 		],
 		"transformations": [
@@ -50,7 +50,7 @@
 			{
 				"name": "ConditionalSplit1",
 				"description": "Split the data on state to create 2 streams",
-				"script": "NewCurrencyColumn split(Country == 'USD',\n\tCountry == 'CAD',\n\tdisjoint: false) ~> ConditionalSplit1@(USD, CAD)"
+				"script": "NewCurrencyColumn split(USDCurrency@Country == 'USD',\n\tUSDCurrency@Country == 'CAD',\n\tdisjoint: false) ~> ConditionalSplit1@(USD, CAD)"
 			},
 			{
 				"name": "Join1",
