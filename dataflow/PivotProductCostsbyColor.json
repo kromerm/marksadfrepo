@@ -1,5 +1,5 @@
 {
-	"name": "pivotflow2",
+	"name": "PivotProductCostsbyColor",
 	"properties": {
 		"sources": [
 			{
@@ -8,21 +8,27 @@
 					"type": "DatasetReference"
 				},
 				"name": "ProductSource",
-				"script": "source(output(ProductID as string,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as string,Size as string,Weight as string,ProductCategoryID as string,ProductModelID as string),allowSchemaDrift: false,validateSchema: false) ~> ProductSource"
+				"script": "source(output(\n\t\tProductID as string,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(10,0),\n\t\tListPrice as string,\n\t\tSize as string,\n\t\tWeight as string,\n\t\tProductCategoryID as string,\n\t\tProductModelID as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> ProductSource"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "AzureBlobBaseballOutput",
+					"type": "DatasetReference"
+				},
+				"name": "SerializePivotedCalcs",
+				"script": "PivotRedBlackCosts sink(saveMode:'overwrite') ~> SerializePivotedCalcs"
 			}
 		],
 		"transformations": [
 			{
-				"name": "PivotColorStandardCost",
-				"script": "ProductSource pivot(groupBy(Name, ProductID), pivotBy(Color), CostSum = sum(StandardCost), columnNaming: '$N$V', lateral: true) ~> PivotColorStandardCost"
+				"name": "PivotRedBlackCosts",
+				"script": "ProductSource pivot(groupBy(Size= iif(isNull(Size) || Size == 'NULL','NA',Size)),\n\tpivotBy(Color, ['Red']),\n\tCostSum = sum(StandardCost),\n\tcolumnNaming: '$N$V',\n\tlateral: true) ~> PivotRedBlackCosts"
 			},
 			{
-				"name": "ProductSourceBranch",
-				"script": "ProductSource select(mapColumn(ProductID2 = ProductID,Name,ProductNumber,Color,StandardCost,ListPrice,Size,Weight,ProductCategoryID,ProductModelID))~> ProductSourceBranch"
-			},
-			{
-				"name": "Join1",
-				"script": "PivotColorStandardCost, ProductSourceBranch join(ProductID == ProductID2,joinType:'inner',broadcast: 'none')~> Join1"
+				"name": "Unpivot1",
+				"script": "PivotRedBlackCosts unpivot(output(\n\t\tColor as string,\n\t\tCostSumRed as decimal(NaN,0)\n\t),\n\tungroupBy(Size),\n\tlateral: true,\n\tignoreNullPivots: false) ~> Unpivot1"
 			}
 		]
 	}
