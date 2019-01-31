@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "TaxiDemoLarge",
+						"referenceName": "dataflow2",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
