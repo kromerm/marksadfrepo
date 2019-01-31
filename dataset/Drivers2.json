@@ -1,5 +1,5 @@
 {
-	"name": "Drivers",
+	"name": "Drivers2",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -52,7 +52,7 @@
 				"skipLineCount": 0,
 				"firstRowAsHeader": false
 			},
-			"fileName": "Drivers.csv",
+			"fileName": "Drivers.txt",
 			"folderPath": "mycontainer/SampleData/USQL/Data/AmbulanceData"
 		}
 	}

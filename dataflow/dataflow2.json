@@ -4,29 +4,19 @@
 		"sources": [
 			{
 				"dataset": {
-					"referenceName": "Drivers",
-					"type": "DatasetReference"
-				},
-				"name": "DriversSource",
-				"script": "source(output(\n\t\tProp_0 as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tProp_7 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> DriversSource"
-			},
-			{
-				"dataset": {
 					"referenceName": "DriverShiftTrips",
 					"type": "DatasetReference"
 				},
 				"name": "DriverShiftTrips",
 				"script": "source(output(\n\t\tProp_0 as string,\n\t\tdriverid as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> DriverShiftTrips"
-			}
-		],
-		"transformations": [
-			{
-				"name": "Join1",
-				"script": "DriversSource, DriverShiftTrips join(DriversSource@driverid == DriverShiftTrips@driverid,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1"
 			},
 			{
-				"name": "DerivedColumn1",
-				"script": "Join1 derive(phone_modified = ERROR_FUNCTION('')) ~> DerivedColumn1"
+				"dataset": {
+					"referenceName": "Drivers2",
+					"type": "DatasetReference"
+				},
+				"name": "source1",
+				"script": "source(output(\n\t\tProp_0 as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tProp_7 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
 			}
 		]
 	}
