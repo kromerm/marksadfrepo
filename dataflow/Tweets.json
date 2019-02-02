@@ -1,0 +1,29 @@
+{
+	"name": "Tweets",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Tweets",
+					"type": "DatasetReference"
+				},
+				"name": "TweetSource",
+				"script": "source(output(\n\t\tTweetDate as string,\n\t\tTweetTime as string,\n\t\tTweetAuthor as string,\n\t\tTweetText as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> TweetSource"
+			}
+		],
+		"transformations": [
+			{
+				"name": "RankTweets",
+				"script": "CountTweets window(over(Category),\n\tdesc(TweetCount, true),\n\ttweet_rank = rank(TweetCount)) ~> RankTweets"
+			},
+			{
+				"name": "DefineCategories",
+				"script": "TweetSource derive(Category = iif (left(TweetText,1)=='@','Mention','Author')\r\n) ~> DefineCategories"
+			},
+			{
+				"name": "CountTweets",
+				"script": "DefineCategories aggregate(groupBy(TweetAuthor,\n\t\tCategory),\n\tTweetCount = sum(1)) ~> CountTweets"
+			}
+		]
+	}
+}
