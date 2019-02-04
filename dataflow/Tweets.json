@@ -11,6 +11,16 @@
 				"script": "source(output(\n\t\tTweetDate as string,\n\t\tTweetTime as string,\n\t\tTweetAuthor as string,\n\t\tTweetText as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> TweetSource"
 			}
 		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sinkDataInLake",
+				"script": "RankTweets sink(saveMode:'overwrite') ~> sinkDataInLake"
+			}
+		],
 		"transformations": [
 			{
 				"name": "RankTweets",

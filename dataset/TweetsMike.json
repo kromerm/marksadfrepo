@@ -1,0 +1,43 @@
+{
+	"name": "TweetsMike",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "TweetDate",
+				"type": "String"
+			},
+			{
+				"name": "TweetTime",
+				"type": "String"
+			},
+			{
+				"name": "TweetAuthor",
+				"type": "String"
+			},
+			{
+				"name": "TweetText",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"quoteChar": "\"",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "MikeDoesBigDataTweets.csv",
+			"folderPath": "mycontainer/SampleData/USQL"
+		}
+	}
+}
