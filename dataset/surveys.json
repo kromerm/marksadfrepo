@@ -1,0 +1,503 @@
+{
+	"name": "surveys",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "ParticipantID",
+				"type": "String"
+			},
+			{
+				"name": "PersonID",
+				"type": "String"
+			},
+			{
+				"name": "FirstName",
+				"type": "String"
+			},
+			{
+				"name": "LastName",
+				"type": "String"
+			},
+			{
+				"name": "Email",
+				"type": "String"
+			},
+			{
+				"name": "CustomValue1",
+				"type": "String"
+			},
+			{
+				"name": "CustomValue2",
+				"type": "String"
+			},
+			{
+				"name": "SurveyID",
+				"type": "String"
+			},
+			{
+				"name": "ScoresID",
+				"type": "String"
+			},
+			{
+				"name": "DateStarted",
+				"type": "String"
+			},
+			{
+				"name": "DateModified",
+				"type": "String"
+			},
+			{
+				"name": "TimeOnSurvey (hh:mm:ss)",
+				"type": "String"
+			},
+			{
+				"name": "IsBlank",
+				"type": "String"
+			},
+			{
+				"name": "ProgressStatus",
+				"type": "String"
+			},
+			{
+				"name": "Language",
+				"type": "String"
+			},
+			{
+				"name": "CultureCode",
+				"type": "String"
+			},
+			{
+				"name": "EvtName",
+				"type": "String"
+			},
+			{
+				"name": "EvtAssgName",
+				"type": "String"
+			},
+			{
+				"name": "ActiveStatus",
+				"type": "String"
+			},
+			{
+				"name": "1899125-1",
+				"type": "String"
+			},
+			{
+				"name": "1899126-2",
+				"type": "String"
+			},
+			{
+				"name": "1899127-3",
+				"type": "String"
+			},
+			{
+				"name": "1899128-4",
+				"type": "String"
+			},
+			{
+				"name": "1899129-5",
+				"type": "String"
+			},
+			{
+				"name": "1899130-6",
+				"type": "String"
+			},
+			{
+				"name": "1899131-7",
+				"type": "String"
+			},
+			{
+				"name": "1899132-8",
+				"type": "String"
+			},
+			{
+				"name": "1899133-9",
+				"type": "String"
+			},
+			{
+				"name": "1899134-10",
+				"type": "String"
+			},
+			{
+				"name": "1899135-11",
+				"type": "String"
+			},
+			{
+				"name": "1899136-12",
+				"type": "String"
+			},
+			{
+				"name": "1899137-13",
+				"type": "String"
+			},
+			{
+				"name": "1899138-14",
+				"type": "String"
+			},
+			{
+				"name": "1899139-15",
+				"type": "String"
+			},
+			{
+				"name": "1899140-16",
+				"type": "String"
+			},
+			{
+				"name": "1899141-17",
+				"type": "String"
+			},
+			{
+				"name": "1899142-18",
+				"type": "String"
+			},
+			{
+				"name": "1899143-19",
+				"type": "String"
+			},
+			{
+				"name": "1899144-20",
+				"type": "String"
+			},
+			{
+				"name": "1899145-21",
+				"type": "String"
+			},
+			{
+				"name": "1899146-22",
+				"type": "String"
+			},
+			{
+				"name": "1899147-23",
+				"type": "String"
+			},
+			{
+				"name": "1899148-24",
+				"type": "String"
+			},
+			{
+				"name": "1899149-25",
+				"type": "String"
+			},
+			{
+				"name": "1899150-26",
+				"type": "String"
+			},
+			{
+				"name": "1899151-27",
+				"type": "String"
+			},
+			{
+				"name": "1899152-28",
+				"type": "String"
+			},
+			{
+				"name": "1899153-29",
+				"type": "String"
+			},
+			{
+				"name": "1899154-30",
+				"type": "String"
+			},
+			{
+				"name": "1899155-31",
+				"type": "String"
+			},
+			{
+				"name": "1899156-32",
+				"type": "String"
+			},
+			{
+				"name": "1899157-33",
+				"type": "String"
+			},
+			{
+				"name": "1899158-34",
+				"type": "String"
+			},
+			{
+				"name": "1899159-35",
+				"type": "String"
+			},
+			{
+				"name": "1899160-36",
+				"type": "String"
+			},
+			{
+				"name": "1899161-37",
+				"type": "String"
+			},
+			{
+				"name": "1899162-38",
+				"type": "String"
+			},
+			{
+				"name": "1899163-39",
+				"type": "String"
+			},
+			{
+				"name": "1899164-40",
+				"type": "String"
+			},
+			{
+				"name": "1899165-41",
+				"type": "String"
+			},
+			{
+				"name": "1899166-42",
+				"type": "String"
+			},
+			{
+				"name": "1899167-43",
+				"type": "String"
+			},
+			{
+				"name": "1899168-44",
+				"type": "String"
+			},
+			{
+				"name": "1899169-45",
+				"type": "String"
+			},
+			{
+				"name": "1899170-46",
+				"type": "String"
+			},
+			{
+				"name": "1899171-47",
+				"type": "String"
+			},
+			{
+				"name": "1899172-48",
+				"type": "String"
+			},
+			{
+				"name": "1899173-49",
+				"type": "String"
+			},
+			{
+				"name": "1899174-50",
+				"type": "String"
+			},
+			{
+				"name": "1899175-51",
+				"type": "String"
+			},
+			{
+				"name": "1899176-52",
+				"type": "String"
+			},
+			{
+				"name": "1899177-53",
+				"type": "String"
+			},
+			{
+				"name": "1899178-54",
+				"type": "String"
+			},
+			{
+				"name": "1899179-55",
+				"type": "String"
+			},
+			{
+				"name": "1899180-56",
+				"type": "String"
+			},
+			{
+				"name": "1899181-57",
+				"type": "String"
+			},
+			{
+				"name": "1899182-58",
+				"type": "String"
+			},
+			{
+				"name": "1899183-59",
+				"type": "String"
+			},
+			{
+				"name": "1899184-60",
+				"type": "String"
+			},
+			{
+				"name": "1899185-61",
+				"type": "String"
+			},
+			{
+				"name": "1899186-62",
+				"type": "String"
+			},
+			{
+				"name": "1899187-63",
+				"type": "String"
+			},
+			{
+				"name": "1899188-64",
+				"type": "String"
+			},
+			{
+				"name": "1899189-65",
+				"type": "String"
+			},
+			{
+				"name": "1899190-66",
+				"type": "String"
+			},
+			{
+				"name": "1899191-67",
+				"type": "String"
+			},
+			{
+				"name": "1899192-68",
+				"type": "String"
+			},
+			{
+				"name": "1899193-69",
+				"type": "String"
+			},
+			{
+				"name": "1899194-70",
+				"type": "String"
+			},
+			{
+				"name": "1899195-71",
+				"type": "String"
+			},
+			{
+				"name": "1899196-72",
+				"type": "String"
+			},
+			{
+				"name": "1899197-73",
+				"type": "String"
+			},
+			{
+				"name": "1899198-74",
+				"type": "String"
+			},
+			{
+				"name": "1899199-75",
+				"type": "String"
+			},
+			{
+				"name": "1899200-76",
+				"type": "String"
+			},
+			{
+				"name": "1899201-77",
+				"type": "String"
+			},
+			{
+				"name": "1899202-78",
+				"type": "String"
+			},
+			{
+				"name": "1899203-79",
+				"type": "String"
+			},
+			{
+				"name": "1899204-80",
+				"type": "String"
+			},
+			{
+				"name": "1899205-81",
+				"type": "String"
+			},
+			{
+				"name": "1899206-82",
+				"type": "String"
+			},
+			{
+				"name": "1899207-83",
+				"type": "String"
+			},
+			{
+				"name": "1899208-84",
+				"type": "String"
+			},
+			{
+				"name": "1899209-85",
+				"type": "String"
+			},
+			{
+				"name": "1899210-86",
+				"type": "String"
+			},
+			{
+				"name": "1899211-87",
+				"type": "String"
+			},
+			{
+				"name": "1899212-88",
+				"type": "String"
+			},
+			{
+				"name": "1899213-89",
+				"type": "String"
+			},
+			{
+				"name": "1899214-90",
+				"type": "String"
+			},
+			{
+				"name": "1899215-91",
+				"type": "String"
+			},
+			{
+				"name": "1899216-92",
+				"type": "String"
+			},
+			{
+				"name": "1899217-93",
+				"type": "String"
+			},
+			{
+				"name": "1899218-94",
+				"type": "String"
+			},
+			{
+				"name": "1899219-95",
+				"type": "String"
+			},
+			{
+				"name": "1899220-96",
+				"type": "String"
+			},
+			{
+				"name": "1899221-97",
+				"type": "String"
+			},
+			{
+				"name": "1899222-98",
+				"type": "String"
+			},
+			{
+				"name": "1899223-99",
+				"type": "String"
+			},
+			{
+				"name": "1899224-100",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"quoteChar": "\"",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": "Raw Data.csv",
+			"folderPath": "mycontainer/SampleData/AON"
+		}
+	}
+}
