@@ -1,0 +1,31 @@
+{
+	"name": "Tweets2",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Tweets",
+					"type": "DatasetReference"
+				},
+				"name": "TweetSource",
+				"script": "source(output(\n\t\tTweetDate as string,\n\t\tTweetTime as string,\n\t\tTweetAuthor as string,\n\t\tTweetText as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> TweetSource"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "SurrogateKey1 sink(mapColumn(\n\t\tTweetDate,\n\t\tTweetTime,\n\t\tTweetAuthor,\n\t\tTweetText,\n\t\tmykey\n\t),\n\tsaveMode:'overwrite') ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "SurrogateKey1",
+				"script": "TweetSource keyGenerate(output(mykey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+			}
+		]
+	}
+}
