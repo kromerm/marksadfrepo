@@ -1,0 +1,29 @@
+{
+	"name": "Dedupe",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "MoviesDBDataset",
+					"type": "DatasetReference"
+				},
+				"name": "MovieSource",
+				"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> MovieSource"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Grouping",
+				"script": "MovieSource aggregate(groupBy(title),\n\tmoviecount = sum(1),\n\t\tmovie = max(movie)) ~> Grouping"
+			},
+			{
+				"name": "dupes",
+				"script": "MovieSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t))~> dupes"
+			},
+			{
+				"name": "DedupedRowJoin",
+				"script": "Grouping, dupes join(Grouping@movie == dupes@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> DedupedRowJoin"
+			}
+		]
+	}
+}
