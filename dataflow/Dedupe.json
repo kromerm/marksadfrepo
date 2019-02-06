@@ -8,7 +8,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "MovieSource",
-				"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> MovieSource"
+				"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotten Tomato} as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> MovieSource"
 			}
 		],
 		"transformations": [
@@ -18,7 +18,7 @@
 			},
 			{
 				"name": "dupes",
-				"script": "MovieSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t))~> dupes"
+				"script": "MovieSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato} = {Rotten Tomato}\n\t))~> dupes"
 			},
 			{
 				"name": "DedupedRowJoin",
