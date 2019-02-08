@@ -18,13 +18,21 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "Filter1 sink(partitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> sink1"
+				"script": "DerivedColumn1 sink(mapColumn(\n\t\tAddress1\n\t),\n\tsaveMode:'overwrite') ~> sink1"
 			}
 		],
 		"transformations": [
 			{
+				"name": "Unpivot1",
+				"script": "Filter1 unpivot(output(\n\t\tAddress1 as string,\n\t\tCity as string\n\t),\n\tungroupBy(AddressID),\n\tlateral: true,\n\tignoreNullPivots: false) ~> Unpivot1"
+			},
+			{
 				"name": "Filter1",
-				"script": "source1 filter(AddressID == '999999') ~> Filter1"
+				"script": "source1 filter(AddressID == '1') ~> Filter1"
+			},
+			{
+				"name": "DerivedColumn1",
+				"script": "Unpivot1 derive(AddressID = Address1 + '_new') ~> DerivedColumn1"
 			}
 		]
 	}
