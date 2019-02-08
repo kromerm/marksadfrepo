@@ -1,0 +1,31 @@
+{
+	"name": "dataflow4",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "Addresses_Blob",
+					"type": "DatasetReference"
+				},
+				"name": "source1",
+				"script": "source(output(\n\t\tAddressID as string,\n\t\tAddress1 as string,\n\t\tAddress2 as string,\n\t\tCity as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tProp_7 as string,\n\t\tProp_8 as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> source1"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "Filter1 sink(partitionBy('hash', 1),\n\tsaveMode:'overwrite') ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Filter1",
+				"script": "source1 filter(AddressID == '999999') ~> Filter1"
+			}
+		]
+	}
+}
