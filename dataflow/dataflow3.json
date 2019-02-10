@@ -18,7 +18,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "DerivedColumn1 sink(saveMode:'overwrite') ~> sink1"
+				"script": "DerivedColumn1 sink(mapColumn(\n\t\tProp_0,\n\t\tProp_1,\n\t\tProp_2,\n\t\tProp_3,\n\t\tProp_4,\n\t\tProp_5,\n\t\tProp_6,\n\t\tProp_7,\n\t\tProp_8,\n\t\tProp_9,\n\t\tProp_10,\n\t\tProp_11,\n\t\tProp_12,\n\t\tProp_13,\n\t\tProp_14,\n\t\tProp_15,\n\t\tProp_16,\n\t\tProp_17,\n\t\tProp_18,\n\t\tProp_19,\n\t\tProp_20,\n\t\tProp_21\n\t),\n\tsaveMode:'overwrite') ~> sink1"
 			}
 		],
 		"transformations": [

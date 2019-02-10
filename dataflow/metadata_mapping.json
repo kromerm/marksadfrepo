@@ -1,0 +1,23 @@
+{
+	"name": "metadata_mapping",
+	"properties": {
+		"sources": [
+			{
+				"dataset": {
+					"referenceName": "genericSource",
+					"type": "DatasetReference"
+				},
+				"name": "genericSource",
+				"script": "source(allowSchemaDrift: false,\n\tvalidateSchema: false) ~> genericSource"
+			},
+			{
+				"dataset": {
+					"referenceName": "mappingLookup",
+					"type": "DatasetReference"
+				},
+				"name": "mappingLookup",
+				"script": "source(allowSchemaDrift: false,\n\tvalidateSchema: false) ~> mappingLookup"
+			}
+		]
+	}
+}

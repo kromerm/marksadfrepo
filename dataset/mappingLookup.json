@@ -1,0 +1,37 @@
+{
+	"name": "mappingLookup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "field1",
+				"type": "String"
+			},
+			{
+				"name": "field2",
+				"type": "String"
+			},
+			{
+				"name": "field3",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": "mappings.txt",
+			"folderPath": "mycontainer/SampleData"
+		}
+	}
+}
