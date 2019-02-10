@@ -26,13 +26,13 @@
 					"type": "DatasetReference"
 				},
 				"name": "sink1",
-				"script": "Lookup1 sink(mapColumn(\n\t\tnewname,\n\t\tProp_1,\n\t\tProp_2\n\t),\n\tsaveMode:'overwrite') ~> sink1"
+				"script": "Join1 sink(mapColumn(\n\t\tnewname\n\t),\n\tsaveMode:'overwrite') ~> sink1"
 			}
 		],
 		"transformations": [
 			{
-				"name": "Lookup1",
-				"script": "genericSource, mappingLookup lookup(genericSource@Prop_0 == oldname,\n\tbroadcast: 'none')~> Lookup1"
+				"name": "Join1",
+				"script": "genericSource, mappingLookup join(Prop_0 == oldname || Prop_1 == oldname || Prop_2 == oldname,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> Join1"
 			}
 		]
 	}
