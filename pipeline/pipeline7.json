@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow3",
+						"referenceName": "metadata_mapping",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
