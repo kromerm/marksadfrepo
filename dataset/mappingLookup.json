@@ -8,15 +8,11 @@
 		"type": "AzureBlob",
 		"structure": [
 			{
-				"name": "field1",
+				"name": "oldname",
 				"type": "String"
 			},
 			{
-				"name": "field2",
-				"type": "String"
-			},
-			{
-				"name": "field3",
+				"name": "newname",
 				"type": "String"
 			}
 		],

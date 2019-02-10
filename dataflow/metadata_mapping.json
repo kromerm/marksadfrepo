@@ -8,7 +8,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "genericSource",
-				"script": "source(allowSchemaDrift: false,\n\tvalidateSchema: false) ~> genericSource"
+				"script": "source(output(\n\t\tProp_0 as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> genericSource"
 			},
 			{
 				"dataset": {
@@ -16,7 +16,23 @@
 					"type": "DatasetReference"
 				},
 				"name": "mappingLookup",
-				"script": "source(allowSchemaDrift: false,\n\tvalidateSchema: false) ~> mappingLookup"
+				"script": "source(output(\n\t\toldname as string,\n\t\tnewname as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> mappingLookup"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "Lookup1 sink(mapColumn(\n\t\tnewname,\n\t\tProp_1,\n\t\tProp_2\n\t),\n\tsaveMode:'overwrite') ~> sink1"
+			}
+		],
+		"transformations": [
+			{
+				"name": "Lookup1",
+				"script": "genericSource, mappingLookup lookup(genericSource@Prop_0 == oldname,\n\tbroadcast: 'none')~> Lookup1"
 			}
 		]
 	}
