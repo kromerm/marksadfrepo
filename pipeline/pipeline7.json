@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow4",
+						"referenceName": "dataflow3",
 						"type": "DataFlowReference"
 					},
 					"linkedService": {
