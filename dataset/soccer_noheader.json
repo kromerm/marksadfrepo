@@ -1,0 +1,118 @@
+{
+	"name": "soccer_noheader",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Soccer"
+		},
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "Prop_0",
+				"type": "String"
+			},
+			{
+				"name": "Prop_1",
+				"type": "String"
+			},
+			{
+				"name": "Prop_2",
+				"type": "String"
+			},
+			{
+				"name": "Prop_3",
+				"type": "String"
+			},
+			{
+				"name": "Prop_4",
+				"type": "String"
+			},
+			{
+				"name": "Prop_5",
+				"type": "String"
+			},
+			{
+				"name": "Prop_6",
+				"type": "String"
+			},
+			{
+				"name": "Prop_7",
+				"type": "String"
+			},
+			{
+				"name": "Prop_8",
+				"type": "String"
+			},
+			{
+				"name": "Prop_9",
+				"type": "String"
+			},
+			{
+				"name": "Prop_10",
+				"type": "String"
+			},
+			{
+				"name": "Prop_11",
+				"type": "String"
+			},
+			{
+				"name": "Prop_12",
+				"type": "String"
+			},
+			{
+				"name": "Prop_13",
+				"type": "String"
+			},
+			{
+				"name": "Prop_14",
+				"type": "String"
+			},
+			{
+				"name": "Prop_15",
+				"type": "String"
+			},
+			{
+				"name": "Prop_16",
+				"type": "String"
+			},
+			{
+				"name": "Prop_17",
+				"type": "String"
+			},
+			{
+				"name": "Prop_18",
+				"type": "String"
+			},
+			{
+				"name": "Prop_19",
+				"type": "String"
+			},
+			{
+				"name": "Prop_20",
+				"type": "String"
+			},
+			{
+				"name": "Prop_21",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"quoteChar": "\"",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "events.csv",
+			"folderPath": "mycontainer/SampleData/Soccer"
+		}
+	}
+}

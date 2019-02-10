@@ -4,17 +4,31 @@
 		"sources": [
 			{
 				"dataset": {
-					"referenceName": "surveys",
+					"referenceName": "soccer_noheader",
 					"type": "DatasetReference"
 				},
 				"name": "source1",
-				"script": "source(output(\n\t\tParticipantID as string,\n\t\tPersonID as string,\n\t\tFirstName as string,\n\t\tLastName as string,\n\t\tEmail as string,\n\t\tCustomValue1 as string,\n\t\tCustomValue2 as string,\n\t\tSurveyID as string,\n\t\tScoresID as string,\n\t\tDateStarted as string,\n\t\tDateModified as string,\n\t\t{TimeOnSurvey (hh:mm:ss)} as string,\n\t\tIsBlank as string,\n\t\tProgressStatus as string,\n\t\tLanguage as string,\n\t\tCultureCode as string,\n\t\tEvtName as string,\n\t\tEvtAssgName as string,\n\t\tActiveStatus as string,\n\t\t{1899125-1} as string,\n\t\t{1899126-2} as string,\n\t\t{1899127-3} as string,\n\t\t{1899128-4} as string,\n\t\t{1899129-5} as string,\n\t\t{1899130-6} as string,\n\t\t{1899131-7} as string,\n\t\t{1899132-8} as string,\n\t\t{1899133-9} as string,\n\t\t{1899134-10} as string,\n\t\t{1899135-11} as string,\n\t\t{1899136-12} as string,\n\t\t{1899137-13} as string,\n\t\t{1899138-14} as string,\n\t\t{1899139-15} as string,\n\t\t{1899140-16} as string,\n\t\t{1899141-17} as string,\n\t\t{1899142-18} as string,\n\t\t{1899143-19} as string,\n\t\t{1899144-20} as string,\n\t\t{1899145-21} as string,\n\t\t{1899146-22} as string,\n\t\t{1899147-23} as string,\n\t\t{1899148-24} as string,\n\t\t{1899149-25} as string,\n\t\t{1899150-26} as string,\n\t\t{1899151-27} as string,\n\t\t{1899152-28} as string,\n\t\t{1899153-29} as string,\n\t\t{1899154-30} as string,\n\t\t{1899155-31} as string,\n\t\t{1899156-32} as string,\n\t\t{1899157-33} as string,\n\t\t{1899158-34} as string,\n\t\t{1899159-35} as string,\n\t\t{1899160-36} as string,\n\t\t{1899161-37} as string,\n\t\t{1899162-38} as string,\n\t\t{1899163-39} as string,\n\t\t{1899164-40} as string,\n\t\t{1899165-41} as string,\n\t\t{1899166-42} as string,\n\t\t{1899167-43} as string,\n\t\t{1899168-44} as string,\n\t\t{1899169-45} as string,\n\t\t{1899170-46} as string,\n\t\t{1899171-47} as string,\n\t\t{1899172-48} as string,\n\t\t{1899173-49} as string,\n\t\t{1899174-50} as string,\n\t\t{1899175-51} as string,\n\t\t{1899176-52} as string,\n\t\t{1899177-53} as string,\n\t\t{1899178-54} as string,\n\t\t{1899179-55} as string,\n\t\t{1899180-56} as string,\n\t\t{1899181-57} as string,\n\t\t{1899182-58} as string,\n\t\t{1899183-59} as string,\n\t\t{1899184-60} as string,\n\t\t{1899185-61} as string,\n\t\t{1899186-62} as string,\n\t\t{1899187-63} as string,\n\t\t{1899188-64} as string,\n\t\t{1899189-65} as string,\n\t\t{1899190-66} as string,\n\t\t{1899191-67} as string,\n\t\t{1899192-68} as string,\n\t\t{1899193-69} as string,\n\t\t{1899194-70} as string,\n\t\t{1899195-71} as string,\n\t\t{1899196-72} as string,\n\t\t{1899197-73} as string,\n\t\t{1899198-74} as string,\n\t\t{1899199-75} as string,\n\t\t{1899200-76} as string,\n\t\t{1899201-77} as string,\n\t\t{1899202-78} as string,\n\t\t{1899203-79} as string,\n\t\t{1899204-80} as string,\n\t\t{1899205-81} as string,\n\t\t{1899206-82} as string,\n\t\t{1899207-83} as string,\n\t\t{1899208-84} as string,\n\t\t{1899209-85} as string,\n\t\t{1899210-86} as string,\n\t\t{1899211-87} as string,\n\t\t{1899212-88} as string,\n\t\t{1899213-89} as string,\n\t\t{1899214-90} as string,\n\t\t{1899215-91} as string,\n\t\t{1899216-92} as string,\n\t\t{1899217-93} as string,\n\t\t{1899218-94} as string,\n\t\t{1899219-95} as string,\n\t\t{1899220-96} as string,\n\t\t{1899221-97} as string,\n\t\t{1899222-98} as string,\n\t\t{1899223-99} as string,\n\t\t{1899224-100} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+				"script": "source(output(\n\t\tProp_0 as string,\n\t\tProp_1 as string,\n\t\tProp_2 as string,\n\t\tProp_3 as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tProp_7 as string,\n\t\tProp_8 as string,\n\t\tProp_9 as string,\n\t\tProp_10 as string,\n\t\tProp_11 as string,\n\t\tProp_12 as string,\n\t\tProp_13 as string,\n\t\tProp_14 as string,\n\t\tProp_15 as string,\n\t\tProp_16 as string,\n\t\tProp_17 as string,\n\t\tProp_18 as string,\n\t\tProp_19 as string,\n\t\tProp_20 as string,\n\t\tProp_21 as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> source1"
+			}
+		],
+		"sinks": [
+			{
+				"dataset": {
+					"referenceName": "others",
+					"type": "DatasetReference"
+				},
+				"name": "sink1",
+				"script": "DerivedColumn1 sink(saveMode:'overwrite') ~> sink1"
 			}
 		],
 		"transformations": [
 			{
-				"name": "Select1",
-				"script": "source1 select(mapColumn(\n\t\tParticipantID,\n\t\tPersonID,\n\t\tCustomValue1,\n\t\tCustomValue2,\n\t\tSurveyID,\n\t\tScoresID,\n\t\tDateStarted,\n\t\tDateModified,\n\t\t{TimeOnSurvey (hh:mm:ss)},\n\t\tIsBlank,\n\t\tProgressStatus,\n\t\tLanguage,\n\t\tCultureCode,\n\t\tEvtName,\n\t\tEvtAssgName,\n\t\tActiveStatus,\n\t\t{1899125-1},\n\t\t{1899126-2},\n\t\tEN0002 = {1899127-3},\n\t\tEN0005 = {1899128-4},\n\t\tEN0001 = {1899129-5},\n\t\tEN0004 = {1899130-6},\n\t\t{1899131-7},\n\t\t{1899132-8},\n\t\t{1899133-9},\n\t\t{1899134-10},\n\t\t{1899135-11},\n\t\t{1899136-12},\n\t\t{1899137-13},\n\t\t{1899138-14},\n\t\t{1899139-15},\n\t\t{1899140-16},\n\t\t{1899141-17},\n\t\t{1899142-18},\n\t\t{1899143-19},\n\t\t{1899144-20},\n\t\t{1899145-21},\n\t\t{1899146-22},\n\t\t{1899147-23},\n\t\t{1899148-24},\n\t\t{1899149-25},\n\t\t{1899150-26},\n\t\t{1899151-27},\n\t\t{1899152-28},\n\t\t{1899153-29},\n\t\t{1899154-30},\n\t\t{1899155-31},\n\t\t{1899156-32},\n\t\t{1899157-33},\n\t\t{1899158-34},\n\t\t{1899159-35},\n\t\t{1899160-36},\n\t\t{1899161-37},\n\t\t{1899162-38},\n\t\t{1899163-39},\n\t\t{1899164-40},\n\t\t{1899165-41},\n\t\t{1899166-42},\n\t\t{1899167-43},\n\t\t{1899168-44},\n\t\t{1899169-45},\n\t\t{1899170-46},\n\t\t{1899171-47},\n\t\t{1899172-48},\n\t\t{1899173-49},\n\t\t{1899174-50},\n\t\t{1899175-51},\n\t\t{1899176-52},\n\t\t{1899177-53},\n\t\t{1899178-54},\n\t\t{1899179-55},\n\t\t{1899180-56},\n\t\t{1899181-57},\n\t\t{1899182-58},\n\t\t{1899183-59},\n\t\t{1899184-60},\n\t\t{1899185-61},\n\t\t{1899186-62},\n\t\t{1899187-63},\n\t\t{1899188-64},\n\t\t{1899189-65},\n\t\t{1899190-66},\n\t\t{1899191-67},\n\t\t{1899192-68},\n\t\t{1899193-69},\n\t\t{1899194-70},\n\t\t{1899195-71},\n\t\t{1899196-72},\n\t\t{1899197-73},\n\t\t{1899198-74},\n\t\t{1899199-75},\n\t\t{1899200-76},\n\t\t{1899201-77},\n\t\t{1899202-78},\n\t\t{1899203-79},\n\t\t{1899204-80},\n\t\t{1899205-81},\n\t\t{1899206-82},\n\t\t{1899207-83},\n\t\t{1899208-84},\n\t\t{1899209-85},\n\t\t{1899210-86},\n\t\t{1899211-87},\n\t\t{1899212-88},\n\t\t{1899213-89},\n\t\t{1899214-90},\n\t\t{1899215-91},\n\t\t{1899216-92},\n\t\t{1899217-93},\n\t\t{1899218-94},\n\t\t{1899219-95},\n\t\t{1899220-96},\n\t\t{1899221-97},\n\t\t{1899222-98},\n\t\t{1899223-99},\n\t\t{1899224-100}\n\t))~> Select1"
+				"name": "Filter1",
+				"script": "source1 filter(left(Prop_0,2) == 'id') ~> Filter1"
+			},
+			{
+				"name": "DerivedColumn1",
+				"script": "Filter1 derive(Prop_1 = Prop_1 + '_new') ~> DerivedColumn1"
 			}
 		]
 	}
