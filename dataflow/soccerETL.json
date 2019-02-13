@@ -19,7 +19,7 @@
 					"type": "DatasetReference"
 				},
 				"name": "locationMap",
-				"script": "source(output(\n\t\tType as string,\n\t\tName as any\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> locationMap"
+				"script": "source(output(\n\t\tType as string,\n\t\tName as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> locationMap"
 			}
 		],
 		"sinks": [
