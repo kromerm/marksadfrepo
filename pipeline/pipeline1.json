@@ -1,0 +1,37 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "dataflow1",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"dataTransformationUnits": 4,
+						"coreCount": 8,
+						"numberOfNodes": 0
+					}
+				}
+			}
+		],
+		"parameters": {
+			"mypath": {
+				"type": "String",
+				"defaultValue": "/mycontainer/folder"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

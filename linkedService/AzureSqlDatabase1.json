@@ -5,7 +5,7 @@
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
 			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=maksqldb.database.windows.net;initial catalog=makaw;user id=kromerm",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkZJTkFMREFUQUZMT1cwMDFfMDUyZTU3OWYtNTJhNC00NTg5LTgyYzctYjNmYmVhZTc4OWFlIg0KfQ=="
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkJVR0JBU0hGRUIwNV9iZWZiNjY0MC0wMWVhLTQ1YTItYTA4ZS01MmYxNmUxNDBhZmYiDQp9"
 		}
 	}
 }
