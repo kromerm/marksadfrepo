@@ -4,55 +4,48 @@
 		"folder": {
 			"name": "Demos"
 		},
-		"sources": [
-			{
-				"dataset": {
-					"referenceName": "SQLProducts",
-					"type": "DatasetReference"
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SQLProducts_new",
+						"type": "DatasetReference"
+					},
+					"name": "SQLProducts",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2)\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table') ~> SQLProducts"
 				},
-				"name": "SQLProducts",
-				"script": "source(output(ProductID as integer,Name as string,ProductNumber as string,Color as string,StandardCost as decimal(10,0),ListPrice as decimal(10,0),Size as string,Weight as decimal(10,0)),allowSchemaDrift: false,validateSchema: false) ~> SQLProducts"
-			},
-			{
-				"dataset": {
-					"referenceName": "DimProd",
-					"type": "DatasetReference"
+				{
+					"dataset": {
+						"referenceName": "DimProd_New",
+						"type": "DatasetReference"
+					},
+					"name": "DimProd",
+					"script": "source(output(\n\t\tProductKey as integer,\n\t\tProductAlternateKey as string,\n\t\tProductSubcategoryKey as integer,\n\t\tWeightUnitMeasureCode as string,\n\t\tSizeUnitMeasureCode as string,\n\t\tEnglishProductName as string,\n\t\tSpanishProductName as string,\n\t\tFrenchProductName as string,\n\t\tStandardCost as decimal(19,4),\n\t\tFinishedGoodsFlag as boolean,\n\t\tColor as string,\n\t\tSafetyStockLevel as integer,\n\t\tReorderPoint as integer,\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tSizeRange as string,\n\t\tWeight as double,\n\t\tDaysToManufacture as integer,\n\t\tProductLine as string,\n\t\tDealerPrice as decimal(19,4),\n\t\tClass as string,\n\t\tStyle as string,\n\t\tModelName as string,\n\t\tEnglishDescription as string,\n\t\tFrenchDescription as string,\n\t\tChineseDescription as string,\n\t\tArabicDescription as string,\n\t\tHebrewDescription as string,\n\t\tThaiDescription as string,\n\t\tGermanDescription as string,\n\t\tJapaneseDescription as string,\n\t\tTurkishDescription as string,\n\t\tStartDate as timestamp,\n\t\tEndDate as timestamp,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false) ~> DimProd"
+				}
+			],
+			"transformations": [
+				{
+					"name": "LookupKeys",
+					"script": "SQLProducts, DimProd lookup(ProductID == ProductKey,\n\tbroadcast: 'none')~> LookupKeys"
 				},
-				"name": "DimProd",
-				"script": "source(output(ProductKey as integer,ProductAlternateKey as string,ProductSubcategoryKey as integer,WeightUnitMeasureCode as string,SizeUnitMeasureCode as string,EnglishProductName as string,SpanishProductName as string,FrenchProductName as string,StandardCost as decimal(10,0),FinishedGoodsFlag as boolean,Color as string,SafetyStockLevel as short,ReorderPoint as short,ListPrice as decimal(10,0),Size as string,SizeRange as string,Weight as double,DaysToManufacture as integer,ProductLine as string,DealerPrice as decimal(10,0),Class as string,Style as string,ModelName as string,EnglishDescription as string,FrenchDescription as string,ChineseDescription as string,ArabicDescription as string,HebrewDescription as string,ThaiDescription as string,GermanDescription as string,JapaneseDescription as string,TurkishDescription as string,StartDate as timestamp,EndDate as timestamp,Status as string),allowSchemaDrift: false,validateSchema: false) ~> DimProd"
-			}
-		],
-		"sinks": [
-			{
-				"dataset": {
-					"referenceName": "ADW_DimProduct",
-					"type": "DatasetReference"
+				{
+					"name": "ColumnSelection",
+					"script": "LookupKeys select(mapColumn(\n\t\tProductID,\n\t\tName,\n\t\tProductNumber,\n\t\tColor = SQLProducts@Color,\n\t\tStandardCost = SQLProducts@StandardCost,\n\t\tListPrice = SQLProducts@ListPrice,\n\t\tSize = SQLProducts@Size,\n\t\tWeight = SQLProducts@Weight,\n\t\tProductKey,\n\t\tProductAlternateKey,\n\t\tProductSubcategoryKey,\n\t\tWeightUnitMeasureCode,\n\t\tSizeUnitMeasureCode,\n\t\tEnglishProductName,\n\t\tSafetyStockLevel,\n\t\tReorderPoint,\n\t\tSizeRange,\n\t\tDaysToManufacture,\n\t\tProductLine,\n\t\tDealerPrice,\n\t\tClass,\n\t\tStyle,\n\t\tModelName,\n\t\tEnglishDescription,\n\t\tStartDate,\n\t\tEndDate,\n\t\tStatus\n\t))~> ColumnSelection"
 				},
-				"name": "sink1",
-				"script": "SetAttributes sink(saveMode:'append' , mapColumn(ProductKey = ProductID,ProductAlternateKey = surrogatekey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName = Name,SpanishProductName,FrenchProductName,StandardCost,FinishedGoodsFlag = mybit,Color,SafetyStockLevel,ReorderPoint,ListPrice,Size,SizeRange,Weight,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status)) ~> sink1"
-			}
-		],
-		"transformations": [
-			{
-				"name": "LookupKeys",
-				"script": "SQLProducts, DimProd join(ProductID == ProductKey,joinType:'left',broadcast: 'none')~> LookupKeys"
-			},
-			{
-				"name": "ConditionalSplit1",
-				"script": "ColumnSelection split(isNull(ProductAlternateKey),disjoint: false) ~> ConditionalSplit1@(NewRow, ExistingMember)"
-			},
-			{
-				"name": "SurrogateKey1",
-				"script": "ConditionalSplit1@NewRow keyGenerate(output(surrogatekey as long),startAt: 1L) ~> SurrogateKey1"
-			},
-			{
-				"name": "ColumnSelection",
-				"script": "LookupKeys select(mapColumn(ProductID,Name,ProductNumber,Color = SQLProducts@Color,StandardCost = SQLProducts@StandardCost,ListPrice = SQLProducts@ListPrice,Size = SQLProducts@Size,Weight = SQLProducts@Weight,ProductKey,ProductAlternateKey,ProductSubcategoryKey,WeightUnitMeasureCode,SizeUnitMeasureCode,EnglishProductName,SpanishProductName,FrenchProductName,FinishedGoodsFlag,SafetyStockLevel,ReorderPoint,SizeRange,DaysToManufacture,ProductLine,DealerPrice,Class,Style,ModelName,EnglishDescription,FrenchDescription,ChineseDescription,ArabicDescription,HebrewDescription,ThaiDescription,GermanDescription,JapaneseDescription,TurkishDescription,StartDate,EndDate,Status))~> ColumnSelection"
-			},
-			{
-				"name": "SetAttributes",
-				"script": "SurrogateKey1 derive(surrogatekey = concat('abcd', toString(1)),Status = 'Y',StartDate = currentDate(),EndDate = 1200,NullDesc = toString('  '),mybit = 0) ~> SetAttributes"
-			}
-		]
+				{
+					"name": "NewRowOrExistingMember",
+					"script": "ColumnSelection split(isNull(ProductAlternateKey),\n\tdisjoint: false) ~> NewRowOrExistingMember@(NewRow, ExistingMember)"
+				},
+				{
+					"name": "SurrogateKey1",
+					"script": "NewRowOrExistingMember@NewRow keyGenerate(output(surrogatekey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+				},
+				{
+					"name": "SetAttributes",
+					"script": "SurrogateKey1 derive(surrogatekey = crc32(surrogatekey)) ~> SetAttributes"
+				}
+			]
+		}
 	}
 }
