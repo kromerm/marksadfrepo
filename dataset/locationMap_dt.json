@@ -1,0 +1,30 @@
+{
+	"name": "locationMap_dt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "locationMap.csv",
+				"folderPath": "SampleData/Soccer",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Type",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			}
+		]
+	}
+}
