@@ -24,11 +24,15 @@
 				},
 				{
 					"name": "Filter1",
-					"script": "DerivedColumn filter(toDate(toString(start), 'MM/dd/yyyy') > toDate('2012-02-06','yyyy-MM-dd')) ~> Filter1"
+					"script": "DerivedColumn filter(newdate > toDate('2012-02-06','yyyy-MM-dd')) ~> Filter1"
 				},
 				{
 					"name": "DerivedColumn",
-					"script": "Select1 derive(newdate = left(start,instr(start,' '))) ~> DerivedColumn"
+					"script": "Select1 derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> DerivedColumn"
+				},
+				{
+					"name": "Filter2",
+					"script": "totalDurationByRegion filter(totalduration > 200) ~> Filter2"
 				}
 			]
 		}
