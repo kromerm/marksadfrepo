@@ -1,0 +1,36 @@
+{
+	"name": "SearchLog",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "searchLog",
+						"type": "DatasetReference"
+					},
+					"name": "searchLog",
+					"script": "source(output(\n\t\t{_col0_} as integer,\n\t\t{_col1_} as string,\n\t\t{_col2_} as string,\n\t\t{_col3_} as string,\n\t\t{_col4_} as integer,\n\t\t{_col5_} as string,\n\t\t{_col6_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> searchLog"
+				}
+			],
+			"transformations": [
+				{
+					"name": "totalDurationByRegion",
+					"script": "Filter1 aggregate(groupBy(region),\n\ttotalduration = sum(duration)) ~> totalDurationByRegion"
+				},
+				{
+					"name": "Select1",
+					"script": "searchLog select(mapColumn(\n\t\tuserid = {_col0_},\n\t\tstart = {_col1_},\n\t\tregion = {_col2_},\n\t\tquery = {_col3_},\n\t\tduration = {_col4_},\n\t\turls = {_col5_},\n\t\tclickedurls = {_col6_}\n\t))~> Select1"
+				},
+				{
+					"name": "Filter1",
+					"script": "DerivedColumn filter(toDate(toString(start), 'MM/dd/yyyy') > toDate('2012-02-06','yyyy-MM-dd')) ~> Filter1"
+				},
+				{
+					"name": "DerivedColumn",
+					"script": "Select1 derive(newdate = left(start,instr(start,' '))) ~> DerivedColumn"
+				}
+			]
+		}
+	}
+}
