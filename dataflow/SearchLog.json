@@ -16,23 +16,23 @@
 			"transformations": [
 				{
 					"name": "totalDurationByRegion",
-					"script": "Filter1 aggregate(groupBy(region),\n\ttotalduration = sum(duration)) ~> totalDurationByRegion"
+					"script": "DateFilter aggregate(groupBy(region),\n\ttotalduration = sum(duration)) ~> totalDurationByRegion"
 				},
 				{
 					"name": "Select1",
 					"script": "searchLog select(mapColumn(\n\t\tuserid = {_col0_},\n\t\tstart = {_col1_},\n\t\tregion = {_col2_},\n\t\tquery = {_col3_},\n\t\tduration = {_col4_},\n\t\turls = {_col5_},\n\t\tclickedurls = {_col6_}\n\t))~> Select1"
 				},
 				{
-					"name": "Filter1",
-					"script": "DerivedColumn filter(newdate > toDate('2012-02-06','yyyy-MM-dd')) ~> Filter1"
+					"name": "DateFilter",
+					"script": "DerivedColumn filter(newdate > toDate('2012-02-06','yyyy-MM-dd')) ~> DateFilter"
 				},
 				{
 					"name": "DerivedColumn",
 					"script": "Select1 derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> DerivedColumn"
 				},
 				{
-					"name": "Filter2",
-					"script": "totalDurationByRegion filter(totalduration > 200) ~> Filter2"
+					"name": "DurationFilter",
+					"script": "totalDurationByRegion filter(totalduration > 200) ~> DurationFilter"
 				}
 			]
 		}
