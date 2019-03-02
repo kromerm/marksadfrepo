@@ -24,11 +24,11 @@
 				},
 				{
 					"name": "DateFilter",
-					"script": "DerivedColumn filter(newdate > toDate('2012-02-06','yyyy-MM-dd')) ~> DateFilter"
+					"script": "ConvertDate filter(newdate > toDate('2012-02-06','yyyy-MM-dd')) ~> DateFilter"
 				},
 				{
-					"name": "DerivedColumn",
-					"script": "RenameColumns derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> DerivedColumn"
+					"name": "ConvertDate",
+					"script": "RenameColumns derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> ConvertDate"
 				},
 				{
 					"name": "DurationFilter",
