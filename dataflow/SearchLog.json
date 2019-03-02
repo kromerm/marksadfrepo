@@ -19,8 +19,8 @@
 					"script": "DateFilter aggregate(groupBy(region),\n\ttotalduration = sum(duration)) ~> totalDurationByRegion"
 				},
 				{
-					"name": "Select1",
-					"script": "searchLog select(mapColumn(\n\t\tuserid = {_col0_},\n\t\tstart = {_col1_},\n\t\tregion = {_col2_},\n\t\tquery = {_col3_},\n\t\tduration = {_col4_},\n\t\turls = {_col5_},\n\t\tclickedurls = {_col6_}\n\t))~> Select1"
+					"name": "RenameColumns",
+					"script": "searchLog select(mapColumn(\n\t\tuserid = {_col0_},\n\t\tstart = {_col1_},\n\t\tregion = {_col2_},\n\t\tquery = {_col3_},\n\t\tduration = {_col4_},\n\t\turls = {_col5_},\n\t\tclickedurls = {_col6_}\n\t))~> RenameColumns"
 				},
 				{
 					"name": "DateFilter",
@@ -28,7 +28,7 @@
 				},
 				{
 					"name": "DerivedColumn",
-					"script": "Select1 derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> DerivedColumn"
+					"script": "RenameColumns derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> DerivedColumn"
 				},
 				{
 					"name": "DurationFilter",

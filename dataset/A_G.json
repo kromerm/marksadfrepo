@@ -6,6 +6,16 @@
 			"type": "LinkedServiceReference"
 		},
 		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "Prop_0",
+				"type": "DateTime"
+			},
+			{
+				"name": "Prop_1",
+				"type": "String"
+			}
+		],
 		"typeProperties": {
 			"format": {
 				"type": "TextFormat",
