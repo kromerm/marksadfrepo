@@ -13,6 +13,16 @@
 					"script": "source(output(\n\t\t{_col0_} as integer,\n\t\t{_col1_} as string,\n\t\t{_col2_} as string,\n\t\t{_col3_} as string,\n\t\t{_col4_} as integer,\n\t\t{_col5_} as string,\n\t\t{_col6_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> searchLog"
 				}
 			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlDWTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sinkIntoDW",
+					"script": "DurationFilter sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sinkIntoDW"
+				}
+			],
 			"transformations": [
 				{
 					"name": "totalDurationByRegion",
