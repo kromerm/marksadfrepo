@@ -9,6 +9,28 @@
 			"name": "Misc"
 		},
 		"type": "AzureSqlDWTable",
+		"structure": [
+			{
+				"name": "DayOfTheWeek",
+				"type": "Int32"
+			},
+			{
+				"name": "trip_distance",
+				"type": "Double"
+			},
+			{
+				"name": "passenger_count",
+				"type": "Double"
+			},
+			{
+				"name": "trip_time_in_secs",
+				"type": "Double"
+			},
+			{
+				"name": "average_fare",
+				"type": "Double"
+			}
+		],
 		"typeProperties": {
 			"tableName": "templatedemodata"
 		}
