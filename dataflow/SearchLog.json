@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkIntoDW",
-					"script": "DurationFilter sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sinkIntoDW"
+					"script": "DurationFilter sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tplace = region,\n\t\ttotalduration\n\t)) ~> sinkIntoDW"
 				}
 			],
 			"transformations": [
