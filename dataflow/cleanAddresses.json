@@ -6,14 +6,6 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "sqltablev2",
-						"type": "DatasetReference"
-					},
-					"name": "addresses",
-					"script": "source(output(\n\t\tAddressID as integer,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tStateProvince as string,\n\t\tCountryRegion as string,\n\t\tPostalCode as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> addresses"
-				},
-				{
-					"dataset": {
 						"referenceName": "Loans",
 						"type": "DatasetReference"
 					},
@@ -29,10 +21,20 @@
 					"script": "source(output(\n\t\t{_c0} as string,\n\t\t{_c1} as string,\n\t\t{_c2} as string,\n\t\t{_c3} as string,\n\t\t{_c4} as string,\n\t\t{_c5} as string,\n\t\t{_c6} as string,\n\t\t{_c7} as string,\n\t\t{_c8} as string,\n\t\t{_c9} as string,\n\t\t{_c10} as string,\n\t\t{_c11} as string,\n\t\t{_c12} as string,\n\t\t{_c13} as string,\n\t\t{_c14} as string,\n\t\t{_c15} as string,\n\t\t{_c16} as string,\n\t\t{_c17} as string,\n\t\t{_c18} as string,\n\t\t{_c19} as string,\n\t\t{_c20} as string,\n\t\t{_c21} as string,\n\t\t{_c22} as string,\n\t\t{_c23} as string,\n\t\t{_c24} as string,\n\t\t{_c25} as string,\n\t\t{_c26} as string,\n\t\t{_c27} as string,\n\t\t{_c28} as string,\n\t\t{_c29} as string,\n\t\t{_c30} as string,\n\t\t{_c31} as string,\n\t\t{_c32} as string,\n\t\t{_c33} as string,\n\t\t{_c34} as string,\n\t\t{_c35} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> products"
 				}
 			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "soccerOutput",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "Union1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['unionout.csv']) ~> sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Union1",
-					"script": "addresses, loans, products union(byName: true)~> Union1"
+					"script": "loans, products union(byName: false)~> Union1"
 				}
 			]
 		}
