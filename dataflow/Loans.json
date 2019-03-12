@@ -1,0 +1,6 @@
+{
+	"name": "Loans",
+	"properties": {
+		"type": "MappingDataFlow"
+	}
+}
