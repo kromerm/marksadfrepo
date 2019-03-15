@@ -10,7 +10,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "movies.csv",
-				"container": "demo"
+				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
 			"firstRowAsHeader": true
