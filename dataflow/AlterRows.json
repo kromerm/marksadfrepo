@@ -6,11 +6,11 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "movie_dataflow_source1",
+						"referenceName": "MoviesWithRatings",
 						"type": "DatasetReference"
 					},
 					"name": "source1",
-					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
 				}
 			],
 			"sinks": [
@@ -20,7 +20,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "source1 sink(input(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie'],\n\ttruncate:true) ~> sink1"
+					"script": "AlterRow1 sink(input(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie']) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AlterRow1",
+					"script": "source1 alterRow(deleteIf(year < 1900 || isNull(year))) ~> AlterRow1"
 				}
 			]
 		}
