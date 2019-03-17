@@ -1,0 +1,31 @@
+{
+	"name": "dataflow5",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "I L♥VE ",
+					"description": "Data Engineers",
+					"script": "source(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> I L♥VE "
+				}
+			],
+			"sinks": [
+				{
+					"name": "with Data Flows",
+					"script": "Azure Data Factory sink() ~> with Data Flows"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Joining",
+					"script": "I L♥VE  join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Joining"
+				},
+				{
+					"name": "Azure Data Factory",
+					"script": "Joining aggregate() ~> Azure Data Factory"
+				}
+			]
+		}
+	}
+}
