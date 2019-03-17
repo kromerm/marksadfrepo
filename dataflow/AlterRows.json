@@ -1,0 +1,28 @@
+{
+	"name": "AlterRows",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "movie_dataflow_source1",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "MoviesWithRatings",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "source1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+				}
+			]
+		}
+	}
+}
