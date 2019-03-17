@@ -20,7 +20,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "source1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie'],\n\ttruncate:true) ~> sink1"
+					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie']) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AlterRow1",
+					"script": "source1 alterRow(deleteIf(year < 1900 || isNull(year))) ~> AlterRow1"
 				}
 			]
 		}
