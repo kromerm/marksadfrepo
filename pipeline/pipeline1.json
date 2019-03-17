@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "AlterRows",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -25,13 +25,7 @@
 					}
 				}
 			}
-		],
-		"parameters": {
-			"mypath": {
-				"type": "String",
-				"defaultValue": "/mycontainer/folder"
-			}
-		}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
