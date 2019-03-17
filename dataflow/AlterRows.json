@@ -20,13 +20,17 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie']) ~> sink1"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['movie']) ~> sink1"
 				}
 			],
 			"transformations": [
 				{
 					"name": "AlterRow1",
-					"script": "source1 alterRow(deleteIf(year < 1900 || isNull(year))) ~> AlterRow1"
+					"script": "source1 alterRow(deleteIf(year < 1900 || isNull(year)),\n\tupdateIf(title == '20,000 Leagues Under the Sea')) ~> AlterRow1"
+				},
+				{
+					"name": "DerivedColumn1",
+					"script": "AlterRow1 derive(title = title + ' (' + toString(year) + ')') ~> DerivedColumn1"
 				}
 			]
 		}
