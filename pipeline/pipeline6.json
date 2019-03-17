@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "pipeline6",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow1",
+				"name": "Currency Converter",
 				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -14,24 +14,15 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "soccerETL",
 						"type": "DataFlowReference"
 					},
 					"compute": {
 						"computeType": "General",
-						"coreCount": 8,
-						"numberOfNodes": 0,
-						"dataTransformationUnits": 4
+						"coreCount": 8
 					}
 				}
 			}
-		],
-		"parameters": {
-			"mypath": {
-				"type": "String",
-				"defaultValue": "/mycontainer/folder"
-			}
-		}
-	},
-	"type": "Microsoft.DataFactory/factories/pipelines"
+		]
+	}
 }

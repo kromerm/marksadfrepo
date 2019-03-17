@@ -13,16 +13,19 @@
 			"sinks": [
 				{
 					"name": "with Data Flows",
+					"description": "For Big Data Analytics",
 					"script": "Azure Data Factory sink() ~> with Data Flows"
 				}
 			],
 			"transformations": [
 				{
 					"name": "Joining",
+					"description": "Combine data ingest with scale-out transformations",
 					"script": "I L♥VE  join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Joining"
 				},
 				{
 					"name": "Azure Data Factory",
+					"description": "In operationalized data pipelines",
 					"script": "Joining aggregate() ~> Azure Data Factory"
 				}
 			]
