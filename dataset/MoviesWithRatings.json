@@ -37,7 +37,7 @@
 			}
 		],
 		"typeProperties": {
-			"tableName": "MoviesWithRatings"
+			"tableName": "[dbo].[MoviesWithRatings]"
 		}
 	}
 }
