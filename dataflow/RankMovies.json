@@ -20,7 +20,7 @@
 				},
 				{
 					"name": "Window1",
-					"script": "DerivedColumn1 window(over(dummy),\n\tasc(combo, true),\n\tRANK = rank(combo)) ~> Window1"
+					"script": "DerivedColumn1 window(over(dummy2 = 1),\n\tasc(combo, true),\n\tRANK = rank(combo)) ~> Window1"
 				}
 			]
 		}
