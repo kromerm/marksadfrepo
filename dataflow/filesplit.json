@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "source1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 20),\n\tfilePattern:'loans[n]',\n\ttruncate:true) ~> sink1"
+					"script": "source1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 20),\n\tfilePattern:'loans[n].csv',\n\ttruncate:true) ~> sink1"
 				}
 			]
 		}
