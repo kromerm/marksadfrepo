@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow7",
+						"referenceName": "filesplit",
 						"type": "DataFlowReference"
 					},
 					"compute": {

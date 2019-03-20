@@ -1,5 +1,5 @@
 {
-	"name": "dataflow7",
+	"name": "filesplit",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
