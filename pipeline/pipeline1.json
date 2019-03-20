@@ -14,13 +14,8 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "AlterRows",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"source1": {
-								"myfile": "Address.csv"
-							}
-						}
+						"referenceName": "dataflow7",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"computeType": "General",
