@@ -1,0 +1,19 @@
+{
+	"name": "Addresses_Parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "mycontainer"
+			},
+			"compressionCodec": "none"
+		},
+		"schema": []
+	}
+}
