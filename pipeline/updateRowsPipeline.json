@@ -1,5 +1,5 @@
 {
-	"name": "updateRows",
+	"name": "updateRowsPipeline",
 	"properties": {
 		"activities": [
 			{
