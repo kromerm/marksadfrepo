@@ -26,11 +26,11 @@
 			"transformations": [
 				{
 					"name": "DerivedColumn1",
-					"script": "source1 derive(Rating = 9999) ~> DerivedColumn1"
+					"script": "source1 derive(Rating = 5) ~> DerivedColumn1"
 				},
 				{
 					"name": "AlterRow1",
-					"script": "DerivedColumn1 alterRow(updateIf(year == -1980)) ~> AlterRow1"
+					"script": "DerivedColumn1 alterRow(updateIf(year==-1980)) ~> AlterRow1"
 				}
 			]
 		}
