@@ -20,21 +20,21 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+					"script": "HashKey sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['yearkey']) ~> sink1"
 				}
 			],
 			"transformations": [
 				{
-					"name": "Aggregate1",
-					"script": "source1 aggregate(groupBy(year),\n\tratingByYear = avg((Rating * 5) + {Rotton Tomato})) ~> Aggregate1"
+					"name": "CreateAggs",
+					"script": "CheckDate aggregate(groupBy(year),\n\tratingByYear = avg((Rating * 5) + {Rotton Tomato})) ~> CreateAggs"
 				},
 				{
-					"name": "SurrogateKey1",
-					"script": "Aggregate1 keyGenerate(output(yearkey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+					"name": "HashKey",
+					"script": "CreateAggs derive(yearkey = crc32(year)) ~> HashKey"
 				},
 				{
-					"name": "DerivedColumn1",
-					"script": "SurrogateKey1 derive(yearkey = crc32(yearkey)) ~> DerivedColumn1"
+					"name": "CheckDate",
+					"script": "source1 filter(dateOfETL == currentDate()) ~> CheckDate"
 				}
 			]
 		}

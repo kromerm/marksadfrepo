@@ -6,9 +6,25 @@
 			"type": "LinkedServiceReference"
 		},
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "year",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ratingByYear",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "yearkey",
+				"type": "bigint",
+				"precision": 19
+			}
+		],
 		"typeProperties": {
-			"tableName": "moviesdw"
+			"tableName": "[dbo].[moviesdw]"
 		}
 	}
 }
