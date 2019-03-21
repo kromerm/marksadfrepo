@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "filesplit",
+						"referenceName": "soccerETL",
 						"type": "DataFlowReference"
 					},
 					"compute": {
