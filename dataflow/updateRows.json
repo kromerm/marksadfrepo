@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table') ~> source1"
 				}
 			],
 			"sinks": [
