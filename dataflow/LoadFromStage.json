@@ -26,15 +26,15 @@
 			"transformations": [
 				{
 					"name": "CreateAggs",
-					"script": "CheckDate aggregate(groupBy(year),\n\tratingByYear = round(avg((Rating * 5) + {Rotton Tomato}),2)\r\n\r\n) ~> CreateAggs"
+					"script": "TodaysDataLoad aggregate(groupBy(year),\n\tratingByYear = round(avg((Rating * 5) + {Rotton Tomato}),2)\r\n\r\n) ~> CreateAggs"
 				},
 				{
 					"name": "HashKey",
 					"script": "CreateAggs derive(yearkey = crc32(year)) ~> HashKey"
 				},
 				{
-					"name": "CheckDate",
-					"script": "source1 filter(dateOfETL == currentDate()) ~> CheckDate"
+					"name": "TodaysDataLoad",
+					"script": "source1 alterRow(upsertIf(dateOfETL == currentDate())) ~> TodaysDataLoad"
 				}
 			]
 		}
