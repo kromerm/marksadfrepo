@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "HashKey sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['yearkey']) ~> sink1"
+					"script": "HashKey sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['yearkey'],\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
