@@ -8,7 +8,7 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"tableName": "dbo.moviestage"
+			"tableName": "moviestage"
 		}
 	}
 }
