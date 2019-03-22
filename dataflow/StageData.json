@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "StageData",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 10),\n\tpartitionFileNames:['movies[n].parquet'],\n\ttruncate:true) ~> StageData"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 10),\n\tfilePattern:'movies[n].parquet',\n\ttruncate:true) ~> StageData"
 				}
 			],
 			"transformations": [
