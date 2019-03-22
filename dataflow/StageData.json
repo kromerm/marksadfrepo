@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "FileSource",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> FileSource"
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
 				}
 			],
 			"sinks": [
@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "StageData",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> StageData"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movies[n].parquet']) ~> StageData"
 				}
 			],
 			"transformations": [
