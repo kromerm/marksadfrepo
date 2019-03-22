@@ -1,5 +1,5 @@
 {
-	"name": "DWLoadPattern1",
+	"name": "StageData",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,8 +9,8 @@
 						"referenceName": "movie_dataflow_source1",
 						"type": "DatasetReference"
 					},
-					"name": "source1",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+					"name": "FileSource",
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
 				}
 			],
 			"sinks": [
@@ -19,14 +19,14 @@
 						"referenceName": "DBStage",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true) ~> sink1"
+					"name": "StageData",
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true) ~> StageData"
 				}
 			],
 			"transformations": [
 				{
 					"name": "DerivedColumn1",
-					"script": "source1 derive(dateOfETL = currentDate()) ~> DerivedColumn1"
+					"script": "FileSource derive(dateOfETL = currentDate()) ~> DerivedColumn1"
 				}
 			]
 		}
