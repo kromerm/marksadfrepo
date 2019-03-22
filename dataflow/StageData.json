@@ -16,7 +16,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Parquet3",
+						"referenceName": "ParquetStage",
 						"type": "DatasetReference"
 					},
 					"name": "StageData",

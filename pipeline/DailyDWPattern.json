@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "DWLoadPattern1",
+				"name": "DWStaging",
 				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -28,7 +28,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "DWLoadPattern1",
+						"activity": "DWStaging",
 						"dependencyConditions": [
 							"Succeeded"
 						]
