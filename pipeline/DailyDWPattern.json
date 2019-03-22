@@ -51,6 +51,63 @@
 						"coreCount": 8
 					}
 				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition"
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "Notebook1",
+							"type": "DatabricksNotebook",
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							}
+						},
+						{
+							"name": "AlterRows",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [
+								{
+									"activity": "Notebook1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "AlterRows",
+									"type": "DataFlowReference",
+									"datasetParameters": {
+										"source1": {
+											"myfile": "Address.csv"
+										}
+									}
+								},
+								"compute": {
+									"computeType": "General",
+									"coreCount": 8
+								}
+							}
+						}
+					]
+				}
 			}
 		]
 	}
