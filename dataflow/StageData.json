@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "FileSource",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
 				}
 			],
 			"sinks": [
@@ -20,13 +20,17 @@
 						"type": "DatasetReference"
 					},
 					"name": "StageData",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movies[n].parquet']) ~> StageData"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 10),\n\tpartitionFileNames:['movies[n].parquet'],\n\ttruncate:true) ~> StageData"
 				}
 			],
 			"transformations": [
 				{
 					"name": "DerivedColumn1",
-					"script": "FileSource derive(dateOfETL = currentDate()) ~> DerivedColumn1"
+					"script": "Select1 derive(dateOfETL = currentDate()) ~> DerivedColumn1"
+				},
+				{
+					"name": "Select1",
+					"script": "FileSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato = {Rotton Tomato}\n\t))~> Select1"
 				}
 			]
 		}
