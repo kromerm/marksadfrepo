@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "soccerETL",
+						"referenceName": "StageData",
 						"type": "DataFlowReference"
 					},
 					"compute": {

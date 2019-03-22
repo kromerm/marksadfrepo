@@ -6,11 +6,11 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesSQLDB",
+						"referenceName": "ParquetStage",
 						"type": "DatasetReference"
 					},
-					"name": "source1",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
+					"name": "StageSource",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> StageSource"
 				}
 			],
 			"sinks": [
@@ -26,7 +26,7 @@
 			"transformations": [
 				{
 					"name": "CreateAggs",
-					"script": "source1 aggregate(groupBy(year),\n\tratingByYear = round(avg((Rating * 5) + {Rotton Tomato}),2)\r\n\r\n) ~> CreateAggs"
+					"script": "StageSource aggregate(groupBy(year = year),\n\tratingByYear = round(avg((Rating * 5) + {Rotton Tomato}),2)) ~> CreateAggs"
 				},
 				{
 					"name": "HashKey",
@@ -34,7 +34,7 @@
 				},
 				{
 					"name": "FilterRows",
-					"script": "HashKey alterRow(updateIf(year == -1980)) ~> FilterRows"
+					"script": "HashKey alterRow(updateIf(year==-1980)) ~> FilterRows"
 				}
 			]
 		}
