@@ -1,5 +1,5 @@
 {
-	"name": "Parquet3",
+	"name": "ParquetStage",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
