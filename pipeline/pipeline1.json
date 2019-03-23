@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "StageData",
+						"referenceName": "LoadFromStage",
 						"type": "DataFlowReference"
 					},
 					"compute": {
