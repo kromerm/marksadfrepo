@@ -34,7 +34,7 @@
 				},
 				{
 					"name": "FilterRows",
-					"script": "HashKey alterRow(updateIf(year==-1980)) ~> FilterRows"
+					"script": "HashKey alterRow(upsertIf(true())) ~> FilterRows"
 				}
 			]
 		}
