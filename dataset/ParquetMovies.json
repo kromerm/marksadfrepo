@@ -1,0 +1,48 @@
+{
+	"name": "ParquetMovies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output/DWstaging",
+				"container": "mycontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "movie",
+				"type": "INT32"
+			},
+			{
+				"name": "title",
+				"type": "UTF8"
+			},
+			{
+				"name": "genres",
+				"type": "UTF8"
+			},
+			{
+				"name": "year",
+				"type": "INT32"
+			},
+			{
+				"name": "Rating",
+				"type": "INT32"
+			},
+			{
+				"name": "RottenTomato",
+				"type": "INT32"
+			},
+			{
+				"name": "dateOfETL",
+				"type": "DATE"
+			}
+		]
+	}
+}

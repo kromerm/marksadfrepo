@@ -6,11 +6,11 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ParquetStage",
+						"referenceName": "ParquetMovies",
 						"type": "DatasetReference"
 					},
 					"name": "StageSource",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> StageSource"
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'currentfilename',\n\twildcardPaths:['*.parquet']) ~> StageSource"
 				}
 			],
 			"sinks": [
@@ -20,13 +20,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "FilterRows sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['yearkey']) ~> sink1"
+					"script": "FilterRows sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tkeys:['yearkey']) ~> sink1"
 				}
 			],
 			"transformations": [
 				{
 					"name": "CreateAggs",
-					"script": "StageSource aggregate(groupBy(year = year),\n\tratingByYear = round(avg((Rating * 5) + {Rotton Tomato}),2)) ~> CreateAggs"
+					"script": "StageSource aggregate(groupBy(year),\n\tratingByYear = round(avg((Rating * 5) + RottenTomato),2)) ~> CreateAggs"
 				},
 				{
 					"name": "HashKey",
