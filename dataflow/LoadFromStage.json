@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "StageSource",
-					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'currentfilename',\n\twildcardPaths:['*.parquet']) ~> StageSource"
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'currentfilename',\n\twildcardPaths:['output/DWstaging/*.parquet']) ~> StageSource"
 				}
 			],
 			"sinks": [

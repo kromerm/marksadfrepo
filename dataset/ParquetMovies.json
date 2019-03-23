@@ -9,7 +9,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/DWstaging",
+				"folderPath": "",
 				"container": "mycontainer"
 			},
 			"compressionCodec": "snappy"
