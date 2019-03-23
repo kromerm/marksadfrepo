@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "LoadFromStage",
+						"referenceName": "filesplit",
 						"type": "DataFlowReference"
 					},
 					"compute": {
