@@ -16,11 +16,11 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "partout",
+						"referenceName": "sqlparams",
 						"type": "DatasetReference"
 					},
 					"name": "ManySmallerLoansParts",
-					"script": "OneBigLoansFile sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 20),\n\tfilePattern:'loans[n].csv',\n\ttruncate:true) ~> ManySmallerLoansParts"
+					"script": "OneBigLoansFile sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 20),\n\tfilePattern:'loans[n].csv',\n\ttruncate:true) ~> ManySmallerLoansParts"
 				}
 			]
 		}
