@@ -12,6 +12,16 @@
 					"name": "source1",
 					"script": "source(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
 				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "CADOutput1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "source1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+				}
 			]
 		}
 	}
