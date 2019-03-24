@@ -15,7 +15,12 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "filesplit",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"ManySmallerLoansParts": {
+								"tablename": "marknewtabls"
+							}
+						}
 					},
 					"compute": {
 						"computeType": "General",
