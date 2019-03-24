@@ -4,9 +4,35 @@
 		"activities": [
 			{
 				"name": "ForEach1",
-				"type": "ForEach"
+				"type": "ForEach",
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.myarray",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
 			}
-		]
+		],
+		"parameters": {
+			"myarray": {
+				"type": "Array",
+				"defaultValue": [
+					1,
+					2,
+					3,
+					4
+				]
+			}
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
