@@ -1,0 +1,23 @@
+{
+	"name": "DelimitedText5",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ","
+		},
+		"schema": [
+			{
+				"name": "_c0",
+				"type": "String"
+			}
+		]
+	}
+}
