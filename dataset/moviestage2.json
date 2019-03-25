@@ -1,0 +1,50 @@
+{
+	"name": "moviestage2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "movie",
+				"type": "nvarchar"
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "genres",
+				"type": "nvarchar"
+			},
+			{
+				"name": "year",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Rating",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RottenTomato",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Rotton Tomato",
+				"type": "nvarchar"
+			},
+			{
+				"name": "dateOfETL",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[moviestage2]"
+		}
+	}
+}
