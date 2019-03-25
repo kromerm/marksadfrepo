@@ -1,0 +1,14 @@
+{
+	"name": "newbattingtable_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "newbattingtable2"
+		}
+	}
+}

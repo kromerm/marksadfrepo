@@ -1,0 +1,14 @@
+{
+	"name": "AzureSqlDWTable5",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDW1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "normbattingstats2"
+		}
+	}
+}

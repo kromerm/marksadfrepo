@@ -3,22 +3,25 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "dataflow10",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 3,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"typeProperties": {
-					"items": {
-						"value": "@pipeline().parameters.myarray",
-						"type": "Expression"
+					"dataflow": {
+						"referenceName": "dataflow10",
+						"type": "DataFlowReference"
 					},
-					"activities": [
-						{
-							"name": "Wait1",
-							"type": "Wait",
-							"typeProperties": {
-								"waitTimeInSeconds": 1
-							}
-						}
-					]
+					"compute": {
+						"computeType": "General",
+						"coreCount": 8
+					},
+					"dataFlowDebugSessionId": "4e66ed93-7427-4f4e-b0a4-f31de1259bfe"
 				}
 			}
 		],
