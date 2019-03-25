@@ -37,7 +37,7 @@
 			"transformations": [
 				{
 					"name": "LookupKeys",
-					"script": "SQLProducts, DimProd lookup(ProductID == ProductKey,\n\tbroadcast: 'none')~> LookupKeys"
+					"script": "Filter1, DimProd lookup(ProductID == ProductKey,\n\tbroadcast: 'none')~> LookupKeys"
 				},
 				{
 					"name": "ColumnSelection",
@@ -54,6 +54,10 @@
 				{
 					"name": "SetAttributes",
 					"script": "SurrogateKey1 derive(surrogatekey = crc32(surrogatekey)) ~> SetAttributes"
+				},
+				{
+					"name": "Filter1",
+					"script": "SQLProducts filter(regexMatch(Name,'^s')) ~> Filter1"
 				}
 			]
 		}

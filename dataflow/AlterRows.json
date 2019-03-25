@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('external', 0)) ~> source1"
+					"script": "source(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('external', 0)) ~> source1"
 				}
 			],
 			"sinks": [
@@ -26,7 +26,7 @@
 			"transformations": [
 				{
 					"name": "AlterRow1",
-					"script": "source1 alterRow(insertIf(1==2)) ~> AlterRow1"
+					"script": "source1 alterRow(insertIf(1==2),\n\tpartitionBy('hash', 2,\n\t\tERROR_FUNCTION('')\n\t)) ~> AlterRow1"
 				}
 			]
 		}

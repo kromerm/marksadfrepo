@@ -9,10 +9,14 @@
 					"script": "source(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
 				}
 			],
-			"sinks": [
+			"transformations": [
 				{
-					"name": "sink1",
-					"script": "source1 sink() ~> sink1"
+					"name": "Aggregate1",
+					"script": "source1 aggregate() ~> Aggregate1"
+				},
+				{
+					"name": "DerivedColumn1",
+					"script": "Aggregate1 derive() ~> DerivedColumn1"
 				}
 			]
 		}
