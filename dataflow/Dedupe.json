@@ -1,0 +1,6 @@
+{
+	"name": "Dedupe",
+	"properties": {
+		"type": "MappingDataFlow"
+	}
+}
