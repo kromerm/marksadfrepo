@@ -6,11 +6,21 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesSQLDB",
+						"referenceName": "moviestage2",
 						"type": "DatasetReference"
 					},
 					"name": "source1",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "moviestage2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "AlterRow1 sink(input(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie'],\n\tmapColumn(\n\t\tmovie\n\t)) ~> sink1"
 				}
 			],
 			"transformations": [
