@@ -1,6 +1,28 @@
 {
 	"name": "Dedupe",
 	"properties": {
-		"type": "MappingDataFlow"
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AlterRow1",
+					"script": "Aggregate1 alterRow(deleteIf(occurences > 1)) ~> AlterRow1"
+				},
+				{
+					"name": "Aggregate1",
+					"script": "source1 aggregate(groupBy(ltitle = lower(title)),\n\tmovie = last(movie),\n\t\toccurences = sum(1)) ~> Aggregate1"
+				}
+			]
+		}
 	}
 }
