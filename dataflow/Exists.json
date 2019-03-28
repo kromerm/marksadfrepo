@@ -34,7 +34,7 @@
 			"transformations": [
 				{
 					"name": "Exists1",
-					"script": "source1, source2 exists(toString(source1@movie) == source2@movie,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"script": "source1, source2 exists(toString(source1@movie) == source2@movie\n\t&& source1@title == source2@title\n\t&& source1@Rating == source2@Rating,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				}
 			]
 		}
