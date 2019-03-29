@@ -1,0 +1,19 @@
+{
+	"name": "folderout",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output/parts",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ","
+		},
+		"schema": []
+	}
+}

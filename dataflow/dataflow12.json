@@ -1,0 +1,34 @@
+{
+	"name": "dataflow12",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "movie_dataflow_source1",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "Filter1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'movie',\n\ttruncate:true) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Filter1",
+					"script": "source1 filter(year == '1940') ~> Filter1"
+				}
+			]
+		}
+	}
+}
