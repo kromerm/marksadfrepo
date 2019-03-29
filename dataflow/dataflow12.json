@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename',\n\ttruncate:true) ~> sink1"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename') ~> sink1"
 				}
 			],
 			"transformations": [
