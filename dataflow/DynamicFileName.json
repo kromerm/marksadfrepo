@@ -30,7 +30,7 @@
 				},
 				{
 					"name": "DerivedColumn1",
-					"script": "Filter1 derive(filename = movie + '.csv') ~> DerivedColumn1"
+					"script": "Filter1 derive(filename = 'movies-out-' + toString(currentDate()) + '.csv') ~> DerivedColumn1"
 				}
 			]
 		}
