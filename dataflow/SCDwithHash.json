@@ -28,15 +28,15 @@
 				},
 				{
 					"name": "Filter1",
-					"script": "SQLProducts filter(true()) ~> Filter1"
+					"script": "SQLProducts filter(ProductID == 706) ~> Filter1"
 				},
 				{
 					"name": "Filter2",
-					"script": "ProdFromSales filter(true()) ~> Filter2"
+					"script": "ProdFromSales filter(ProductID == 706) ~> Filter2"
 				},
 				{
 					"name": "Exists1",
-					"script": "CreateDWHash, Filter2 exists(CreateDWHash@DWHash == ProdFromSales@DWhash,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1"
+					"script": "CreateDWHash, Filter2 exists(CreateDWHash@DWHash == ProdFromSales@DWhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				}
 			]
 		}
