@@ -48,10 +48,52 @@
 				"type": "decimal",
 				"precision": 8,
 				"scale": 2
+			},
+			{
+				"name": "ProductCategoryID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ProductModelID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SellStartDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "SellEndDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "DiscontinuedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ThumbnailPhotoFileName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rowguid",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
 			}
 		],
 		"typeProperties": {
-			"tableName": "salesprod"
+			"tableName": "[SalesLT].[Product]"
 		}
 	}
 }

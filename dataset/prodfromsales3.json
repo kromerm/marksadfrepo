@@ -1,0 +1,60 @@
+{
+	"name": "prodfromsales3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ProductID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ProductNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StandardCost",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "ListPrice",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "_Inserted",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "_LastUpdated",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "DWhash",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[ProdFromSales2]"
+		}
+	}
+}
