@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DynamicFileName",
+						"referenceName": "dataflow13",
 						"type": "DataFlowReference"
 					},
 					"compute": {
