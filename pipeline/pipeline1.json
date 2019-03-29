@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dedupe",
+						"referenceName": "dataflow12",
 						"type": "DataFlowReference"
 					},
 					"compute": {

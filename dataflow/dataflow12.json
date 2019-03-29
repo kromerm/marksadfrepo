@@ -20,13 +20,17 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "Filter1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'movie',\n\ttruncate:true) ~> sink1"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename',\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
 				{
 					"name": "Filter1",
-					"script": "source1 filter(year == '1940') ~> Filter1"
+					"script": "source1 filter(year == '1940' && Rating == '6') ~> Filter1"
+				},
+				{
+					"name": "DerivedColumn1",
+					"script": "Filter1 derive(filename = movie + '.csv') ~> DerivedColumn1"
 				}
 			]
 		}
