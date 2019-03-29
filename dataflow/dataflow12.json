@@ -1,0 +1,26 @@
+{
+	"name": "dataflow12",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SQLProducts_new",
+						"type": "DatasetReference"
+					},
+					"name": "SQLProducts",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> SQLProducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "SQLProdFromSales",
+						"type": "DatasetReference"
+					},
+					"name": "ProdFromSales",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\t{_Inserted} as timestamp,\n\t\t{_LastUpdated} as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> ProdFromSales"
+				}
+			]
+		}
+	}
+}
