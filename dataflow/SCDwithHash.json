@@ -1,5 +1,5 @@
 {
-	"name": "dataflow12",
+	"name": "SCDwithHash",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -14,7 +14,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SQLProdFromSales",
+						"referenceName": "AzureSqlDWTable4",
 						"type": "DatasetReference"
 					},
 					"name": "ProdFromSales",
