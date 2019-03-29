@@ -1,5 +1,5 @@
 {
-	"name": "dataflow12",
+	"name": "DynamicFileName",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
