@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow13",
+						"referenceName": "AppendToFile",
 						"type": "DataFlowReference"
 					},
 					"compute": {
