@@ -12,7 +12,7 @@
 				"folderPath": "output/taxipaymentout",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "\t",
 			"firstRowAsHeader": false
 		},
 		"schema": []
