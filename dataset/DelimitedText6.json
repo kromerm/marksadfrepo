@@ -1,5 +1,5 @@
 {
-	"name": "CurrencyDatasetUSD1",
+	"name": "DelimitedText6",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -9,12 +9,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Currency_USD.txt",
+				"fileName": "Currency_ARS.txt",
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": "\t",
-			"firstRowAsHeader": false
+			"columnDelimiter": "\t"
 		},
 		"schema": [
 			{
@@ -30,6 +29,5 @@
 				"type": "String"
 			}
 		]
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
