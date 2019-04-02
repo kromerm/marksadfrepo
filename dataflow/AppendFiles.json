@@ -36,7 +36,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "UpdatedOutput",
-					"script": "OrigData sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['SalesUpdated.csv'],\n\ttruncate:true) ~> UpdatedOutput"
+					"script": "ReJoinData sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tID = OrigData@ID,\n\t\tTitle,\n\t\tCost\n\t),\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['SalesUpdated.csv'],\n\ttruncate:true) ~> UpdatedOutput"
 				}
 			],
 			"transformations": [
