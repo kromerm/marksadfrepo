@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "NewAndUpdated",
-					"script": "Exists1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['combofile.csv']) ~> NewAndUpdated"
+					"script": "Exists1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tID,\n\t\tTitle,\n\t\tCost\n\t),\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['combofile.csv']) ~> NewAndUpdated"
 				}
 			],
 			"transformations": [
