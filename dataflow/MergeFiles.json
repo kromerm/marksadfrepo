@@ -17,8 +17,8 @@
 						"referenceName": "sales2",
 						"type": "DatasetReference"
 					},
-					"name": "source",
-					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source"
+					"name": "source2",
+					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2"
 				}
 			],
 			"sinks": [
@@ -38,11 +38,11 @@
 				},
 				{
 					"name": "DerivedColumn2",
-					"script": "source derive(myhash = sha1(ID+Title+Cost)) ~> DerivedColumn2"
+					"script": "source2 derive(myhash = sha1(ID+Title+Cost)) ~> DerivedColumn2"
 				},
 				{
 					"name": "Exists1",
-					"script": "DerivedColumn1, DerivedColumn2 exists(DerivedColumn1@myhash == DerivedColumn2@myhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"script": "DerivedColumn2, DerivedColumn1 exists(DerivedColumn2@myhash == DerivedColumn1@myhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				}
 			]
 		}
