@@ -1,6 +1,9 @@
 {
 	"name": "MergeFiles",
 	"properties": {
+		"folder": {
+			"name": "MergeFiles"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
