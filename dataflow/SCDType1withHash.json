@@ -17,8 +17,8 @@
 						"referenceName": "SQLprodstaging",
 						"type": "DatasetReference"
 					},
-					"name": "StagingSource",
-					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\t{_Inserted} as timestamp,\n\t\t{_LastUpdated} as timestamp,\n\t\tDWhash as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> StagingSource"
+					"name": "StagingSource1",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\t{_Inserted} as timestamp,\n\t\t{_LastUpdated} as timestamp,\n\t\tDWhash as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> StagingSource1"
 				}
 			],
 			"sinks": [
@@ -38,7 +38,7 @@
 				},
 				{
 					"name": "Exists",
-					"script": "CreateHash, StagingSource exists(CreateHash@DWhash == StagingSource@DWhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists"
+					"script": "CreateHash, StagingSource1 exists(CreateHash@DWhash == StagingSource1@DWhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists"
 				},
 				{
 					"name": "SetAttributes",
@@ -46,7 +46,7 @@
 				},
 				{
 					"name": "Lookup1",
-					"script": "Exists, StagingSource lookup(SQLProductsOLTP@ProductID == StagingSource@ProductID,\n\tbroadcast: 'none')~> Lookup1"
+					"script": "Exists, StagingSource1 lookup(SQLProductsOLTP@ProductID == StagingSource1@ProductID,\n\tbroadcast: 'none')~> Lookup1"
 				},
 				{
 					"name": "AlterRows",
