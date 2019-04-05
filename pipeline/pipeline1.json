@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "AppendToFile",
+						"referenceName": "SCDType1withHash",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -23,18 +23,7 @@
 					}
 				}
 			}
-		],
-		"parameters": {
-			"myarray": {
-				"type": "Array",
-				"defaultValue": [
-					1,
-					2,
-					3,
-					4
-				]
-			}
-		}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

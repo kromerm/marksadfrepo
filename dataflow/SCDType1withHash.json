@@ -42,7 +42,7 @@
 				},
 				{
 					"name": "SetAttributes",
-					"script": "Lookup1 derive(Inserted = iif (isNull({_Inserted}),currentTimestamp(),{_Inserted}),\n\t\tUpdated = iif (isNull({_LastUpdated}),currentTimestamp(),{_LastUpdated})) ~> SetAttributes"
+					"script": "Lookup1 derive(Inserted = iif (isNull({_Inserted}),currentTimestamp(),{_Inserted}),\n\t\tUpdated = currentTimestamp()) ~> SetAttributes"
 				},
 				{
 					"name": "Lookup1",
