@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SCDType1withHash",
+						"referenceName": "DynamicFileName",
 						"type": "DataFlowReference"
 					},
 					"compute": {
