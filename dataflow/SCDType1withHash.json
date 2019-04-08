@@ -14,7 +14,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SQLprodstaging",
+						"referenceName": "prodfromsales3",
 						"type": "DatasetReference"
 					},
 					"name": "StagingSource1",
@@ -38,7 +38,7 @@
 				},
 				{
 					"name": "Exists1",
-					"script": "CreateHash, StagingSource1 exists(CreateHash@DWhash == StagingSource1@DWhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"script": "CreateHash, StagingSource1 exists(SQLProductsOLTP@Name == StagingSource1@Name || StagingSource1@Color == SQLProductsOLTP@Color,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				},
 				{
 					"name": "SetAttributes",
