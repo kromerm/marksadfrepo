@@ -34,11 +34,11 @@
 			"transformations": [
 				{
 					"name": "CreateHash",
-					"script": "SQLProductsOLTP derive(DWhash = \r\nsha1(Name+ProductNumber+Color)) ~> CreateHash"
+					"script": "SQLProductsOLTP derive(DWhash = sha1(Name+ProductNumber+Color)) ~> CreateHash"
 				},
 				{
-					"name": "Exists",
-					"script": "CreateHash, StagingSource1 exists(CreateHash@DWhash == StagingSource1@DWhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists"
+					"name": "Exists1",
+					"script": "CreateHash, StagingSource1 exists(CreateHash@DWhash == StagingSource1@DWhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				},
 				{
 					"name": "SetAttributes",
@@ -46,7 +46,7 @@
 				},
 				{
 					"name": "Lookup1",
-					"script": "Exists, StagingSource1 lookup(SQLProductsOLTP@ProductID == StagingSource1@ProductID,\n\tbroadcast: 'none')~> Lookup1"
+					"script": "Exists1, StagingSource1 lookup(SQLProductsOLTP@ProductID == StagingSource1@ProductID,\n\tbroadcast: 'none')~> Lookup1"
 				},
 				{
 					"name": "AlterRows",
