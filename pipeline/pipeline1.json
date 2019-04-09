@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DynamicFileName",
+						"referenceName": "pivotflow1",
 						"type": "DataFlowReference"
 					},
 					"compute": {

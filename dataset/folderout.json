@@ -12,7 +12,8 @@
 				"folderPath": "output/parts",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": ","
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
 		},
 		"schema": []
 	}

@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "Pivot1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+					"script": "Pivot1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['colors.csv'],\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
