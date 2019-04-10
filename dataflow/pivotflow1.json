@@ -26,7 +26,11 @@
 			"transformations": [
 				{
 					"name": "Pivot1",
-					"script": "source1 pivot(groupBy(Size),\n\tpivotBy(Color),\n\tavg = avg(StandardCost),\n\tcolumnNaming: '$N$V',\n\tlateral: true) ~> Pivot1"
+					"script": "DerivedColumn1 pivot(groupBy(dummy),\n\tpivotBy(Color),\n\tavg(StandardCost) + 1221232 + trim('asdsad') = avg(StandardCost) + 1221232 + trim('asdsad'),\n\tcolumnNaming: '$N$V',\n\tlateral: true) ~> Pivot1"
+				},
+				{
+					"name": "DerivedColumn1",
+					"script": "source1 derive(dummy = 1) ~> DerivedColumn1"
 				}
 			]
 		}
