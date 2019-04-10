@@ -35,14 +35,6 @@
 						"referenceName": "DimEmployee2",
 						"type": "DatasetReference"
 					},
-					"name": "ageOutOld",
-					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent\n\t)) ~> ageOutOld"
-				},
-				{
-					"dataset": {
-						"referenceName": "DimEmployee2",
-						"type": "DatasetReference"
-					},
 					"name": "sinkForUpdates",
 					"script": "SetAttrsForUpdates sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t)) ~> sinkForUpdates"
 				}
