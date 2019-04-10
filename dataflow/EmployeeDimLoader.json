@@ -10,6 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "Employees",
+					"description": " ",
 					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees"
 				},
 				{
@@ -28,6 +29,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkNew",
+					"description": " ",
 					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent\n\t)) ~> sinkNew"
 				},
 				{
@@ -36,6 +38,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkUpdates",
+					"description": " ",
 					"script": "SetAttrsUpdate sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sinkUpdates"
 				},
 				{
@@ -44,6 +47,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkInactive",
+					"description": " ",
 					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tStatusCode,\n\t\tEndDt,\n\t\tiscurrent\n\t)) ~> sinkInactive"
 				}
 			],
