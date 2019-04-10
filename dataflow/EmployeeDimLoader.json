@@ -19,7 +19,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "DimEmployees",
-					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
+					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
 				}
 			],
 			"sinks": [
@@ -30,7 +30,7 @@
 					},
 					"name": "sinkNew",
 					"description": " ",
-					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkNew"
+					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkNew"
 				},
 				{
 					"dataset": {
@@ -39,7 +39,7 @@
 					},
 					"name": "sinkUpdates",
 					"description": " ",
-					"script": "SetAttrsUpdate sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkUpdates"
+					"script": "SetAttrsUpdate sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkUpdates"
 				},
 				{
 					"dataset": {
@@ -48,7 +48,7 @@
 					},
 					"name": "sinkInactive",
 					"description": " ",
-					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tStatusCode,\n\t\tEndDt,\n\t\tiscurrent\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
+					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
 				}
 			],
 			"transformations": [
@@ -57,12 +57,12 @@
 					"script": "DimEmployees derive(EmpID = toInteger(EmpID)) ~> TypeConversions"
 				},
 				{
-					"name": "TypeConversions1",
-					"script": "Employees derive(EmpID = toInteger(EmpID)) ~> TypeConversions1"
+					"name": "TypeConversionsAndTimestamp",
+					"script": "Employees derive(EmpID = toInteger(EmpID),\n\t\tprocesstime = currentTimestamp()) ~> TypeConversionsAndTimestamp"
 				},
 				{
 					"name": "LookupIDs",
-					"script": "TypeConversions1, TypeConversions lookup(TypeConversions1@EmpID == TypeConversions@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
+					"script": "TypeConversionsAndTimestamp, TypeConversions lookup(TypeConversionsAndTimestamp@EmpID == TypeConversionsAndTimestamp@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
 				},
 				{
 					"name": "ConditionalSplit1",
@@ -86,7 +86,7 @@
 				},
 				{
 					"name": "NormNames",
-					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversions1@EmpID,\n\t\tRegionCode = Employees@RegionCode,\n\t\tStatusCode = Employees@StatusCode,\n\t\tFunctionCode = Employees@FunctionCode,\n\t\tGradeLevel = Employees@GradeLevel,\n\t\tRoleCode = Employees@RoleCode,\n\t\tStartDt = Employees@StartDt,\n\t\tEndDt = Employees@EndDt,\n\t\tiscurrent\n\t))~> NormNames"
+					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegionCode = Employees@RegionCode,\n\t\tStatusCode = Employees@StatusCode,\n\t\tFunctionCode = Employees@FunctionCode,\n\t\tGradeLevel = Employees@GradeLevel,\n\t\tRoleCode = Employees@RoleCode,\n\t\tStartDt = Employees@StartDt,\n\t\tEndDt = Employees@EndDt,\n\t\tiscurrent\n\t))~> NormNames"
 				},
 				{
 					"name": "InactiveFields",
