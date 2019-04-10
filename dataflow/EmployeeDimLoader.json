@@ -70,7 +70,7 @@
 				},
 				{
 					"name": "Exists1",
-					"script": "ConditionalSplit1@CheckForUpdates, TypeConversions exists(ConditionalSplit1@CheckForUpdates@RegionCode == DimEmployees@RegionCode,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"script": "ConditionalSplit1@CheckForUpdates, TypeConversions exists(ConditionalSplit1@NewRow@RegionCode == DimEmployees@RegionCode ||\r\nConditionalSplit1@NewRow@StatusCode == DimEmployees@StatusCode ||\r\nConditionalSplit1@NewRow@FunctionCode == DimEmployees@FunctionCode ||\r\nConditionalSplit1@NewRow@RoleCode == DimEmployees@RoleCode ||\r\nConditionalSplit1@NewRow@GradeLevel == DimEmployees@GradeLevel ||\r\nConditionalSplit1@NewRow@StartDt == DimEmployees@StartDt ||\r\nConditionalSplit1@NewRow@EndDt == DimEmployees@EndDt,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				},
 				{
 					"name": "SetAttrsForNew",
@@ -90,7 +90,7 @@
 				},
 				{
 					"name": "InactiveFields",
-					"script": "SetAttrsInactive select(mapColumn(\n\t\tEmpID,\n\t\tStatusCode,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> InactiveFields"
+					"script": "SetAttrsInactive select(mapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> InactiveFields"
 				},
 				{
 					"name": "AlterRow1",
