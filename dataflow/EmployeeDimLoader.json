@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "EmployeeDay2",
+						"referenceName": "EmployeeFiles",
 						"type": "DatasetReference"
 					},
 					"name": "Employees",
@@ -58,7 +58,7 @@
 				},
 				{
 					"name": "TypeConversionsAndTimestamp",
-					"script": "Employees derive(EmpID = toInteger(EmpID),\n\t\tprocesstime = currentTimestamp()) ~> TypeConversionsAndTimestamp"
+					"script": "NullFilter derive(EmpID = toInteger(EmpID),\n\t\tprocesstime = currentTimestamp()) ~> TypeConversionsAndTimestamp"
 				},
 				{
 					"name": "LookupIDs",
@@ -95,6 +95,10 @@
 				{
 					"name": "AlterRow1",
 					"script": "InactiveFields alterRow(updateIf(true())) ~> AlterRow1"
+				},
+				{
+					"name": "NullFilter",
+					"script": "Employees filter(!isNull(EmpID)) ~> NullFilter"
 				}
 			]
 		}
