@@ -28,7 +28,11 @@
 				},
 				{
 					"name": "Exists1",
-					"script": "Employees, TypeConversions exists(rowhash == rowhash2,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1"
+					"script": "TypeConversions1, TypeConversions exists(TypeConversions1@EmpID == TypeConversions@EmpID ||\r\nEmployees@RegionCode == DimEmployees@RegionCode ||\r\nEmployees@StatusCode == DimEmployees@StatusCode || \r\nEmployees@FunctionCode == DimEmployees@FunctionCode ||\r\nEmployees@GradeLevel == DimEmployees@GradeLevel ||\r\nEmployees@RoleCode == DimEmployees@RoleCode ||\r\nEmployees@StartDt == DimEmployees@StartDt ||\r\nEmployees@EndDt == DimEmployees@EndDt\r\n,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+				},
+				{
+					"name": "TypeConversions1",
+					"script": "Employees derive(EmpID = toInteger(EmpID)) ~> TypeConversions1"
 				}
 			]
 		}
