@@ -62,7 +62,7 @@
 				},
 				{
 					"name": "LookupIDs",
-					"script": "TypeConversionsAndTimestamp, TypeConversions lookup(TypeConversionsAndTimestamp@EmpID == TypeConversionsAndTimestamp@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
+					"script": "TypeConversionsAndTimestamp, TypeConversions lookup(TypeConversionsAndTimestamp@EmpID == TypeConversions@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
 				},
 				{
 					"name": "ConditionalSplit1",
