@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "Employees",
-					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees"
+					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees"
 				}
 			],
 			"sinks": [
@@ -20,7 +20,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "Employees sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+					"script": "Filter1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Filter1",
+					"script": "Employees filter(!isNull(EmpID)) ~> Filter1"
 				}
 			]
 		}
