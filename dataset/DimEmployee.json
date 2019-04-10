@@ -5,6 +5,9 @@
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Sample"
+		},
 		"type": "AzureSqlTable",
 		"typeProperties": {
 			"tableName": "DimEmployee"
