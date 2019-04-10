@@ -9,7 +9,8 @@
 		"schema": [
 			{
 				"name": "EmpID",
-				"type": "nvarchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "RegionCode",
