@@ -10,25 +10,25 @@
 						"type": "DatasetReference"
 					},
 					"name": "Employees",
-					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees"
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees"
 				},
 				{
 					"dataset": {
-						"referenceName": "DimEmployee",
+						"referenceName": "DimEmployee2",
 						"type": "DatasetReference"
 					},
 					"name": "DimEmployees",
-					"script": "source(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
 				}
 			],
-			"sinks": [
+			"transformations": [
 				{
-					"dataset": {
-						"referenceName": "DimEmployee",
-						"type": "DatasetReference"
-					},
-					"name": "sink1",
-					"script": "Employees sink(input(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+					"name": "TypeConversions",
+					"script": "DimEmployees derive(EmpID = toInteger(EmpID)) ~> TypeConversions"
+				},
+				{
+					"name": "Exists1",
+					"script": "Employees, TypeConversions exists(rowhash == rowhash2,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1"
 				}
 			]
 		}

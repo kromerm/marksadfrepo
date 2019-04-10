@@ -1,0 +1,47 @@
+{
+	"name": "DimEmployee2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "EmpID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RegionCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StatusCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FunctionCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "GradeLevel",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RoleCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StartDt",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EndDt",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[DimEmployee]"
+		}
+	}
+}
