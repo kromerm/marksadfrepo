@@ -16,7 +16,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "LoadFacts2",
+						"referenceName": "DimEmployee",
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
