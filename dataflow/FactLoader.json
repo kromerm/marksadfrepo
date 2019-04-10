@@ -44,7 +44,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "LoadFacts",
-					"script": "CombineSalesTX sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tSalesOrderID = SalesDetail@SalesOrderID,\n\t\tOrderQty,\n\t\tProductID = SalesDetail@ProductID,\n\t\tUnitPrice,\n\t\tUnitPriceDiscount,\n\t\tLineTotal,\n\t\tModifiedDate = SalesDetail@ModifiedDate,\n\t\tName,\n\t\tProductNumber,\n\t\tProductCategoryID,\n\t\tProductModelID,\n\t\tShipDate,\n\t\tAccountNumber,\n\t\tCustomerID,\n\t\tSubTotal,\n\t\tTaxAmt,\n\t\tTotalDue\n\t)) ~> LoadFacts"
+					"script": "CombineSalesTX sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tSalesOrderID = SalesDetail@SalesOrderID,\n\t\tOrderQty,\n\t\tProductID = SalesDetail@ProductID,\n\t\tUnitPrice,\n\t\tUnitPriceDiscount,\n\t\tLineTotal,\n\t\tModifiedDate = SalesDetail@ModifiedDate,\n\t\tName,\n\t\tProductNumber,\n\t\tShipDate,\n\t\tAccountNumber,\n\t\tCustomerID,\n\t\tSubTotal,\n\t\tTaxAmt,\n\t\tTotalDue\n\t)) ~> LoadFacts"
 				}
 			],
 			"transformations": [
