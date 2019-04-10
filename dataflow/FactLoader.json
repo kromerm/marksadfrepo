@@ -22,19 +22,19 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SQLProducts_new",
+						"referenceName": "SQLProdFromSales",
 						"type": "DatasetReference"
 					},
-					"name": "Products",
-					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> Products"
+					"name": "DimProducts",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\t{_Inserted} as timestamp,\n\t\t{_LastUpdated} as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimProducts"
 				},
 				{
 					"dataset": {
 						"referenceName": "Customer",
 						"type": "DatasetReference"
 					},
-					"name": "Customer",
-					"script": "source(output(\n\t\tCustomerID as integer,\n\t\tNameStyle as boolean,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tSuffix as string,\n\t\tCompanyName as string,\n\t\tSalesPerson as string,\n\t\tEmailAddress as string,\n\t\tPhone as string,\n\t\tPasswordHash as string,\n\t\tPasswordSalt as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> Customer"
+					"name": "DimCustomer",
+					"script": "source(output(\n\t\tCustomerID as integer,\n\t\tNameStyle as boolean,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tSuffix as string,\n\t\tCompanyName as string,\n\t\tSalesPerson as string,\n\t\tEmailAddress as string,\n\t\tPhone as string,\n\t\tPasswordHash as string,\n\t\tPasswordSalt as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimCustomer"
 				}
 			],
 			"sinks": [
@@ -50,11 +50,11 @@
 			"transformations": [
 				{
 					"name": "LookupCustomer",
-					"script": "SalesHeader, Customer lookup(SalesHeader@CustomerID == Customer@CustomerID,\n\tbroadcast: 'none')~> LookupCustomer"
+					"script": "SalesHeader, DimCustomer lookup(SalesHeader@CustomerID == DimCustomer@CustomerID,\n\tbroadcast: 'none')~> LookupCustomer"
 				},
 				{
 					"name": "LookupProduct",
-					"script": "SalesDetail, Products lookup(SalesDetail@ProductID == Products@ProductID,\n\tbroadcast: 'none')~> LookupProduct"
+					"script": "SalesDetail, DimProducts lookup(SalesDetail@ProductID == DimProducts@ProductID,\n\tbroadcast: 'none')~> LookupProduct"
 				},
 				{
 					"name": "CombineSalesTX",
