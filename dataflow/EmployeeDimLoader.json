@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "EmployeeDay1",
+						"referenceName": "EmployeeDay2",
 						"type": "DatasetReference"
 					},
 					"name": "Employees",
