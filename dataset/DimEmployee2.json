@@ -39,6 +39,11 @@
 			{
 				"name": "EndDt",
 				"type": "nvarchar"
+			},
+			{
+				"name": "iscurrent",
+				"type": "int",
+				"precision": 10
 			}
 		],
 		"typeProperties": {

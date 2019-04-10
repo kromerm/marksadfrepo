@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "pivotflow1",
+						"referenceName": "EmployeeDimLoader",
 						"type": "DataFlowReference"
 					},
 					"compute": {
