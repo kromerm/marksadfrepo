@@ -16,7 +16,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "LoadFacts",
+						"referenceName": "LoadFacts2",
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
