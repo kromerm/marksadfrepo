@@ -21,16 +21,6 @@
 					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "DimEmployee2",
-						"type": "DatasetReference"
-					},
-					"name": "sinkForUpdates",
-					"script": "SetAttrsForUpdates sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = sinkForUpdates@{ConditionalSplit1@EmpID},\n\t\tEndDt = sinkForUpdates@{ConditionalSplit1@EndDt},\n\t\tiscurrent\n\t)) ~> sinkForUpdates"
-				}
-			],
 			"transformations": [
 				{
 					"name": "TypeConversions",
@@ -61,16 +51,8 @@
 					"script": "Exists1 derive(iscurrent = 1) ~> SetAttrsForUpdates"
 				},
 				{
-					"name": "Select1",
-					"script": "SetAttrsOld select(mapColumn(\n\t\tEmpID = Select1@{Select1@ConditionalSplit1@EmpID},\n\t\tEndDt = Select1@{Select1@ConditionalSplit1@EndDt},\n\t\tiscurrent\n\t))~> Select1"
-				},
-				{
 					"name": "SetAttrsOld",
 					"script": "Exists1 derive(iscurrent = 0) ~> SetAttrsOld"
-				},
-				{
-					"name": "AlterRow1",
-					"script": "Select1 alterRow(updateIf(true())) ~> AlterRow1"
 				}
 			]
 		}
