@@ -21,6 +21,32 @@
 					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
 				}
 			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimEmployee2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkNewDims",
+					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode = ConditionalSplit1@RegionCode,\n\t\tStatusCode = ConditionalSplit1@StatusCode,\n\t\tFunctionCode = ConditionalSplit1@FunctionCode,\n\t\tGradeLevel = ConditionalSplit1@GradeLevel,\n\t\tRoleCode = ConditionalSplit1@RoleCode,\n\t\tStartDt = ConditionalSplit1@StartDt,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t)) ~> sinkNewDims"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimEmployee2",
+						"type": "DatasetReference"
+					},
+					"name": "ageOutOld",
+					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID\n\t)) ~> ageOutOld"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimEmployee2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkForUpdates",
+					"script": "SetAttrsForUpdates sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode = ConditionalSplit1@RegionCode,\n\t\tStatusCode = ConditionalSplit1@StatusCode,\n\t\tFunctionCode = ConditionalSplit1@FunctionCode,\n\t\tGradeLevel = ConditionalSplit1@GradeLevel,\n\t\tRoleCode = ConditionalSplit1@RoleCode,\n\t\tStartDt = ConditionalSplit1@StatusCode,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t)) ~> sinkForUpdates"
+				}
+			],
 			"transformations": [
 				{
 					"name": "TypeConversions",
@@ -33,6 +59,34 @@
 				{
 					"name": "LookupIDs",
 					"script": "TypeConversions1, TypeConversions lookup(TypeConversions1@EmpID == TypeConversions@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
+				},
+				{
+					"name": "ConditionalSplit1",
+					"script": "LookupIDs split(isNull(iscurrent),\n\tdisjoint: false) ~> ConditionalSplit1@(NewRow, CheckForUpdates)"
+				},
+				{
+					"name": "Exists1",
+					"script": "ConditionalSplit1@CheckForUpdates, TypeConversions exists(ConditionalSplit1@CheckForUpdates@RegionCode == DimEmployees@RegionCode,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+				},
+				{
+					"name": "SetAttrsForNew",
+					"script": "ConditionalSplit1@NewRow derive(iscurrent = 1) ~> SetAttrsForNew"
+				},
+				{
+					"name": "SetAttrsForUpdates",
+					"script": "Exists1 derive(iscurrent = 1) ~> SetAttrsForUpdates"
+				},
+				{
+					"name": "Select1",
+					"script": "SetAttrsOld select(mapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t))~> Select1"
+				},
+				{
+					"name": "SetAttrsOld",
+					"script": "Exists1 derive(iscurrent = 0) ~> SetAttrsOld"
+				},
+				{
+					"name": "AlterRow1",
+					"script": "Select1 alterRow(updateIf(true())) ~> AlterRow1"
 				}
 			]
 		}
