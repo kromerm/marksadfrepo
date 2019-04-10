@@ -1,5 +1,5 @@
 {
-	"name": "EmployeeDay1",
+	"name": "TimeWritingDay1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -12,7 +12,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "EmployeeDay1.csv",
+				"fileName": "TimeWritingFactDay1.csv",
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
