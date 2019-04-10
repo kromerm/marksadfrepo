@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkNewDims",
-					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode = ConditionalSplit1@RegionCode,\n\t\tStatusCode = ConditionalSplit1@StatusCode,\n\t\tFunctionCode = ConditionalSplit1@FunctionCode,\n\t\tGradeLevel = ConditionalSplit1@GradeLevel,\n\t\tRoleCode = ConditionalSplit1@RoleCode,\n\t\tStartDt = ConditionalSplit1@StartDt,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t)) ~> sinkNewDims"
+					"script": "Select2 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = Select2@EmpID,\n\t\tRegionCode = Select2@RegionCode,\n\t\tStatusCode = Select2@StatusCode,\n\t\tFunctionCode = Select2@FunctionCode,\n\t\tGradeLevel = Select2@GradeLevel,\n\t\tRoleCode = Select2@RoleCode,\n\t\tStartDt = Select2@StartDt,\n\t\tEndDt = Select2@EndDt,\n\t\tiscurrent\n\t)) ~> sinkNewDims"
 				},
 				{
 					"dataset": {
@@ -36,7 +36,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "ageOutOld",
-					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID\n\t)) ~> ageOutOld"
+					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent\n\t)) ~> ageOutOld"
 				},
 				{
 					"dataset": {
@@ -44,7 +44,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkForUpdates",
-					"script": "SetAttrsForUpdates sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode = ConditionalSplit1@RegionCode,\n\t\tStatusCode = ConditionalSplit1@StatusCode,\n\t\tFunctionCode = ConditionalSplit1@FunctionCode,\n\t\tGradeLevel = ConditionalSplit1@GradeLevel,\n\t\tRoleCode = ConditionalSplit1@RoleCode,\n\t\tStartDt = ConditionalSplit1@StatusCode,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t)) ~> sinkForUpdates"
+					"script": "SetAttrsForUpdates sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode = ConditionalSplit1@RegionCode,\n\t\tStatusCode = ConditionalSplit1@StatusCode,\n\t\tFunctionCode = ConditionalSplit1@FunctionCode,\n\t\tGradeLevel = ConditionalSplit1@GradeLevel,\n\t\tRoleCode = ConditionalSplit1@RoleCode,\n\t\tStartDt = ConditionalSplit1@StartDt,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t)) ~> sinkForUpdates"
 				}
 			],
 			"transformations": [
@@ -87,6 +87,10 @@
 				{
 					"name": "AlterRow1",
 					"script": "Select1 alterRow(updateIf(true())) ~> AlterRow1"
+				},
+				{
+					"name": "Select2",
+					"script": "SetAttrsForNew select(mapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode = ConditionalSplit1@RegionCode,\n\t\tStatusCode = ConditionalSplit1@StatusCode,\n\t\tFunctionCode = ConditionalSplit1@FunctionCode,\n\t\tGradeLevel = ConditionalSplit1@GradeLevel,\n\t\tRoleCode = ConditionalSplit1@RoleCode,\n\t\tStartDt = ConditionalSplit1@StartDt,\n\t\tEndDt = ConditionalSplit1@EndDt,\n\t\tiscurrent\n\t))~> Select2"
 				}
 			]
 		}
