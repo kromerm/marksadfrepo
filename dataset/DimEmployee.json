@@ -1,0 +1,13 @@
+{
+	"name": "DimEmployee",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "DimEmployee"
+		}
+	}
+}
