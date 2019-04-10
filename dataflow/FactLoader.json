@@ -1,0 +1,66 @@
+{
+	"name": "FactLoader",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SalesHeader",
+						"type": "DatasetReference"
+					},
+					"name": "SalesHeader",
+					"script": "source(output(\n\t\tSalesOrderID as integer,\n\t\tRevisionNumber as integer,\n\t\tOrderDate as timestamp,\n\t\tDueDate as timestamp,\n\t\tShipDate as timestamp,\n\t\tStatus as integer,\n\t\tOnlineOrderFlag as boolean,\n\t\tSalesOrderNumber as string,\n\t\tPurchaseOrderNumber as string,\n\t\tAccountNumber as string,\n\t\tCustomerID as integer,\n\t\tShipToAddressID as integer,\n\t\tBillToAddressID as integer,\n\t\tShipMethod as string,\n\t\tCreditCardApprovalCode as string,\n\t\tSubTotal as decimal(19,4),\n\t\tTaxAmt as decimal(19,4),\n\t\tFreight as decimal(19,4),\n\t\tTotalDue as decimal(19,4),\n\t\tComment as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> SalesHeader"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalesDetail",
+						"type": "DatasetReference"
+					},
+					"name": "SalesDetail",
+					"script": "source(output(\n\t\tSalesOrderID as integer,\n\t\tSalesOrderDetailID as integer,\n\t\tOrderQty as integer,\n\t\tProductID as integer,\n\t\tUnitPrice as decimal(19,4),\n\t\tUnitPriceDiscount as decimal(19,4),\n\t\tLineTotal as decimal(38,6),\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> SalesDetail"
+				},
+				{
+					"dataset": {
+						"referenceName": "SQLProducts_new",
+						"type": "DatasetReference"
+					},
+					"name": "Products",
+					"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> Products"
+				},
+				{
+					"dataset": {
+						"referenceName": "Customer",
+						"type": "DatasetReference"
+					},
+					"name": "Customer",
+					"script": "source(output(\n\t\tCustomerID as integer,\n\t\tNameStyle as boolean,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tSuffix as string,\n\t\tCompanyName as string,\n\t\tSalesPerson as string,\n\t\tEmailAddress as string,\n\t\tPhone as string,\n\t\tPasswordHash as string,\n\t\tPasswordSalt as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> Customer"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LoadFacts",
+						"type": "DatasetReference"
+					},
+					"name": "LoadFacts",
+					"script": "CombineSalesTX sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tSalesOrderID = SalesDetail@SalesOrderID,\n\t\tOrderQty,\n\t\tProductID = SalesDetail@ProductID,\n\t\tUnitPrice,\n\t\tUnitPriceDiscount,\n\t\tLineTotal,\n\t\tModifiedDate = SalesDetail@ModifiedDate,\n\t\tName,\n\t\tProductNumber,\n\t\tProductCategoryID,\n\t\tProductModelID,\n\t\tShipDate,\n\t\tAccountNumber,\n\t\tCustomerID,\n\t\tSubTotal,\n\t\tTaxAmt,\n\t\tTotalDue\n\t)) ~> LoadFacts"
+				}
+			],
+			"transformations": [
+				{
+					"name": "LookupCustomer",
+					"script": "SalesHeader, Customer lookup(SalesHeader@CustomerID == Customer@CustomerID,\n\tbroadcast: 'none')~> LookupCustomer"
+				},
+				{
+					"name": "LookupProduct",
+					"script": "SalesDetail, Products lookup(SalesDetail@ProductID == Products@ProductID,\n\tbroadcast: 'none')~> LookupProduct"
+				},
+				{
+					"name": "CombineSalesTX",
+					"script": "LookupProduct, SalesHeader join(SalesDetail@SalesOrderID == SalesHeader@SalesOrderID,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> CombineSalesTX"
+				}
+			]
+		}
+	}
+}
