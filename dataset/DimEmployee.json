@@ -9,6 +9,40 @@
 			"name": "Sample"
 		},
 		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "EmpID",
+				"type": "String"
+			},
+			{
+				"name": "RegionCode",
+				"type": "String"
+			},
+			{
+				"name": "StatusCode",
+				"type": "String"
+			},
+			{
+				"name": "FunctionCode",
+				"type": "String"
+			},
+			{
+				"name": "GradeLevel",
+				"type": "String"
+			},
+			{
+				"name": "RoleCode",
+				"type": "String"
+			},
+			{
+				"name": "StartDt",
+				"type": "String"
+			},
+			{
+				"name": "EndDt",
+				"type": "String"
+			}
+		],
 		"typeProperties": {
 			"tableName": "DimEmployee"
 		}
