@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "DimEmployeePipeline",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow10",
+				"name": "LoadDimEmployee",
 				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
