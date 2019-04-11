@@ -7,7 +7,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Copy Data1",
+						"activity": "EmployeeDimLoader",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -32,8 +32,8 @@
 				}
 			},
 			{
-				"name": "Copy Data1",
-				"type": "Copy",
+				"name": "EmployeeDimLoader",
+				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -42,26 +42,14 @@
 					"secureInput": false
 				},
 				"typeProperties": {
-					"enableStaging": false
-				}
-			},
-			{
-				"name": "Web1",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "FactLoader2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
+					"dataflow": {
+						"referenceName": "AppendFiles",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"coreCount": 8
 					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
 				}
 			}
 		]
