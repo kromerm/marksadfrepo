@@ -1,0 +1,57 @@
+{
+	"name": "Facts",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "SampleData/Facts/today",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "employeeID",
+				"type": "String"
+			},
+			{
+				"name": "workLoadDt",
+				"type": "String"
+			},
+			{
+				"name": "WorkDt",
+				"type": "String"
+			},
+			{
+				"name": "vendorCode",
+				"type": "String"
+			},
+			{
+				"name": "CostCenter",
+				"type": "String"
+			},
+			{
+				"name": "serviceType",
+				"type": "String"
+			},
+			{
+				"name": "approveStatus",
+				"type": "String"
+			},
+			{
+				"name": "Hour",
+				"type": "String"
+			},
+			{
+				"name": "Amount",
+				"type": "String"
+			}
+		]
+	}
+}
