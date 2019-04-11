@@ -43,7 +43,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "AppendFiles",
+						"referenceName": "filesplit",
 						"type": "DataFlowReference"
 					},
 					"compute": {
