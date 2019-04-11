@@ -70,7 +70,7 @@
 				},
 				{
 					"name": "Exists1",
-					"script": "NameNorm2, TypeConversions exists(NameNorm2@RegionCode == DimEmployees@RegionCode ||\r\nNameNorm2@StatusCode == DimEmployees@StatusCode ||\r\nNameNorm2@FunctionCode == DimEmployees@FunctionCode ||\r\nNameNorm2@GradeLevel == DimEmployees@GradeLevel ||\r\nNameNorm2@RoleCode == DimEmployees@RoleCode ||\r\nNameNorm2@StartDt == DimEmployees@StartDt ||\r\nNameNorm2@EndDt == DimEmployees@EndDt\r\n,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID &&\r\n(\r\n\r\nNameNorm2@RegionCode != DimEmployees@RegionCode ||\r\nDimEmployees@StatusCode != NameNorm2@StatusCode ||\r\nDimEmployees@EndDt != NameNorm2@EndDt\r\n\r\n),\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1"
 				},
 				{
 					"name": "SetAttrsForNew",
