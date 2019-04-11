@@ -70,7 +70,7 @@
 				},
 				{
 					"name": "Exists1",
-					"script": "ConditionalSplit1@CheckForUpdates, TypeConversions exists(ConditionalSplit1@CheckForUpdates@RegionCode == DimEmployees@RegionCode,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"script": "NameNorm2, TypeConversions exists(NameNorm2@RegionCode == DimEmployees@RegionCode ||\r\nNameNorm2@StatusCode == DimEmployees@StatusCode ||\r\nNameNorm2@FunctionCode == DimEmployees@FunctionCode ||\r\nNameNorm2@GradeLevel == DimEmployees@GradeLevel ||\r\nNameNorm2@RoleCode == DimEmployees@RoleCode ||\r\nNameNorm2@StartDt == DimEmployees@StartDt ||\r\nNameNorm2@EndDt == DimEmployees@EndDt\r\n,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
 				},
 				{
 					"name": "SetAttrsForNew",
@@ -99,6 +99,10 @@
 				{
 					"name": "NullFilter",
 					"script": "Employees filter(!isNull(EmpID)) ~> NullFilter"
+				},
+				{
+					"name": "NameNorm2",
+					"script": "ConditionalSplit1@CheckForUpdates select(mapColumn(\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> NameNorm2"
 				}
 			]
 		}
