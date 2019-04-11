@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "writeFactTable",
-					"script": "Lookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt\n\t)) ~> writeFactTable"
+					"script": "Lookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
 				}
 			],
 			"transformations": [
