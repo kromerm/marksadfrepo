@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "Employees",
-					"description": " ",
+					"description": " Source employees file, changes every day",
 					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true) ~> Employees"
 				},
 				{
@@ -19,6 +19,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "DimEmployees",
+					"description": "Current rows in DimEmployees DW table",
 					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
 				}
 			],
@@ -47,7 +48,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkInactive",
-					"description": " ",
+					"description": " Age out old rows",
 					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
 				}
 			],
@@ -78,6 +79,7 @@
 				},
 				{
 					"name": "SetAttrsInactive",
+					"description": "make iscurrent 0",
 					"script": "checkForChanges derive(iscurrent = 0) ~> SetAttrsInactive"
 				},
 				{
@@ -98,6 +100,7 @@
 				},
 				{
 					"name": "NullFilter",
+					"description": "Filter out NULLs from source file",
 					"script": "Employees filter(!isNull(EmpID)) ~> NullFilter"
 				},
 				{
