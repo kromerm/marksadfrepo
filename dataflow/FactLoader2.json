@@ -28,17 +28,29 @@
 						"type": "DatasetReference"
 					},
 					"name": "writeFactTable",
-					"script": "Lookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
+					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
 				}
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1",
-					"script": "Facts derive(employeeID = toInteger(employeeID),\n\t\tiscurrent = 1,\n\t\tfacttimestamp = currentTimestamp()) ~> DerivedColumn1"
+					"name": "SetAttributes",
+					"script": "Facts derive(employeeID = toInteger(employeeID),\n\t\tiscurrent = 1,\n\t\tfacttimestamp = currentTimestamp()) ~> SetAttributes"
 				},
 				{
-					"name": "Lookup1",
-					"script": "DerivedColumn1, DimEmployee lookup(employeeID == EmpID\n\t&& DerivedColumn1@iscurrent == DimEmployee@iscurrent,\n\tbroadcast: 'none')~> Lookup1"
+					"name": "LookupDimEmployee",
+					"script": "SetAttributes, DimEmployee lookup(employeeID == EmpID\n\t&& SetAttributes@iscurrent == DimEmployee@iscurrent,\n\tbroadcast: 'none')~> LookupDimEmployee"
+				},
+				{
+					"name": "DailyHourTotal",
+					"script": "LookupDimEmployee aggregate(groupBy(WorkDt),\n\tTotalHours = sum(toInteger(Hour))) ~> DailyHourTotal"
+				},
+				{
+					"name": "OrigData",
+					"script": "LookupDimEmployee select(mapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tiscurrent = SetAttributes@iscurrent,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = DimEmployee@iscurrent,\n\t\tprocesstime\n\t))~> OrigData"
+				},
+				{
+					"name": "JoinAllColumns",
+					"script": "DailyHourTotal, OrigData join(DailyHourTotal@WorkDt == OrigData@WorkDt,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinAllColumns"
 				}
 			]
 		}
