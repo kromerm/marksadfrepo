@@ -11,7 +11,7 @@
 					},
 					"name": "Employees",
 					"description": " Source employees file, changes every day",
-					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true) ~> Employees"
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees"
 				},
 				{
 					"dataset": {
@@ -71,7 +71,7 @@
 				},
 				{
 					"name": "checkForChanges",
-					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID &&\r\n(\r\n\r\nNameNorm2@RegionCode != DimEmployees@RegionCode ||\r\nDimEmployees@StatusCode != NameNorm2@StatusCode ||\r\nDimEmployees@EndDt != NameNorm2@EndDt\r\n\r\n),\n\tnegate:false,\n\tbroadcast: 'none')~> checkForChanges"
+					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID,\n\tnegate:false,\n\tbroadcast: 'none')~> checkForChanges"
 				},
 				{
 					"name": "SetAttrsForNew",
