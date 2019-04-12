@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "writeFactTable",
-					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
+					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tTotalHours,\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt = OrigData@WorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = OrigData@iscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
 				}
 			],
 			"transformations": [
@@ -46,7 +46,7 @@
 				},
 				{
 					"name": "OrigData",
-					"script": "LookupDimEmployee select(mapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tiscurrent = SetAttributes@iscurrent,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = DimEmployee@iscurrent,\n\t\tprocesstime\n\t))~> OrigData"
+					"script": "LookupDimEmployee select(mapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = DimEmployee@iscurrent,\n\t\tprocesstime\n\t))~> OrigData"
 				},
 				{
 					"name": "JoinAllColumns",
