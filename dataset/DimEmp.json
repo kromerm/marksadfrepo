@@ -13,6 +13,10 @@
 				"precision": 10
 			},
 			{
+				"name": "surrogatekey",
+				"type": "nvarchar"
+			},
+			{
 				"name": "Region",
 				"type": "nvarchar"
 			},
