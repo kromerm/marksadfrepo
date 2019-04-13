@@ -11,7 +11,7 @@
 					},
 					"name": "Employees1",
 					"description": " Source employees file, changes every day",
-					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Employees1"
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true,\n\twildcardPaths:['*.csv']) ~> Employees1"
 				},
 				{
 					"dataset": {
@@ -31,7 +31,7 @@
 					},
 					"name": "sinkNew",
 					"description": " ",
-					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkNew"
+					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkNew"
 				},
 				{
 					"dataset": {
@@ -40,7 +40,7 @@
 					},
 					"name": "sinkUpdates",
 					"description": " ",
-					"script": "SetAttrsUpdate sink(input(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkUpdates"
+					"script": "SetAttrsUpdate sink(input(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkUpdates"
 				},
 				{
 					"dataset": {
@@ -58,12 +58,12 @@
 					"script": "DimEmployees derive(EmpID = toInteger(EmpID)) ~> TypeConversions"
 				},
 				{
-					"name": "TypeConversionsAndTimestamp",
-					"script": "NullFilter derive(EmpID = toInteger(EmpID),\n\t\tprocesstime = currentTimestamp(),\n\t\tStartDate = toDate(StartDate,'MM/dd/yyyy'),\n\t\tEndDate = toDate(EndDate,'MM/dd/yyyy')) ~> TypeConversionsAndTimestamp"
+					"name": "TypeConversionsAndSetAttrs",
+					"script": "NullFilter derive(EmpID = toInteger(EmpID),\n\t\tStartDate = toDate(StartDate,'MM/dd/yyyy'),\n\t\tEndDate = toDate(EndDate,'MM/dd/yyyy'),\n\t\tprocesstime = currentTimestamp()) ~> TypeConversionsAndSetAttrs"
 				},
 				{
 					"name": "LookupIDs",
-					"script": "TypeConversionsAndTimestamp, TypeConversions lookup(TypeConversionsAndTimestamp@EmpID == TypeConversions@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
+					"script": "TypeConversionsAndSetAttrs, TypeConversions lookup(TypeConversionsAndSetAttrs@EmpID == TypeConversions@EmpID,\n\tbroadcast: 'none')~> LookupIDs"
 				},
 				{
 					"name": "ConditionalSplit1",
@@ -71,7 +71,7 @@
 				},
 				{
 					"name": "checkForChanges",
-					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID,\n\tnegate:false,\n\tbroadcast: 'none')~> checkForChanges"
+					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID &&\r\n\r\n(\r\n\r\nNameNorm2@Region != DimEmployees@Region ||\r\nNameNorm2@Status != DimEmployees@Status || \r\nNameNorm2@Level != DimEmployees@Level ||\r\nNameNorm2@Role != DimEmployees@Role ||\r\nNameNorm2@EndDate != DimEmployees@EndDate\r\n\r\n),\n\tnegate:false,\n\tbroadcast: 'none')~> checkForChanges"
 				},
 				{
 					"name": "SetAttrsForNew",
@@ -88,7 +88,7 @@
 				},
 				{
 					"name": "NormNames",
-					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegion = Employees1@Region,\n\t\tStatus = Employees1@Status,\n\t\tLevel = Employees1@Level,\n\t\tRole = Employees1@Role,\n\t\tStartDate = TypeConversionsAndTimestamp@StartDate,\n\t\tEndDate = TypeConversionsAndTimestamp@EndDate,\n\t\tEmpFunction = Function,\n\t\tiscurrent,\n\t\tprocesstime = DimEmployees@processtime,\n\t\tsurrogatekey\n\t))~> NormNames"
+					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndSetAttrs@EmpID,\n\t\tRegion = Employees1@Region,\n\t\tStatus = Employees1@Status,\n\t\tLevel = Employees1@Level,\n\t\tRole = Employees1@Role,\n\t\tStartDate = TypeConversionsAndSetAttrs@StartDate,\n\t\tEndDate = TypeConversionsAndSetAttrs@EndDate,\n\t\tEmpFunction = Function,\n\t\tiscurrent,\n\t\tprocesstime = TypeConversionsAndSetAttrs@processtime,\n\t\tsurrogatekey\n\t))~> NormNames"
 				},
 				{
 					"name": "InactiveFields",
