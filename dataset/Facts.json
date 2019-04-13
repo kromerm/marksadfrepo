@@ -21,35 +21,15 @@
 				"type": "String"
 			},
 			{
-				"name": "workLoadDt",
-				"type": "String"
-			},
-			{
-				"name": "WorkDt",
-				"type": "String"
-			},
-			{
-				"name": "vendorCode",
-				"type": "String"
-			},
-			{
-				"name": "CostCenter",
-				"type": "String"
-			},
-			{
-				"name": "serviceType",
-				"type": "String"
-			},
-			{
-				"name": "approveStatus",
-				"type": "String"
-			},
-			{
-				"name": "Hour",
+				"name": "Hours",
 				"type": "String"
 			},
 			{
 				"name": "Amount",
+				"type": "String"
+			},
+			{
+				"name": "ProjDate",
 				"type": "String"
 			}
 		]

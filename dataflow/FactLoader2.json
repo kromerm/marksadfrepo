@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "Facts",
-					"script": "source(output(\n\t\temployeeID as string,\n\t\tworkLoadDt as string,\n\t\tWorkDt as string,\n\t\tvendorCode as string,\n\t\tCostCenter as string,\n\t\tserviceType as string,\n\t\tapproveStatus as string,\n\t\tHour as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Facts"
+					"script": "source(output(\n\t\temployeeID as string,\n\t\tHours as string,\n\t\tAmount as string,\n\t\tProjDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true,\n\twildcardPaths:['SampleData/Facts/today/*.csv']) ~> Facts"
 				},
 				{
 					"dataset": {
@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "writeFactTable",
-					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tTotalHours,\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt = OrigData@WorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = writeFactTable@{writeFactTable@OrigData@iscurrent},\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
+					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tProjDate = OrigData@ProjDate,\n\t\tTotalHours,\n\t\temployeeID,\n\t\tHours,\n\t\tAmount,\n\t\tEmpID,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tfacttimestamp\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
 				}
 			],
 			"transformations": [
@@ -42,15 +42,15 @@
 				},
 				{
 					"name": "DailyHourTotal",
-					"script": "LookupDimEmployee aggregate(groupBy(WorkDt),\n\tTotalHours = sum(toInteger(Hour))) ~> DailyHourTotal"
+					"script": "LookupDimEmployee aggregate(groupBy(ProjDate),\n\tTotalHours = sum(toInteger(Hours))) ~> DailyHourTotal"
 				},
 				{
 					"name": "OrigData",
-					"script": "LookupDimEmployee select(mapColumn(\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = DimEmployee@iscurrent,\n\t\tprocesstime\n\t))~> OrigData"
+					"script": "LookupDimEmployee select(mapColumn(\n\t\temployeeID,\n\t\tHours,\n\t\tAmount,\n\t\tProjDate,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tiscurrent = DimEmployee@iscurrent,\n\t\tprocesstime\n\t))~> OrigData"
 				},
 				{
 					"name": "JoinAllColumns",
-					"script": "DailyHourTotal, OrigData join(DailyHourTotal@WorkDt == OrigData@WorkDt,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinAllColumns"
+					"script": "DailyHourTotal, OrigData join(DailyHourTotal@ProjDate == OrigData@ProjDate,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinAllColumns"
 				}
 			]
 		}
