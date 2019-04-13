@@ -21,31 +21,31 @@
 				"type": "String"
 			},
 			{
-				"name": "RegionCode",
+				"name": "Region",
 				"type": "String"
 			},
 			{
-				"name": "StatusCode",
+				"name": "Status",
 				"type": "String"
 			},
 			{
-				"name": "FunctionCode",
+				"name": "Function",
 				"type": "String"
 			},
 			{
-				"name": "GradeLevel",
+				"name": "Level",
 				"type": "String"
 			},
 			{
-				"name": "RoleCode",
+				"name": "Role",
 				"type": "String"
 			},
 			{
-				"name": "StartDt",
+				"name": "StartDate",
 				"type": "String"
 			},
 			{
-				"name": "EndDt",
+				"name": "EndDate",
 				"type": "String"
 			}
 		]
