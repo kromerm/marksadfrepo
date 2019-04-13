@@ -14,11 +14,11 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "DimEmployee2",
+						"referenceName": "DimEmp",
 						"type": "DatasetReference"
 					},
 					"name": "DimEmployee",
-					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployee"
+					"script": "source(output(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployee"
 				}
 			],
 			"sinks": [
@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "writeFactTable",
-					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tTotalHours,\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt = OrigData@WorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = writeFactTable@{OrigData@iscurrent},\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
+					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tTotalHours,\n\t\temployeeID,\n\t\tworkLoadDt,\n\t\tWorkDt = OrigData@WorkDt,\n\t\tvendorCode,\n\t\tCostCenter,\n\t\tserviceType,\n\t\tapproveStatus,\n\t\tHour,\n\t\tAmount,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent = writeFactTable@{writeFactTable@OrigData@iscurrent},\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
 				}
 			],
 			"transformations": [
