@@ -9,7 +9,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "SampleData/Emps/today",
+				"folderPath": "",
 				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
