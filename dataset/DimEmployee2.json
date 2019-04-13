@@ -6,52 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"type": "AzureSqlTable",
-		"schema": [
-			{
-				"name": "EmpID",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "RegionCode",
-				"type": "nvarchar"
-			},
-			{
-				"name": "StatusCode",
-				"type": "nvarchar"
-			},
-			{
-				"name": "FunctionCode",
-				"type": "nvarchar"
-			},
-			{
-				"name": "GradeLevel",
-				"type": "nvarchar"
-			},
-			{
-				"name": "RoleCode",
-				"type": "nvarchar"
-			},
-			{
-				"name": "StartDt",
-				"type": "nvarchar"
-			},
-			{
-				"name": "EndDt",
-				"type": "nvarchar"
-			},
-			{
-				"name": "iscurrent",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "processtime",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 3
-			}
-		],
+		"schema": [],
 		"typeProperties": {
 			"tableName": "[dbo].[DimEmployee]"
 		}
