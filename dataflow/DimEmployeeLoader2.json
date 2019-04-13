@@ -15,41 +15,41 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "DimEmployee2",
+						"referenceName": "DimEmp",
 						"type": "DatasetReference"
 					},
 					"name": "DimEmployees",
 					"description": "Current rows in DimEmployees DW table",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
+					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployees"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DimEmployee2",
+						"referenceName": "DimEmp",
 						"type": "DatasetReference"
 					},
 					"name": "sinkNew",
 					"description": " ",
-					"script": "SetAttrsForNew sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkNew"
+					"script": "SetAttrsForNew sink(input(\n\t\tEmpID as integer,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkNew"
 				},
 				{
 					"dataset": {
-						"referenceName": "DimEmployee2",
+						"referenceName": "DimEmp",
 						"type": "DatasetReference"
 					},
 					"name": "sinkUpdates",
 					"description": " ",
-					"script": "SetAttrsUpdate sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkUpdates"
+					"script": "SetAttrsUpdate sink(input(\n\t\tEmpID as integer,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 4)) ~> sinkUpdates"
 				},
 				{
 					"dataset": {
-						"referenceName": "DimEmployee2",
+						"referenceName": "DimEmp",
 						"type": "DatasetReference"
 					},
 					"name": "sinkInactive",
 					"description": " Age out old rows",
-					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
+					"script": "AlterRow1 sink(input(\n\t\tEmpID as integer,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tStatus,\n\t\tEndDate,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
 				}
 			],
 			"transformations": [
@@ -59,7 +59,7 @@
 				},
 				{
 					"name": "TypeConversionsAndTimestamp",
-					"script": "NullFilter derive(EmpID = toInteger(EmpID),\n\t\tprocesstime = currentTimestamp()) ~> TypeConversionsAndTimestamp"
+					"script": "NullFilter derive(EmpID = toInteger(EmpID),\n\t\tprocesstime = currentTimestamp(),\n\t\tStartDate = toDate(StartDate,'MM/dd/yyyy'),\n\t\tEndDate = toDate(EndDate,'MM/dd/yyyy')) ~> TypeConversionsAndTimestamp"
 				},
 				{
 					"name": "LookupIDs",
@@ -88,11 +88,11 @@
 				},
 				{
 					"name": "NormNames",
-					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegionCode = Employees@RegionCode,\n\t\tStatusCode = Employees@StatusCode,\n\t\tFunctionCode = Employees@FunctionCode,\n\t\tGradeLevel = Employees@GradeLevel,\n\t\tRoleCode = Employees@RoleCode,\n\t\tStartDt = Employees@StartDt,\n\t\tEndDt = Employees@EndDt,\n\t\tiscurrent,\n\t\tprocesstime = TypeConversionsAndTimestamp@processtime\n\t))~> NormNames"
+					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegion = Employees@Region,\n\t\tStatus = Employees@Status,\n\t\tLevel = Employees@Level,\n\t\tRole = Employees@Role,\n\t\tStartDate = TypeConversionsAndTimestamp@StartDate,\n\t\tEndDate = TypeConversionsAndTimestamp@EndDate,\n\t\tEmpFunction = Function,\n\t\tiscurrent,\n\t\tprocesstime = DimEmployees@processtime\n\t))~> NormNames"
 				},
 				{
 					"name": "InactiveFields",
-					"script": "SetAttrsInactive select(mapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> InactiveFields"
+					"script": "SetAttrsInactive select(mapColumn(\n\t\tEmpID,\n\t\tStatus,\n\t\tEndDate,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> InactiveFields"
 				},
 				{
 					"name": "AlterRow1",
@@ -105,7 +105,7 @@
 				},
 				{
 					"name": "NameNorm2",
-					"script": "ConditionalSplit1@CheckForUpdates select(mapColumn(\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> NameNorm2"
+					"script": "ConditionalSplit1@CheckForUpdates select()~> NameNorm2"
 				}
 			]
 		}
