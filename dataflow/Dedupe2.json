@@ -9,26 +9,38 @@
 						"referenceName": "names",
 						"type": "DatasetReference"
 					},
-					"name": "source1",
-					"script": "source(output(\n\t\tacctnum as string,\n\t\tfullname as string,\n\t\tphone as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+					"name": "sourceNames",
+					"script": "source(output(\n\t\tacctnum as string,\n\t\tfullname as string,\n\t\tphone as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceNames"
 				}
 			],
 			"transformations": [
 				{
 					"name": "FuzzyMatch",
-					"script": "source1 derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
+					"script": "sourceNames derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
 				},
 				{
-					"name": "OriginSelect",
-					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> OriginSelect"
+					"name": "DerivedColumn1",
+					"script": "Orig derive(hashvalue = crc32(SoundexValue,phone,zip)) ~> DerivedColumn1"
 				},
 				{
-					"name": "CopySelect",
-					"script": "FuzzyMatch select(mapColumn(\n\t\tProductID,\n\t\tName,\n\t\tProductNumber,\n\t\tColor,\n\t\tStandardCost,\n\t\tListPrice,\n\t\tSize,\n\t\tWeight,\n\t\tProductCategoryID,\n\t\tProductModelID,\n\t\tSoundexValue\n\t))~> CopySelect"
+					"name": "Aggregate1",
+					"script": "DerivedColumn1 aggregate(groupBy(hashvalue),\n\tlastid = last(acctnum)) ~> Aggregate1"
 				},
 				{
-					"name": "Exists1",
-					"script": "OriginSelect, CopySelect exists(SoundexValue == CopySelect@SoundexValue,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1"
+					"name": "Orig",
+					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> Orig"
+				},
+				{
+					"name": "Copy",
+					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> Copy"
+				},
+				{
+					"name": "Join1",
+					"script": "Aggregate1, Copy join(lastid == acctnum,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1"
+				},
+				{
+					"name": "Select1",
+					"script": "Join1 select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip\n\t))~> Select1"
 				}
 			]
 		}
