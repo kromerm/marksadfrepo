@@ -19,28 +19,33 @@
 					"script": "sourceNames derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
 				},
 				{
-					"name": "DerivedColumn1",
-					"script": "Orig derive(hashvalue = crc32(SoundexValue,phone,zip)) ~> DerivedColumn1"
+					"name": "CreateRowHash",
+					"script": "FuzzyMatch derive(hashvalue = crc32(SoundexValue,phone,zip)) ~> CreateRowHash"
 				},
 				{
-					"name": "Aggregate1",
-					"script": "DerivedColumn1 aggregate(groupBy(hashvalue),\n\tlastid = last(acctnum)) ~> Aggregate1"
+					"name": "Grouping",
+					"script": "Orig aggregate(groupBy(hashvalue),\n\tPossibleDupe = sum(1)) ~> Grouping"
 				},
 				{
 					"name": "Orig",
-					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> Orig"
+					"script": "CreateRowHash select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue,\n\t\thashvalue\n\t))~> Orig"
 				},
 				{
 					"name": "Copy",
-					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> Copy"
+					"script": "CreateRowHash select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue,\n\t\thashvalue\n\t))~> Copy"
 				},
 				{
-					"name": "Join1",
-					"script": "Aggregate1, Copy join(lastid == acctnum,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1"
+					"name": "LookupOrig",
+					"description": "This is my Lookup",
+					"script": "Copy, IsThisADupe lookup(Copy@hashvalue == Grouping@hashvalue,\n\tbroadcast: 'none')~> LookupOrig"
 				},
 				{
-					"name": "Select1",
-					"script": "Join1 select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip\n\t))~> Select1"
+					"name": "IsThisADupe",
+					"script": "Grouping derive(PossibleDupe = iif(PossibleDupe > 1,1,0)) ~> IsThisADupe"
+				},
+				{
+					"name": "FinalResults",
+					"script": "LookupOrig select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tPossibleDupe\n\t))~> FinalResults"
 				}
 			]
 		}
