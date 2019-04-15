@@ -9,12 +9,13 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Productutf8.txt",
+				"fileName": "Product2.csv",
 				"folderPath": "SampleData/AW",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": "\t",
-			"firstRowAsHeader": false
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
 		},
 		"schema": [
 			{
