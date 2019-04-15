@@ -18,7 +18,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "products",
-					"script": "source(output(\n\t\t{_c0} as string,\n\t\t{_c1} as string,\n\t\t{_c2} as string,\n\t\t{_c3} as string,\n\t\t{_c4} as string,\n\t\t{_c5} as string,\n\t\t{_c6} as string,\n\t\t{_c7} as string,\n\t\t{_c8} as string,\n\t\t{_c9} as string,\n\t\t{_c10} as string,\n\t\t{_c11} as string,\n\t\t{_c12} as string,\n\t\t{_c13} as string,\n\t\t{_c14} as string,\n\t\t{_c15} as string,\n\t\t{_c16} as string,\n\t\t{_c17} as string,\n\t\t{_c18} as string,\n\t\t{_c19} as string,\n\t\t{_c20} as string,\n\t\t{_c21} as string,\n\t\t{_c22} as string,\n\t\t{_c23} as string,\n\t\t{_c24} as string,\n\t\t{_c25} as string,\n\t\t{_c26} as string,\n\t\t{_c27} as string,\n\t\t{_c28} as string,\n\t\t{_c29} as string,\n\t\t{_c30} as string,\n\t\t{_c31} as string,\n\t\t{_c32} as string,\n\t\t{_c33} as string,\n\t\t{_c34} as string,\n\t\t{_c35} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> products"
+					"script": "source(output(\n\t\tProductID as string,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as string,\n\t\tListPrice as string,\n\t\tSize as string,\n\t\tWeight as string,\n\t\tProductCategoryID as string,\n\t\tProductModelID as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> products"
 				}
 			],
 			"sinks": [
