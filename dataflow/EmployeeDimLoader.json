@@ -88,7 +88,7 @@
 				},
 				{
 					"name": "NormNames",
-					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tprocesstime = TypeConversionsAndTimestamp@processtime,\n\t\tEmpID = TypeConversions@EmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime = DimEmployees@processtime\n\t))~> NormNames"
+					"script": "LookupIDs select(mapColumn(\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tEmpID = TypeConversions@EmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime = DimEmployees@processtime\n\t))~> NormNames"
 				},
 				{
 					"name": "InactiveFields",
@@ -105,7 +105,7 @@
 				},
 				{
 					"name": "NameNorm2",
-					"script": "ConditionalSplit1@CheckForUpdates select(mapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tprocesstime = ConditionalSplit1@processtime,\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime = ConditionalSplit1@processtime\n\t))~> NameNorm2"
+					"script": "ConditionalSplit1@CheckForUpdates select(mapColumn(\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent\n\t))~> NameNorm2"
 				}
 			]
 		}
