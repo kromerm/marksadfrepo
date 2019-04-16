@@ -71,7 +71,7 @@
 				},
 				{
 					"name": "checkForChanges",
-					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID &&\r\n\r\n(\r\n\r\nNameNorm2@Region != DimEmployees@Region ||\r\nNameNorm2@Status != DimEmployees@Status || \r\nNameNorm2@Level != DimEmployees@Level ||\r\nNameNorm2@Role != DimEmployees@Role ||\r\nNameNorm2@EndDate != DimEmployees@EndDate\r\n\r\n),\n\tnegate:false,\n\tbroadcast: 'none')~> checkForChanges"
+					"script": "NameNorm2, TypeConversions exists(NameNorm2@EmpID == TypeConversions@EmpID &&\r\n\r\n(\r\n\r\nNameNorm2@Region == DimEmployees@Region ||\r\nNameNorm2@Role == DimEmployees@Role ||\r\nNameNorm2@Level == DimEmployees@Level ||\r\nNameNorm2@Status == DimEmployees@Status\r\n\r\n),\n\tnegate:false,\n\tbroadcast: 'none')~> checkForChanges"
 				},
 				{
 					"name": "SetAttrsForNew",
