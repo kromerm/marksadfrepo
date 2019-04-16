@@ -36,7 +36,7 @@
 				},
 				{
 					"name": "LookupOrig",
-					"description": "This is my Lookup",
+					"description": "Match row hashes",
 					"script": "Copy, IsThisADupe lookup(Copy@hashvalue == Grouping@hashvalue,\n\tbroadcast: 'none')~> LookupOrig"
 				},
 				{
