@@ -54,7 +54,7 @@
 				},
 				{
 					"name": "DerivedColumn1",
-					"script": "Aggregate1 derive() ~> DerivedColumn1"
+					"script": "Aggregate1 derive(Rating = 1) ~> DerivedColumn1"
 				}
 			]
 		}
