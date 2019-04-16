@@ -36,7 +36,7 @@
 				},
 				{
 					"name": "JoinCopyToOrig",
-					"script": "Grouping, Copy join(Grouping@hashvalue == Copy@hashvalue,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinCopyToOrig"
+					"script": "Grouping, Copy join(PossibleDupe == acctnum,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinCopyToOrig"
 				},
 				{
 					"name": "FinalResults",
