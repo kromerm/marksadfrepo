@@ -49,7 +49,7 @@
 					},
 					"name": "sinkInactive",
 					"description": " Age out old rows",
-					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
+					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['EmpID'],\n\tmapColumn(\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent\n\t),\n\tpartitionBy('roundRobin', 4)) ~> sinkInactive"
 				}
 			],
 			"transformations": [
@@ -88,11 +88,11 @@
 				},
 				{
 					"name": "NormNames",
-					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegionCode = Employees@RegionCode,\n\t\tStatusCode = Employees@StatusCode,\n\t\tFunctionCode = Employees@FunctionCode,\n\t\tGradeLevel = Employees@GradeLevel,\n\t\tRoleCode = Employees@RoleCode,\n\t\tStartDt = Employees@StartDt,\n\t\tEndDt = Employees@EndDt,\n\t\tiscurrent,\n\t\tprocesstime = TypeConversionsAndTimestamp@processtime\n\t))~> NormNames"
+					"script": "LookupIDs select(mapColumn(\n\t\tEmpID = TypeConversionsAndTimestamp@EmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tprocesstime = TypeConversionsAndTimestamp@processtime,\n\t\tEmpID = TypeConversions@EmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime = DimEmployees@processtime\n\t))~> NormNames"
 				},
 				{
 					"name": "InactiveFields",
-					"script": "SetAttrsInactive select(mapColumn(\n\t\tEmpID,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> InactiveFields"
+					"script": "SetAttrsInactive select(mapColumn(\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent\n\t))~> InactiveFields"
 				},
 				{
 					"name": "AlterRow1",
@@ -105,7 +105,7 @@
 				},
 				{
 					"name": "NameNorm2",
-					"script": "ConditionalSplit1@CheckForUpdates select(mapColumn(\n\t\tEmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime\n\t))~> NameNorm2"
+					"script": "ConditionalSplit1@CheckForUpdates select(mapColumn(\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tprocesstime = ConditionalSplit1@processtime,\n\t\tEmpID = ConditionalSplit1@EmpID,\n\t\tRegionCode,\n\t\tStatusCode,\n\t\tFunctionCode,\n\t\tGradeLevel,\n\t\tRoleCode,\n\t\tStartDt,\n\t\tEndDt,\n\t\tiscurrent,\n\t\tprocesstime = ConditionalSplit1@processtime\n\t))~> NameNorm2"
 				}
 			]
 		}

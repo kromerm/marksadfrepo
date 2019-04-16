@@ -16,7 +16,7 @@
 			"transformations": [
 				{
 					"name": "Window1",
-					"script": "source1 window(over(dummy = 1),\n\tasc(Rating, true),\n\trank = rank(Rating)) ~> Window1"
+					"script": "source1 window(over(year),\n\tasc(Rating, true),\n\trank = rank(Rating)) ~> Window1"
 				}
 			]
 		}

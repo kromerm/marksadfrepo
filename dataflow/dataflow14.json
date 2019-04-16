@@ -21,14 +21,22 @@
 					"script": "source(output(\n\t\tEmpID as integer,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source2"
 				},
 				{
+					"dataset": {
+						"referenceName": "USDOutput1",
+						"type": "DatasetReference"
+					},
 					"name": "source3",
 					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source3"
 				}
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "USDOutput1",
+						"type": "DatasetReference"
+					},
 					"name": "sink1",
-					"script": "DerivedColumn1 sink() ~> sink1"
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 				}
 			],
 			"transformations": [
@@ -42,7 +50,7 @@
 				},
 				{
 					"name": "Aggregate1",
-					"script": "Join2 aggregate() ~> Aggregate1"
+					"script": "Join2 aggregate(groupBy(genres),\n\tRating = sum(1)) ~> Aggregate1"
 				},
 				{
 					"name": "DerivedColumn1",
