@@ -24,7 +24,7 @@
 				},
 				{
 					"name": "Grouping",
-					"script": "Orig aggregate(groupBy(hashvalue),\n\tPossibleDupe = sum(1)) ~> Grouping"
+					"script": "Orig aggregate(groupBy(hashvalue),\n\tPossibleDupe = last(acctnum)) ~> Grouping"
 				},
 				{
 					"name": "Orig",
@@ -35,17 +35,12 @@
 					"script": "CreateRowHash select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue,\n\t\thashvalue\n\t))~> Copy"
 				},
 				{
-					"name": "LookupOrig",
-					"description": "This is my Lookup",
-					"script": "Copy, IsThisADupe lookup(Copy@hashvalue == Grouping@hashvalue,\n\tbroadcast: 'none')~> LookupOrig"
-				},
-				{
-					"name": "IsThisADupe",
-					"script": "Grouping derive(PossibleDupe = iif(PossibleDupe > 1,1,0)) ~> IsThisADupe"
+					"name": "JoinCopyToOrig",
+					"script": "Grouping, Copy join(Grouping@hashvalue == Copy@hashvalue,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinCopyToOrig"
 				},
 				{
 					"name": "FinalResults",
-					"script": "LookupOrig select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tPossibleDupe\n\t))~> FinalResults"
+					"script": "JoinCopyToOrig select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip\n\t))~> FinalResults"
 				}
 			]
 		}
