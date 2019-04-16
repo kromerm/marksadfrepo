@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "EmployeeDimLoader",
+						"referenceName": "DimEmployeeLoader2",
 						"type": "DataFlowReference"
 					},
 					"compute": {
