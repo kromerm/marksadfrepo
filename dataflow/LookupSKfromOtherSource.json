@@ -35,12 +35,8 @@
 					"script": "EmpFile, MaxVal join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> JoinToAddMaxVal"
 				},
 				{
-					"name": "CreateDummyVal",
-					"script": "FileSource derive(dummy = 1) ~> CreateDummyVal"
-				},
-				{
 					"name": "MaxVal",
-					"script": "CreateDummyVal aggregate(groupBy(dummy),\n\tmaxval = max(EmpID)) ~> MaxVal"
+					"script": "FileSource aggregate(maxval = max(EmpID)) ~> MaxVal"
 				}
 			]
 		}
