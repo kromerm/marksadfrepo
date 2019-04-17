@@ -1,5 +1,5 @@
 {
-	"name": "LookupSurrogateKey",
+	"name": "LookupSurrogateKeyDB",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
