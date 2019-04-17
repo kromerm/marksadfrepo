@@ -1,0 +1,48 @@
+{
+	"name": "LookupSKfromOtherSource",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeDay1",
+						"type": "DatasetReference"
+					},
+					"name": "EmpFile",
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> EmpFile"
+				},
+				{
+					"dataset": {
+						"referenceName": "EmployeeDay1",
+						"type": "DatasetReference"
+					},
+					"name": "FileSource",
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegionCode as string,\n\t\tStatusCode as string,\n\t\tFunctionCode as string,\n\t\tGradeLevel as string,\n\t\tRoleCode as string,\n\t\tStartDt as string,\n\t\tEndDt as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SurrogateKey1",
+					"script": "JoinToAddMaxVal keyGenerate(output(surrogatekey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+				},
+				{
+					"name": "AddSKtoMaxVal",
+					"script": "SurrogateKey1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal"
+				},
+				{
+					"name": "JoinToAddMaxVal",
+					"script": "EmpFile, MaxVal join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> JoinToAddMaxVal"
+				},
+				{
+					"name": "CreateDummyVal",
+					"script": "FileSource derive(dummy = 1) ~> CreateDummyVal"
+				},
+				{
+					"name": "MaxVal",
+					"script": "CreateDummyVal aggregate(groupBy(dummy),\n\tmaxval = max(EmpID)) ~> MaxVal"
+				}
+			]
+		}
+	}
+}
