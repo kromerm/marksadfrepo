@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "writeFactTable",
-					"script": "CheckForEarlyFact sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tProjDate = OrigData@ProjDate,\n\t\tTotalHours,\n\t\tHours,\n\t\tAmount,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tEmpID,\n\t\tfacttimestamp\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
+					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tProjDate = OrigData@ProjDate,\n\t\temployeeID = OrigData@employeeID,\n\t\tTotalHours,\n\t\tTotalAmount,\n\t\tfacttimestamp,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
 				}
 			],
 			"transformations": [
@@ -41,8 +41,8 @@
 					"script": "SetAttributes, DimEmployee lookup(employeeID == EmpID\n\t&& SetAttributes@iscurrent == DimEmployee@iscurrent,\n\tbroadcast: 'none')~> LookupDimEmployee"
 				},
 				{
-					"name": "DailyHourTotal",
-					"script": "LookupDimEmployee aggregate(groupBy(ProjDate),\n\tTotalHours = sum(toInteger(Hours))) ~> DailyHourTotal"
+					"name": "DailyAggs",
+					"script": "CheckForEarlyFact aggregate(groupBy(ProjDate,\n\t\tCheckForEarlyFact@employeeID),\n\tTotalHours = sum(toInteger(Hours)),\n\t\tTotalAmount = sum(toInteger(Amount))) ~> DailyAggs"
 				},
 				{
 					"name": "OrigData",
@@ -50,11 +50,11 @@
 				},
 				{
 					"name": "JoinAllColumns",
-					"script": "DailyHourTotal, OrigData join(DailyHourTotal@ProjDate == OrigData@ProjDate,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinAllColumns"
+					"script": "DailyAggs, OrigData join(DailyAggs@ProjDate == OrigData@ProjDate\n\t&& DailyAggs@employeeID == OrigData@employeeID,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinAllColumns"
 				},
 				{
 					"name": "CheckForEarlyFact",
-					"script": "JoinAllColumns derive(surrogatekey = iif(isNull(surrogatekey),'NA',surrogatekey)) ~> CheckForEarlyFact"
+					"script": "LookupDimEmployee derive(employeeID = iif(isNull(employeeID),0,employeeID)) ~> CheckForEarlyFact"
 				}
 			]
 		}
