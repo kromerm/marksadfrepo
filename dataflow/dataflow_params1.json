@@ -4,41 +4,46 @@
 		"folder": {
 			"name": "Params"
 		},
-		"sources": [
-			{
-				"dataset": {
-					"referenceName": "Product_Blob",
-					"type": "DatasetReference"
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeFiles",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
 				},
-				"name": "prodSource",
-				"script": "source(output(\n\t\tProductID as string,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(10,0),\n\t\tListPrice as string,\n\t\tSize as string,\n\t\tWeight as string,\n\t\tProductCategoryID as string,\n\t\tProductModelID as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> prodSource"
-			},
-			{
-				"dataset": {
-					"referenceName": "blob_params",
-					"type": "DatasetReference"
+				{
+					"dataset": {
+						"referenceName": "EmployeeFiles",
+						"type": "DatasetReference"
+					},
+					"name": "source2",
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Addresses_Blob",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "DerivedColumn1 sink(input(\n\t\tAddressID as string,\n\t\tAddress1 as string,\n\t\tAddress2 as string,\n\t\tCity as string,\n\t\tProp_4 as string,\n\t\tProp_5 as string,\n\t\tProp_6 as string,\n\t\tProp_7 as string,\n\t\tProp_8 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 20),\n\tfilePattern:'undefined') ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Lookup1",
+					"script": "source1, source2 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tbroadcast: 'none')~> Lookup1"
 				},
-				"name": "paramsFile",
-				"script": "source(output(\n\t\tParamColor as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> paramsFile"
-			}
-		],
-		"transformations": [
-			{
-				"name": "getParams",
-				"script": "prodSource, paramsFile lookup(Color == ParamColor,\n\tbroadcast: 'none')~> getParams"
-			},
-			{
-				"name": "FilterRows",
-				"script": "Select1 filter(Color == ParamColor) ~> FilterRows"
-			},
-			{
-				"name": "AggregateStandardCost",
-				"script": "FilterRows aggregate(groupBy(Color),\n\tAverageStandardCostByColor = '$'+toString(round(avg(StandardCost),2))) ~> AggregateStandardCost"
-			},
-			{
-				"name": "Select1",
-				"script": "getParams select(mapColumn(\n\t\tProductID,\n\t\tName,\n\t\tProductNumber,\n\t\tColor,\n\t\tStandardCost,\n\t\tListPrice,\n\t\tSize,\n\t\tWeight,\n\t\tProductCategoryID,\n\t\tProductModelID,\n\t\tParamColor\n\t))~> Select1"
-			}
-		]
+				{
+					"name": "DerivedColumn1",
+					"script": "Lookup1 derive(myfilename = source2@Role) ~> DerivedColumn1"
+				}
+			]
+		}
 	}
 }
