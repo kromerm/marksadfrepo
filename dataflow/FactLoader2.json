@@ -42,7 +42,7 @@
 				},
 				{
 					"name": "DailyAggs",
-					"script": "CheckForEarlyFact aggregate(groupBy(ProjDate,\n\t\tCheckForEarlyFact@employeeID),\n\tTotalHours = sum(toInteger(Hours)),\n\t\tTotalAmount = sum(toInteger(Amount))) ~> DailyAggs"
+					"script": "CheckForEarlyFact aggregate(groupBy(ProjDate,\n\t\temployeeID),\n\tTotalHours = sum(toInteger(Hours)),\n\t\tTotalAmount = sum(toInteger(Amount))) ~> DailyAggs"
 				},
 				{
 					"name": "OrigData",
