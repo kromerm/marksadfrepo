@@ -1,0 +1,68 @@
+{
+	"name": "dedupeProbability",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "names",
+						"type": "DatasetReference"
+					},
+					"name": "sourceNames",
+					"script": "source(output(\n\t\tacctnum as string,\n\t\tfullname as string,\n\t\tphone as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceNames"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FuzzyMatch",
+					"script": "sourceNames derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
+				},
+				{
+					"name": "groupSoundex",
+					"script": "Orig1 aggregate(groupBy(SoundexValue),\n\tsoundexmatch = sum(1)) ~> groupSoundex"
+				},
+				{
+					"name": "Orig1",
+					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> Orig1"
+				},
+				{
+					"name": "soundexJoin",
+					"script": "groupSoundex, soundexBranch join(groupSoundex@SoundexValue == soundexBranch@SoundexValue,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> soundexJoin"
+				},
+				{
+					"name": "soundexBranch",
+					"script": "FuzzyMatch select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> soundexBranch"
+				},
+				{
+					"name": "groupPhone",
+					"script": "soundexJoin aggregate(groupBy(phone),\n\tphonematch = sum(1)) ~> groupPhone"
+				},
+				{
+					"name": "phoneBranch",
+					"script": "soundexJoin select(mapColumn(\n\t\tsundexmatch = soundexmatch,\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue = soundexBranch@SoundexValue\n\t))~> phoneBranch"
+				},
+				{
+					"name": "phoneJoin",
+					"script": "groupPhone, phoneBranch join(groupPhone@phone == phoneBranch@phone,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> phoneJoin"
+				},
+				{
+					"name": "groupZip",
+					"script": "phoneJoin aggregate(groupBy(zip),\n\tzipcount = sum(1)) ~> groupZip"
+				},
+				{
+					"name": "zipBranch",
+					"script": "phoneJoin select(mapColumn(\n\t\tphonematch,\n\t\tsundexmatch,\n\t\tacctnum,\n\t\tfullname,\n\t\tphone = phoneBranch@phone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> zipBranch"
+				},
+				{
+					"name": "zipJoin",
+					"script": "groupZip, zipBranch join(groupZip@zip == zipBranch@zip,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> zipJoin"
+				},
+				{
+					"name": "MatchScore",
+					"script": "zipJoin derive(matchscore = ERROR_FUNCTION('')) ~> MatchScore"
+				}
+			]
+		}
+	}
+}
