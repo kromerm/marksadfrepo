@@ -31,7 +31,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "timeBins sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['']) ~> sink1"
+					"script": "timeBins sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['soccerout.csv'],\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
