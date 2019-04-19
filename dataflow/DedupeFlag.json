@@ -1,5 +1,5 @@
 {
-	"name": "Dedupe2",
+	"name": "DedupeFlag",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
