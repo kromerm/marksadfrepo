@@ -39,7 +39,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "SQLDBSink",
-					"script": "timeBins sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:2000,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('hash', 40,\n\t\tid_event\n\t)) ~> SQLDBSink"
+					"script": "timeBins sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:2000,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpartitionBy('roundRobin', 40),\n\ttruncate:true) ~> SQLDBSink"
 				}
 			],
 			"transformations": [
