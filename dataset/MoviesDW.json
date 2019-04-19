@@ -1,0 +1,30 @@
+{
+	"name": "MoviesDW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "year",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ratingByYear",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "yearkey",
+				"type": "bigint",
+				"precision": 19
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[moviesdw]"
+		}
+	}
+}

@@ -1,0 +1,53 @@
+{
+	"name": "EmployeeFiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "EmpID",
+				"type": "String"
+			},
+			{
+				"name": "Region",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "Function",
+				"type": "String"
+			},
+			{
+				"name": "Level",
+				"type": "String"
+			},
+			{
+				"name": "Role",
+				"type": "String"
+			},
+			{
+				"name": "StartDate",
+				"type": "String"
+			},
+			{
+				"name": "EndDate",
+				"type": "String"
+			}
+		]
+	}
+}

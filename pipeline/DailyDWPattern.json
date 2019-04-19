@@ -1,0 +1,57 @@
+{
+	"name": "DailyDWPattern",
+	"properties": {
+		"activities": [
+			{
+				"name": "DWStaging",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "StageData",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"coreCount": 8
+					}
+				}
+			},
+			{
+				"name": "LoadFromStage",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "DWStaging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "LoadFromStage",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"coreCount": 8
+					}
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"name": "ParquetStage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output/DWstaging",
+				"container": "mycontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

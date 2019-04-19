@@ -1,0 +1,19 @@
+{
+	"name": "soccerOutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output/soccer",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ","
+		},
+		"schema": []
+	}
+}

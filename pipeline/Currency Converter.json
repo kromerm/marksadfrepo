@@ -16,9 +16,11 @@
 						"referenceName": "Currency Converter",
 						"type": "DataFlowReference"
 					},
-					"linkedService": {
-						"referenceName": "MyDataBricksLinkedService",
-						"type": "LinkedServiceReference"
+					"compute": {
+						"computeType": "General",
+						"dataTransformationUnits": 4,
+						"coreCount": 8,
+						"numberOfNodes": 0
 					}
 				}
 			}

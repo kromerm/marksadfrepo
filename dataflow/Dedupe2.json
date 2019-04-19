@@ -1,0 +1,53 @@
+{
+	"name": "Dedupe2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "names",
+						"type": "DatasetReference"
+					},
+					"name": "sourceNames",
+					"script": "source(output(\n\t\tacctnum as string,\n\t\tfullname as string,\n\t\tphone as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceNames"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FuzzyMatch",
+					"script": "sourceNames derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
+				},
+				{
+					"name": "CreateRowHash",
+					"script": "FuzzyMatch derive(hashvalue = crc32(SoundexValue,phone,zip)) ~> CreateRowHash"
+				},
+				{
+					"name": "Grouping",
+					"script": "Orig aggregate(groupBy(hashvalue),\n\tPossibleDupe = sum(1)) ~> Grouping"
+				},
+				{
+					"name": "Orig",
+					"script": "CreateRowHash select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue,\n\t\thashvalue\n\t))~> Orig"
+				},
+				{
+					"name": "Copy",
+					"script": "CreateRowHash select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue,\n\t\thashvalue\n\t))~> Copy"
+				},
+				{
+					"name": "LookupOrig",
+					"description": "Match row hashes",
+					"script": "Copy, IsThisADupe lookup(Copy@hashvalue == Grouping@hashvalue,\n\tbroadcast: 'none')~> LookupOrig"
+				},
+				{
+					"name": "IsThisADupe",
+					"script": "Grouping derive(PossibleDupe = iif(PossibleDupe > 1,1,0)) ~> IsThisADupe"
+				},
+				{
+					"name": "FinalResults",
+					"script": "LookupOrig select(mapColumn(\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tPossibleDupe\n\t))~> FinalResults"
+				}
+			]
+		}
+	}
+}

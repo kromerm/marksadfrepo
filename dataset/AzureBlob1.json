@@ -2,25 +2,22 @@
 	"name": "AzureBlob1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "MyAzureBlobLinkedService",
+			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "Misc"
 		},
 		"type": "AzureBlob",
 		"typeProperties": {
 			"format": {
 				"type": "TextFormat",
-				"columnDelimiter": "\t",
+				"columnDelimiter": ",",
 				"rowDelimiter": "",
 				"nullValue": "\\N",
 				"treatEmptyAsNull": true,
 				"skipLineCount": 0,
 				"firstRowAsHeader": false
 			},
-			"fileName": "SalesOrderDetail.csv",
-			"folderPath": "mycontainer/SampleData/AW"
+			"fileName": "part-00000-tid-3602434708290458144-2151ae16-5154-4f5e-b6af-9cac5957888f-407-c000.csv",
+			"folderPath": "mycontainer/output/taxipaymentout"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

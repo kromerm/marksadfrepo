@@ -1,0 +1,53 @@
+{
+	"name": "MergeFiles",
+	"properties": {
+		"folder": {
+			"name": "MergeFiles"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sales1",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "sales2",
+						"type": "DatasetReference"
+					},
+					"name": "source2",
+					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "NewAndUpdated",
+					"script": "Exists1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tID,\n\t\tTitle,\n\t\tCost\n\t),\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['combofile.csv']) ~> NewAndUpdated"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1",
+					"script": "source1 derive(myhash = sha1(ID+Title+Cost)) ~> DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2",
+					"script": "source2 derive(myhash = sha1(ID+Title+Cost)) ~> DerivedColumn2"
+				},
+				{
+					"name": "Exists1",
+					"script": "DerivedColumn2, DerivedColumn1 exists(DerivedColumn2@myhash == DerivedColumn1@myhash,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+				}
+			]
+		}
+	}
+}

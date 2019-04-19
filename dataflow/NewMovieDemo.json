@@ -1,0 +1,38 @@
+{
+	"name": "NewMovieDemo",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "movie_dataflow_source1",
+						"type": "DatasetReference"
+					},
+					"name": "moviesource",
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "USDOutput1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "Aggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "deletebaddata",
+					"script": "moviesource alterRow(deleteIf(year<1900)) ~> deletebaddata"
+				},
+				{
+					"name": "Aggregate1",
+					"script": "deletebaddata aggregate(groupBy(year),\n\tAverageRate = toDecimal(avg(Rating),10,2)) ~> Aggregate1"
+				}
+			]
+		}
+	}
+}

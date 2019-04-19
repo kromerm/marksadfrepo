@@ -1,0 +1,38 @@
+{
+	"name": "StageData",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "movie_dataflow_source1",
+						"type": "DatasetReference"
+					},
+					"name": "FileSource",
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ParquetStage",
+						"type": "DatasetReference"
+					},
+					"name": "StageData",
+					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 10),\n\tfilePattern:'movies[n].parquet',\n\ttruncate:true) ~> StageData"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1",
+					"script": "Select1 derive(dateOfETL = currentDate()) ~> DerivedColumn1"
+				},
+				{
+					"name": "Select1",
+					"script": "FileSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato = {Rotton Tomato}\n\t))~> Select1"
+				}
+			]
+		}
+	}
+}

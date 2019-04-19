@@ -1,0 +1,40 @@
+{
+	"name": "LookupSurrogateKeyDB",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeFiles",
+						"type": "DatasetReference"
+					},
+					"name": "EmpFile",
+					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimEmp",
+						"type": "DatasetReference"
+					},
+					"name": "DimEmp",
+					"script": "source(output(\n\t\tmaxval as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'select MAX(surrogatekey) as maxval from dbo.dimemp',\n\tformat: 'query') ~> DimEmp"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SurrogateKey1",
+					"script": "JoinToAddMaxVal keyGenerate(output(surrogatekey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+				},
+				{
+					"name": "AddSKtoMaxVal",
+					"script": "SurrogateKey1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal"
+				},
+				{
+					"name": "JoinToAddMaxVal",
+					"script": "EmpFile, DimEmp join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> JoinToAddMaxVal"
+				}
+			]
+		}
+	}
+}

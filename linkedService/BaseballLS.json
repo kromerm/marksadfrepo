@@ -4,8 +4,8 @@
 	"properties": {
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"connectionString": "DefaultEndpointsProtocol=https;AccountName=makadf001;",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkZJTkFMREFUQUZMT1cwMDFfMzNiMWU4YTEtNDVmMi00MTU3LWFiYWItNzI3YTE2N2IyZDViIg0KfQ=="
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=makadf001;EndpointSuffix=core.windows.net;",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIk1BS0FERldFU1RfMzVmMjc0NTYtNDJlMS00OWY1LTliNGMtNzljOTQwMWVlYzQ0Ig0KfQ=="
 		}
 	}
 }

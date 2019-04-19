@@ -1,0 +1,62 @@
+{
+	"name": "FactLoader2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Facts",
+						"type": "DatasetReference"
+					},
+					"name": "Facts",
+					"script": "source(output(\n\t\temployeeID as string,\n\t\tHours as string,\n\t\tAmount as string,\n\t\tProjDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['SampleData/Facts/today/*.csv']) ~> Facts"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimEmp",
+						"type": "DatasetReference"
+					},
+					"name": "DimEmployee",
+					"script": "source(output(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> DimEmployee"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "FactTable2",
+						"type": "DatasetReference"
+					},
+					"name": "writeFactTable",
+					"script": "JoinAllColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:50,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tmapColumn(\n\t\tProjDate = OrigData@ProjDate,\n\t\temployeeID = OrigData@employeeID,\n\t\tTotalHours,\n\t\tTotalAmount,\n\t\tfacttimestamp,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tprocesstime\n\t),\n\tpartitionBy('roundRobin', 4)) ~> writeFactTable"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SetAttributes",
+					"script": "Facts derive(employeeID = toInteger(employeeID),\n\t\tiscurrent = 1,\n\t\tfacttimestamp = currentTimestamp()) ~> SetAttributes"
+				},
+				{
+					"name": "LookupDimEmployee",
+					"script": "SetAttributes, DimEmployee lookup(employeeID == EmpID\n\t&& SetAttributes@iscurrent == DimEmployee@iscurrent,\n\tbroadcast: 'none')~> LookupDimEmployee"
+				},
+				{
+					"name": "DailyAggs",
+					"script": "CheckForEarlyFact aggregate(groupBy(ProjDate,\n\t\tCheckForEarlyFact@employeeID),\n\tTotalHours = sum(toInteger(Hours)),\n\t\tTotalAmount = sum(toInteger(Amount))) ~> DailyAggs"
+				},
+				{
+					"name": "OrigData",
+					"script": "LookupDimEmployee select(mapColumn(\n\t\temployeeID,\n\t\tHours,\n\t\tAmount,\n\t\tProjDate,\n\t\tfacttimestamp,\n\t\tEmpID,\n\t\tsurrogatekey,\n\t\tRegion,\n\t\tStatus,\n\t\tEmpFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tiscurrent = DimEmployee@iscurrent,\n\t\tprocesstime\n\t))~> OrigData"
+				},
+				{
+					"name": "JoinAllColumns",
+					"script": "DailyAggs, OrigData join(DailyAggs@ProjDate == OrigData@ProjDate\n\t&& DailyAggs@employeeID == OrigData@employeeID,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> JoinAllColumns"
+				},
+				{
+					"name": "CheckForEarlyFact",
+					"script": "LookupDimEmployee derive(employeeID = iif(isNull(employeeID),0,employeeID)) ~> CheckForEarlyFact"
+				}
+			]
+		}
+	}
+}

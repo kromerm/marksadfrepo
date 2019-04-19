@@ -1,0 +1,50 @@
+{
+	"name": "SearchLog",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "searchLog",
+						"type": "DatasetReference"
+					},
+					"name": "searchLog",
+					"script": "source(output(\n\t\t{_col0_} as integer,\n\t\t{_col1_} as string,\n\t\t{_col2_} as string,\n\t\t{_col3_} as string,\n\t\t{_col4_} as integer,\n\t\t{_col5_} as string,\n\t\t{_col6_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> searchLog"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "movie_dataflow_sink1",
+						"type": "DatasetReference"
+					},
+					"name": "sinkIntoDW",
+					"script": "DurationFilter sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sinkIntoDW"
+				}
+			],
+			"transformations": [
+				{
+					"name": "totalDurationByRegion",
+					"script": "DateFilter aggregate(groupBy(region),\n\ttotalduration = sum(duration)) ~> totalDurationByRegion"
+				},
+				{
+					"name": "RenameColumns",
+					"script": "searchLog select(mapColumn(\n\t\tuserid = {_col0_},\n\t\tstart = {_col1_},\n\t\tregion = {_col2_},\n\t\tquery = {_col3_},\n\t\tduration = {_col4_},\n\t\turls = {_col5_},\n\t\tclickedurls = {_col6_}\n\t))~> RenameColumns"
+				},
+				{
+					"name": "DateFilter",
+					"script": "ConvertDate filter(newdate > toDate('2012-02-06','yyyy-MM-dd')) ~> DateFilter"
+				},
+				{
+					"name": "ConvertDate",
+					"script": "RenameColumns derive(newdate = toDate(left(start,instr(start,' ')-1),'MM/dd/yyyy')) ~> ConvertDate"
+				},
+				{
+					"name": "DurationFilter",
+					"script": "totalDurationByRegion filter(totalduration > 200) ~> DurationFilter"
+				}
+			]
+		}
+	}
+}

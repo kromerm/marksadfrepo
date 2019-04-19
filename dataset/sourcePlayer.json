@@ -1,0 +1,118 @@
+{
+	"name": "sourcePlayer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "People.csv",
+				"folderPath": "SampleData/baseball",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "playerID",
+				"type": "String"
+			},
+			{
+				"name": "birthYear",
+				"type": "String"
+			},
+			{
+				"name": "birthMonth",
+				"type": "String"
+			},
+			{
+				"name": "birthDay",
+				"type": "String"
+			},
+			{
+				"name": "birthCountry",
+				"type": "String"
+			},
+			{
+				"name": "birthState",
+				"type": "String"
+			},
+			{
+				"name": "birthCity",
+				"type": "String"
+			},
+			{
+				"name": "deathYear",
+				"type": "String"
+			},
+			{
+				"name": "deathMonth",
+				"type": "String"
+			},
+			{
+				"name": "deathDay",
+				"type": "String"
+			},
+			{
+				"name": "deathCountry",
+				"type": "String"
+			},
+			{
+				"name": "deathState",
+				"type": "String"
+			},
+			{
+				"name": "deathCity",
+				"type": "String"
+			},
+			{
+				"name": "nameFirst",
+				"type": "String"
+			},
+			{
+				"name": "nameLast",
+				"type": "String"
+			},
+			{
+				"name": "nameGiven",
+				"type": "String"
+			},
+			{
+				"name": "weight",
+				"type": "String"
+			},
+			{
+				"name": "height",
+				"type": "String"
+			},
+			{
+				"name": "bats",
+				"type": "String"
+			},
+			{
+				"name": "throws",
+				"type": "String"
+			},
+			{
+				"name": "debut",
+				"type": "String"
+			},
+			{
+				"name": "finalGame",
+				"type": "String"
+			},
+			{
+				"name": "retroID",
+				"type": "String"
+			},
+			{
+				"name": "bbrefID",
+				"type": "String"
+			}
+		]
+	}
+}

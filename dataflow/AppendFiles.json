@@ -1,0 +1,74 @@
+{
+	"name": "AppendFiles",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sales1",
+						"type": "DatasetReference"
+					},
+					"name": "SalesOrig",
+					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SalesOrig"
+				},
+				{
+					"dataset": {
+						"referenceName": "Sales3",
+						"type": "DatasetReference"
+					},
+					"name": "SalesNew",
+					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SalesNew"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalesUpdate",
+						"type": "DatasetReference"
+					},
+					"name": "SalesUpdate",
+					"script": "source(output(\n\t\tID as string,\n\t\tTitle as string,\n\t\tCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SalesUpdate"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "UpdatedOutput",
+					"script": "ReJoinData sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tID = OrigData@ID,\n\t\tTitle,\n\t\tCost\n\t),\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['SalesUpdated.csv'],\n\ttruncate:true) ~> UpdatedOutput"
+				}
+			],
+			"transformations": [
+				{
+					"name": "UnionNew",
+					"script": "SalesOrig, SalesNew union(byName: true)~> UnionNew"
+				},
+				{
+					"name": "UnionUpdate",
+					"script": "UnionNew, SalesUpdate union(byName: true)~> UnionUpdate"
+				},
+				{
+					"name": "Distinct",
+					"script": "SurrogateKey aggregate(groupBy(ID),\n\twinner = last(mykey)) ~> Distinct"
+				},
+				{
+					"name": "NotNull",
+					"script": "UnionUpdate filter(!isNull(Title)) ~> NotNull"
+				},
+				{
+					"name": "SurrogateKey",
+					"script": "NotNull keyGenerate(output(mykey as long),\n\tstartAt: 1L) ~> SurrogateKey"
+				},
+				{
+					"name": "ReJoinData",
+					"script": "Distinct, OrigData join(winner == mykey,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> ReJoinData"
+				},
+				{
+					"name": "OrigData",
+					"script": "SurrogateKey select(mapColumn(\n\t\tID,\n\t\tTitle,\n\t\tCost,\n\t\tmykey\n\t))~> OrigData"
+				}
+			]
+		}
+	}
+}

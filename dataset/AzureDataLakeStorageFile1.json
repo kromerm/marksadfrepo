@@ -1,0 +1,23 @@
+{
+	"name": "AzureDataLakeStorageFile1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage2",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlobFSFile",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
+			},
+			"fileName": "",
+			"folderPath": "mycontainer/myfolder"
+		}
+	}
+}

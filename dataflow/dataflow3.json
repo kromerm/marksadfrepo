@@ -1,0 +1,32 @@
+{
+	"name": "dataflow3",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "searchLog",
+						"type": "DatasetReference"
+					},
+					"name": "searchLog",
+					"script": "source(output(\n\t\t{_col0_} as integer,\n\t\t{_col1_} as timestamp 'MM/dd/yyyy hh:mm:ss',\n\t\t{_col2_} as string,\n\t\t{_col3_} as string,\n\t\t{_col4_} as short,\n\t\t{_col5_} as string,\n\t\t{_col6_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttimestampFormats: ['MM/dd/yyyy hh:mm:ss']) ~> searchLog"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\t{_c0} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Join1",
+					"script": "searchLog, source1 join(toString({_col0_}) != toString({_c0}),\n\tjoinType:'cross',\n\tbroadcast: 'none')~> Join1"
+				}
+			]
+		}
+	}
+}

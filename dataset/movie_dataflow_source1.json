@@ -1,0 +1,47 @@
+{
+	"name": "movie_dataflow_source1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "moviesDB.csv",
+				"folderPath": "SampleData",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "movie",
+				"type": "String"
+			},
+			{
+				"name": "title",
+				"type": "String"
+			},
+			{
+				"name": "genres",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "Rating",
+				"type": "String"
+			},
+			{
+				"name": "Rotton Tomato",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

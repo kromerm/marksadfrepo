@@ -1,0 +1,14 @@
+{
+	"name": "DBStage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "moviestage"
+		}
+	}
+}

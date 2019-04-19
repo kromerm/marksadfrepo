@@ -1,0 +1,43 @@
+{
+	"name": "MoviesWithRatings",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "movie",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "genres",
+				"type": "nvarchar"
+			},
+			{
+				"name": "year",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Rating",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Rotton Tomato",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[MoviesWithRatings]"
+		}
+	}
+}

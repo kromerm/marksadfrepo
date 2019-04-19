@@ -17,16 +17,18 @@
 						"referenceName": "Baseball 1 Norm Batting Stats",
 						"type": "DataFlowReference"
 					},
-					"linkedService": {
-						"referenceName": "adb5_jan_eastus",
-						"type": "LinkedServiceReference"
-					},
 					"staging": {
 						"linkedService": {
 							"referenceName": "AzureBlobStorage1",
 							"type": "LinkedServiceReference"
 						},
 						"folderPath": "mycontainer/staging"
+					},
+					"compute": {
+						"computeType": "General",
+						"dataTransformationUnits": 4,
+						"coreCount": 8,
+						"numberOfNodes": 0
 					}
 				}
 			}

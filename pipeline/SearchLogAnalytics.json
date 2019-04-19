@@ -1,0 +1,31 @@
+{
+	"name": "SearchLogAnalytics",
+	"properties": {
+		"description": "This is a sample that takes the U-SQL SearchLog analytics example and turns it into an ADF Data Flow: https://kromerbigdata.com/2019/03/03/u-sql-searchlog-aggregations-as-adf-data-flows/",
+		"activities": [
+			{
+				"name": "SearchLog",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SearchLog",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"dataTransformationUnits": 4,
+						"coreCount": 8,
+						"numberOfNodes": 0
+					}
+				}
+			}
+		]
+	}
+}
