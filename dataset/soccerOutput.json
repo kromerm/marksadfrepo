@@ -12,7 +12,8 @@
 				"folderPath": "output/soccer",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": ","
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
 		},
 		"schema": []
 	}
