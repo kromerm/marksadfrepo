@@ -23,7 +23,10 @@
 					}
 				}
 			}
-		]
+		],
+		"folder": {
+			"name": "Demos"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

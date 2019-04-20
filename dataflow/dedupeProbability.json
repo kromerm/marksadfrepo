@@ -36,31 +36,43 @@
 				},
 				{
 					"name": "groupPhone",
-					"script": "soundexJoin aggregate(groupBy(phone),\n\tphonematch = sum(1)) ~> groupPhone"
+					"script": "soundexJoin aggregate(groupBy(phone,\n\t\tsoundexBranch@SoundexValue),\n\tphonematch = sum(1),\n\t\tacctnum_agg = last(acctnum)) ~> groupPhone"
 				},
 				{
 					"name": "phoneBranch",
-					"script": "soundexJoin select(mapColumn(\n\t\tsundexmatch = soundexmatch,\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue = soundexBranch@SoundexValue\n\t))~> phoneBranch"
+					"script": "soundexJoin select(mapColumn(\n\t\tsoundexmatch,\n\t\tacctnum,\n\t\tfullname,\n\t\tphone,\n\t\tzip,\n\t\tSoundexValue = soundexBranch@SoundexValue\n\t))~> phoneBranch"
 				},
 				{
 					"name": "phoneJoin",
-					"script": "groupPhone, phoneBranch join(groupPhone@phone == phoneBranch@phone,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> phoneJoin"
+					"script": "groupPhone, phoneBranch join(acctnum_agg == acctnum,\n\tjoinType:'right',\n\tbroadcast: 'none')~> phoneJoin"
 				},
 				{
 					"name": "groupZip",
-					"script": "phoneJoin aggregate(groupBy(zip),\n\tzipcount = sum(1)) ~> groupZip"
+					"script": "phoneJoin aggregate(groupBy(phoneBranch@phone,\n\t\tphoneBranch@SoundexValue),\n\tzipcount = sum(1),\n\t\tacctnum_agg = last(acctnum_agg)) ~> groupZip"
 				},
 				{
 					"name": "zipBranch",
-					"script": "phoneJoin select(mapColumn(\n\t\tphonematch,\n\t\tsundexmatch,\n\t\tacctnum,\n\t\tfullname,\n\t\tphone = phoneBranch@phone,\n\t\tzip,\n\t\tSoundexValue\n\t))~> zipBranch"
+					"script": "phoneJoin select(mapColumn(\n\t\tphonematch,\n\t\tsoundexmatch,\n\t\tacctnum,\n\t\tfullname,\n\t\tphone = phoneBranch@phone,\n\t\tzip,\n\t\tSoundexValue = phoneBranch@SoundexValue\n\t))~> zipBranch"
 				},
 				{
 					"name": "zipJoin",
-					"script": "groupZip, zipBranch join(groupZip@zip == zipBranch@zip,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> zipJoin"
+					"script": "groupZip, zipBranch join(acctnum_agg == acctnum,\n\tjoinType:'right',\n\tbroadcast: 'none')~> zipJoin"
 				},
 				{
-					"name": "MatchScore",
-					"script": "zipJoin derive(matchscore = ERROR_FUNCTION('')) ~> MatchScore"
+					"name": "setConstants",
+					"script": "zipJoin derive(soundexweight = 50,\n\t\tzipweight = 25,\n\t\tphonewight = 25,\n\t\tsoundexbool = iif (soundexmatch > 1, 1, 0),\n\t\tzipbool = iif (zipcount > 1, 1, 0),\n\t\tphonebool = iif (phonematch > 1, 1, 0)) ~> setConstants"
+				},
+				{
+					"name": "matchScore",
+					"script": "setConstants derive(matchscore = (soundexbool * 50) + (zipbool * 25) + (phonebool * 25)) ~> matchScore"
+				},
+				{
+					"name": "finalResult",
+					"script": "matchScore select(mapColumn(\n\t\tphone = zipBranch@phone,\n\t\tacctnum,\n\t\tfullname,\n\t\tzip,\n\t\tmatchscore\n\t))~> finalResult"
+				},
+				{
+					"name": "Filter1",
+					"script": "finalResult filter(matchscore < 100) ~> Filter1"
 				}
 			]
 		}
