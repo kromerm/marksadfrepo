@@ -9,7 +9,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "100 Records.csv",
+				"fileName": "90 Records.csv",
 				"folderPath": "SampleData/HR",
 				"container": "mycontainer"
 			},
