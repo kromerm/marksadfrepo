@@ -16,7 +16,7 @@
 			"transformations": [
 				{
 					"name": "FuzzyMatch",
-					"script": "sourceNames derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
+					"script": "MapNames derive(SoundexValue = soundex(fullname)) ~> FuzzyMatch"
 				},
 				{
 					"name": "groupSoundex",
@@ -36,7 +36,7 @@
 				},
 				{
 					"name": "groupPhone",
-					"script": "soundexJoin aggregate(groupBy(phone = phone,\n\t\tsoundexBranch@SoundexValue),\n\tphonematch = sum(1),\n\t\tacctnum_agg = last(acctnum)) ~> groupPhone"
+					"script": "soundexJoin aggregate(groupBy(phone,\n\t\tsoundexBranch@SoundexValue),\n\tphonematch = sum(1),\n\t\tacctnum_agg = last(acctnum)) ~> groupPhone"
 				},
 				{
 					"name": "phoneBranch",
@@ -48,7 +48,7 @@
 				},
 				{
 					"name": "groupZip",
-					"script": "phoneJoin aggregate(groupBy(phone = phoneBranch@phone,\n\t\tphoneBranch@SoundexValue),\n\tzipcount = sum(1),\n\t\tacctnum_agg = last(acctnum_agg)) ~> groupZip"
+					"script": "phoneJoin aggregate(groupBy(phoneBranch@phone,\n\t\tphoneBranch@SoundexValue),\n\tzipcount = sum(1),\n\t\tacctnum_agg = last(acctnum_agg)) ~> groupZip"
 				},
 				{
 					"name": "zipBranch",
@@ -71,8 +71,16 @@
 					"script": "matchScore select(mapColumn(\n\t\tphone = zipBranch@phone,\n\t\tacctnum,\n\t\tfullname,\n\t\tzip,\n\t\tmatchscore\n\t))~> finalResult"
 				},
 				{
-					"name": "Filter1",
-					"script": "finalResult filter(matchscore < 100) ~> Filter1"
+					"name": "MapNames",
+					"script": "CreateFullName select(mapColumn(\n\t\tphone = {Phone No. },\n\t\tzip = Zip,\n\t\tfullname,\n\t\tacctnum = {Emp ID}\n\t))~> MapNames"
+				},
+				{
+					"name": "CreateFullName",
+					"script": "sourceNames derive(fullname = {First Name} + ' '+{Last Name}) ~> CreateFullName"
+				},
+				{
+					"name": "CheckForDupes",
+					"script": "finalResult split(matchscore > 50,\n\tdisjoint: false) ~> CheckForDupes@(Duplicates, NotDupe)"
 				}
 			]
 		}
