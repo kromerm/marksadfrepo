@@ -49,7 +49,7 @@
 				},
 				{
 					"name": "joinStringDataViaLookup",
-					"script": "dictionaryMapping, locationMap join(location == Type,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> joinStringDataViaLookup"
+					"script": "dictionaryMapping, locationMap join(location == Type,\n\tjoinType:'left',\n\tbroadcast: 'none')~> joinStringDataViaLookup"
 				},
 				{
 					"name": "columnSelectorRenaming",
