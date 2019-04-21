@@ -66,7 +66,7 @@
 				},
 				{
 					"name": "groupZip",
-					"script": "phoneJoin aggregate(groupBy(phoneBranch@phone,\n\t\tphoneBranch@SoundexValue),\n\tzipcount = sum(1),\n\t\tacctnum_agg = last(acctnum_agg)) ~> groupZip"
+					"script": "phoneJoin aggregate(groupBy(zip,\n\t\tphoneBranch@SoundexValue),\n\tzipcount = sum(1),\n\t\tacctnum_agg = last(acctnum_agg)) ~> groupZip"
 				},
 				{
 					"name": "zipBranch",
@@ -78,7 +78,7 @@
 				},
 				{
 					"name": "setConstants",
-					"script": "zipJoin derive(soundexweight = 50,\n\t\tzipweight = 25,\n\t\tphonewight = 25,\n\t\tsoundexbool = iif (soundexmatch > 1, 1, 0),\n\t\tzipbool = iif (zipcount > 1, 1, 0),\n\t\tphonebool = iif (phonematch > 1, 1, 0)) ~> setConstants"
+					"script": "zipJoin derive(soundexweight = 50,\n\t\tzipweight = 25,\n\t\tphoneweight = 25,\n\t\tsoundexbool = iif (soundexmatch > 1, 1, 0),\n\t\tzipbool = iif (zipcount > 1, 1, 0),\n\t\tphonebool = iif (phonematch > 1, 1, 0)) ~> setConstants"
 				},
 				{
 					"name": "matchScore",
@@ -86,7 +86,7 @@
 				},
 				{
 					"name": "finalResult",
-					"script": "matchScore select(mapColumn(\n\t\tphone = zipBranch@phone,\n\t\tacctnum,\n\t\tfullname,\n\t\tzip,\n\t\tmatchscore\n\t))~> finalResult"
+					"script": "matchScore select(mapColumn(\n\t\tphone,\n\t\tacctnum,\n\t\tfullname,\n\t\tzip = zipBranch@zip,\n\t\tmatchscore\n\t))~> finalResult"
 				},
 				{
 					"name": "MapNames",
