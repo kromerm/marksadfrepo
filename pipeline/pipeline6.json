@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Data Flow",
+				"name": "dataflow_params1",
 				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow16",
+						"referenceName": "dataflow_params1",
 						"type": "DataFlowReference"
 					},
 					"compute": {
