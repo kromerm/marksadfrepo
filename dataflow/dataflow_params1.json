@@ -30,8 +30,8 @@
 						"referenceName": "folderout",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename') ~> sink1"
+					"name": "sinkData",
+					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename') ~> sinkData"
 				}
 			],
 			"transformations": [
