@@ -27,7 +27,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "partout",
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
