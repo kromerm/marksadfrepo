@@ -27,11 +27,11 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "folderout",
+						"referenceName": "partout",
 						"type": "DatasetReference"
 					},
-					"name": "sinkData",
-					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename') ~> sinkData"
+					"name": "sink1",
+					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['myfile.csv'],\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
