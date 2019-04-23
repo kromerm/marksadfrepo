@@ -31,13 +31,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename',\n\ttruncate:true) ~> sink1"
+					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tEmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate\n\t),\n\trowUrlColumn:'filename',\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
 				{
 					"name": "ParseFileName",
-					"script": "ParamsFile derive(filedate = split(Column_1,'=')[1],\n\t\tfilename = split(Column_1,'=')[2]) ~> ParseFileName"
+					"script": "ParamsFile derive(filedate = split(Column_1,'=')[1],\n\t\tfilename = 'output/parts/'+split(Column_1,'=')[2]) ~> ParseFileName"
 				},
 				{
 					"name": "Join1",
