@@ -51,6 +51,44 @@
 						"coreCount": 8
 					}
 				}
+			},
+			{
+				"name": "Send email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "LoadFromStage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				}
+			},
+			{
+				"name": "Process Models",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "LoadFromStage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				}
 			}
 		]
 	}
