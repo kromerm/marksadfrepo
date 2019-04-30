@@ -10,23 +10,27 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('external', 0)) ~> source1"
+					"script": "source(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('external', 0)) ~> source1"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "MoviesWithRatings",
+						"referenceName": "DelimitedText9",
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "AlterRow1 sink(input(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie'],\n\ttruncate:true) ~> sink1"
+					"script": "AlterRow1 sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string,\n\t\tColumn_12 as string,\n\t\tColumn_13 as string,\n\t\tColumn_14 as string,\n\t\tColumn_15 as string,\n\t\tColumn_16 as string,\n\t\tColumn_17 as string,\n\t\tColumn_18 as string,\n\t\tColumn_19 as string,\n\t\tColumn_20 as string,\n\t\tColumn_21 as string,\n\t\tColumn_22 as string,\n\t\tColumn_23 as string,\n\t\tColumn_24 as string,\n\t\tColumn_25 as string,\n\t\tColumn_26 as string,\n\t\tColumn_27 as string,\n\t\tColumn_28 as string,\n\t\tColumn_29 as string,\n\t\tColumn_30 as string,\n\t\tColumn_31 as string,\n\t\tColumn_32 as string,\n\t\tColumn_33 as string,\n\t\tColumn_34 as string,\n\t\tColumn_35 as string,\n\t\tColumn_36 as string,\n\t\tColumn_37 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'undefined',\n\ttruncate:true) ~> sink1"
 				}
 			],
 			"transformations": [
 				{
 					"name": "AlterRow1",
-					"script": "source1 alterRow(insertIf(1==2),\n\tpartitionBy('hash', 2,\n\t\tERROR_FUNCTION('')\n\t)) ~> AlterRow1"
+					"script": "Exists1 alterRow(insertIf(1==2),\n\tpartitionBy('hash', 2,\n\t\tERROR_FUNCTION('')\n\t)) ~> AlterRow1"
+				},
+				{
+					"name": "Exists1",
+					"script": "source1 exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1"
 				}
 			]
 		}
