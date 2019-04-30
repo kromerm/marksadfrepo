@@ -1,0 +1,9 @@
+{
+	"name": "AzureKeyVault1",
+	"properties": {
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://makkv001.vault.azure.net/"
+		}
+	}
+}
