@@ -5,12 +5,17 @@
 			"referenceName": "AzureDataLakeStorage3",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@utcnow()",
+					"value": "dataset().filename",
 					"type": "Expression"
 				},
 				"folderPath": "myfolder",
