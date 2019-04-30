@@ -1,0 +1,70 @@
+{
+	"name": "pipeline7",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute SSIS Package1",
+				"type": "ExecuteSSISPackage",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"loggingLevel": "Basic",
+					"environmentPath": null,
+					"connectVia": {
+						"referenceName": "integrationRuntime2",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			},
+			{
+				"name": "Execute SSIS Package2",
+				"type": "ExecuteSSISPackage",
+				"dependsOn": [
+					{
+						"activity": "Execute SSIS Package1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"loggingLevel": "Basic"
+				}
+			},
+			{
+				"name": "Execute SSIS Package3",
+				"type": "ExecuteSSISPackage",
+				"dependsOn": [
+					{
+						"activity": "Execute SSIS Package1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"loggingLevel": "Basic"
+				}
+			}
+		]
+	}
+}
