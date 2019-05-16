@@ -1,0 +1,17 @@
+{
+	"name": "pipeline8",
+	"properties": {
+		"activities": [
+			{
+				"name": "WebHook1",
+				"type": "WebHook",
+				"typeProperties": {
+					"url": "https://s15events.azure-automation.net/webhooks?token=pEgcJL4A9WPo3MUih6aOaDda1%2fffN1CnmgH51M2jAl0%3d",
+					"method": "POST",
+					"body": "hi",
+					"timeout": "00:10:00"
+				}
+			}
+		]
+	}
+}
