@@ -1,0 +1,395 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name"
+		},
+		"SqlServer1": {
+			"type": "string"
+		},
+		"AzureBlobStorage1": {
+			"type": "string"
+		},
+		"AzureSqlDatabase1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalDataFlow')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup_LastVersion",
+						"type": "Lookup",
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource"
+							},
+							"dataset": {
+								"referenceName": "SQLServerChanges",
+								"type": "DatasetReference"
+							}
+						}
+					},
+					{
+						"name": "Lookup_CurrentVersion",
+						"type": "Lookup",
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "SELECT CHANGE_TRACKING_CURRENT_VERSION() as CurrentChangeTrackingVersion"
+							},
+							"dataset": {
+								"referenceName": "SQLServerIncremental_Data",
+								"type": "DatasetReference"
+							}
+						}
+					},
+					{
+						"name": "Incrememental Copy",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Lookup_LastVersion",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Lookup_CurrentVersion",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select data_source_table.PersonID,data_source_table.Name,data_source_table.Age, CT.SYS_CHANGE_VERSION, SYS_CHANGE_OPERATION from data_source_table RIGHT OUTER JOIN CHANGETABLE(CHANGES data_source_table, \n\n@{activity('Lookup_LastVersion').output.firstRow.SYS_CHANGE_VERSION}) as CT\n\n on data_source_table.PersonID = CT.PersonID where CT.SYS_CHANGE_VERSION <= @{activity('Lookup_CurrentVersion').output.firstRow.CurrentChangeTrackingVersion} ",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSetting"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSetting",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "SQLServerIncremental_Data",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "IncrementalDailyCSV",
+								"type": "DatasetReference"
+							}
+						]
+					},
+					{
+						"name": "Update Change Tracking",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Incrememental Copy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[Update_ChangeTracking_Version]",
+							"storedProcedureParameters": {
+								"CurrentTrackingVersion": {
+									"value": {
+										"value": "@{activity('Lookup_CurrentVersion').output.firstRow.CurrentChangeTrackingVersion}",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"TableName": {
+									"value": {
+										"value": "@{activity('Lookup_LastVersion').output.firstRow.TableName}",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "[parameters('SqlServer1')]",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Clean Data",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Update Change Tracking",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "CleanData",
+								"type": "DataFlowReference"
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "Incremental"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQLServerChanges')]",
+				"[concat(variables('factoryId'), '/datasets/SQLServerIncremental_Data')]",
+				"[concat(variables('factoryId'), '/datasets/IncrementalDailyCSV')]",
+				"[concat(variables('factoryId'), '/dataflows/CleanData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLServerChanges')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('SqlServer1')]",
+					"type": "LinkedServiceReference"
+				},
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "TableName",
+						"type": "varchar"
+					},
+					{
+						"name": "SYS_CHANGE_VERSION",
+						"type": "bigint",
+						"precision": 19
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[table_store_ChangeTracking_version]"
+				}
+			}
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLServerIncremental_Data')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('SqlServer1')]",
+					"type": "LinkedServiceReference"
+				},
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "PersonID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Age",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[data_source_table]"
+				}
+			}
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IncrementalDailyCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "dailychanges.csv",
+						"folderPath": "incremental",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "PersonID",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "SYS_CHANGE_VERSION",
+						"type": "String"
+					},
+					{
+						"name": "SYS_CHANGE_OPERATION",
+						"type": "String"
+					}
+				]
+			}
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CleanData')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "IncrementalDailyCSV",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"script": "source(output(\n\t\tPersonID as string,\n\t\tName as string,\n\t\tAge as string,\n\t\tSYS_CHANGE_VERSION as string,\n\t\tSYS_CHANGE_OPERATION as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true) ~> source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlIncremental_Data_New1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"script": "AlterRowRules sink(input(\n\t\tPersonID as integer,\n\t\tName as string,\n\t\tAge as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['PersonID'],\n\tmapColumn(\n\t\tPersonID,\n\t\tName = TransformColumns@Name,\n\t\tAge\n\t)) ~> sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "TransformColumns",
+							"script": "FilterOutDeletes derive(PersonID = toInteger(PersonID),\n\t\tAge = toInteger(Age),\n\t\tName = initCap(Name)) ~> TransformColumns"
+						},
+						{
+							"name": "AlterRowRules",
+							"script": "TransformColumns alterRow(insertIf(SYS_CHANGE_OPERATION=='I'),\n\tupdateIf(SYS_CHANGE_OPERATION=='U'),\n\tdeleteIf(SYS_CHANGE_OPERATION=='D')) ~> AlterRowRules"
+						},
+						{
+							"name": "FilterOutDeletes",
+							"script": "source1 filter(SYS_CHANGE_OPERATION != 'D') ~> FilterOutDeletes"
+						}
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/IncrementalDailyCSV')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlIncremental_Data_New1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlIncremental_Data_New1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Incremental"
+				},
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "PersonID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Age",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[data_source_table_sql]"
+				}
+			}
+		}
+	]
+}
