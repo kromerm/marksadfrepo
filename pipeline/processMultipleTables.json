@@ -1,5 +1,5 @@
 {
-	"name": "pipeline10",
+	"name": "processMultipleTables",
 	"properties": {
 		"activities": [
 			{
