@@ -1,0 +1,16 @@
+{
+	"name": "myLargeSparkIR",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "West US",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 260,
+					"timeToLiveInMinutes": 60
+				}
+			}
+		}
+	}
+}
