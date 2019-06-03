@@ -1,14 +1,3 @@
 {
-	"name": "pipeline10",
-	"properties": {
-		"activities": [
-			{
-				"name": "Wait1",
-				"type": "Wait",
-				"typeProperties": {
-					"waitTimeInSeconds": 600000000
-				}
-			}
-		]
-	}
+	"name": "pipeline10"
 }
