@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1",
-					"script": "source(output(\n\t\tplayerID_yearID as string,\n\t\tBA as double,\n\t\tOBP as double,\n\t\tSLG as double,\n\t\tTB as integer,\n\t\tbirthYear as string,\n\t\tbirthMonth as string,\n\t\tbirthDay as string,\n\t\tbirthCountry as string,\n\t\tbirthState as string,\n\t\tbirthCity as string,\n\t\tdeathYear as string,\n\t\tdeathMonth as string,\n\t\tdeathDay as string,\n\t\tdeathCountry as string,\n\t\tdeathState as string,\n\t\tdeathCity as string,\n\t\tnameFirst as string,\n\t\tnameLast as string,\n\t\tnameGiven as string,\n\t\tweight as string,\n\t\theight as string,\n\t\tbats as string,\n\t\tthrows as string,\n\t\tdebut as string,\n\t\tfinalGame as string,\n\t\tretroID as string,\n\t\tbbrefID as string,\n\t\tplayerID as string,\n\t\tyearID as string,\n\t\tstint as string,\n\t\tteamID as string,\n\t\tlgID as string,\n\t\tG as integer,\n\t\tAB as integer,\n\t\tR as integer,\n\t\tH as integer,\n\t\tH2B as integer,\n\t\tH3B as integer,\n\t\tHR as integer,\n\t\tRBI as integer,\n\t\tSB as integer,\n\t\tCS as integer,\n\t\tBB as integer,\n\t\tSO as integer,\n\t\tIBB as integer,\n\t\tHBP as integer,\n\t\tSH as integer,\n\t\tSF as integer,\n\t\tGIDP as integer,\n\t\tcurrenttime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tbatchSize: 1000,\n\tformat: 'table',\n\tpartitionColumn: 'playerID_yearID',\n\tpartitionBy('external', 0)) ~> source1"
+					"script": "source(output(\n\t\tplayerID_yearID as string,\n\t\tBA as double,\n\t\tOBP as double,\n\t\tSLG as double,\n\t\tTB as integer,\n\t\tbirthYear as string,\n\t\tbirthMonth as string,\n\t\tbirthDay as string,\n\t\tbirthCountry as string,\n\t\tbirthState as string,\n\t\tbirthCity as string,\n\t\tdeathYear as string,\n\t\tdeathMonth as string,\n\t\tdeathDay as string,\n\t\tdeathCountry as string,\n\t\tdeathState as string,\n\t\tdeathCity as string,\n\t\tnameFirst as string,\n\t\tnameLast as string,\n\t\tnameGiven as string,\n\t\tweight as string,\n\t\theight as string,\n\t\tbats as string,\n\t\tthrows as string,\n\t\tdebut as string,\n\t\tfinalGame as string,\n\t\tretroID as string,\n\t\tbbrefID as string,\n\t\tplayerID as string,\n\t\tyearID as string,\n\t\tstint as string,\n\t\tteamID as string,\n\t\tlgID as string,\n\t\tG as integer,\n\t\tAB as integer,\n\t\tR as integer,\n\t\tH as integer,\n\t\tH2B as integer,\n\t\tH3B as integer,\n\t\tHR as integer,\n\t\tRBI as integer,\n\t\tSB as integer,\n\t\tCS as integer,\n\t\tBB as integer,\n\t\tSO as integer,\n\t\tIBB as integer,\n\t\tHBP as integer,\n\t\tSH as integer,\n\t\tSF as integer,\n\t\tGIDP as integer,\n\t\tcurrenttime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tbatchSize: 1000,\n\tformat: 'table',\n\tpartitionColumn: 'playerID_yearID',\n\tnumPartitions: 10,\n\tpartitionBy('external', 10)) ~> source1"
 				}
 			],
 			"sinks": [
@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
-					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+					"script": "AlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['playerID_yearID']) ~> sink1"
 				}
 			],
 			"transformations": [
