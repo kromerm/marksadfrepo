@@ -16,6 +16,10 @@
 					"dataflow": {
 						"referenceName": "fileUpdates",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "myLargeSparkIR",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
