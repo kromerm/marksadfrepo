@@ -21,6 +21,16 @@
 					"script": "source(output(\n\t\tmaxval as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'select MAX(surrogatekey) as maxval from dbo.dimemp',\n\tformat: 'query') ~> DimEmp"
 				}
 			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "CADOutput1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "AddSKtoMaxVal sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "SurrogateKey1",

@@ -16,10 +16,6 @@
 					"dataflow": {
 						"referenceName": "StageData",
 						"type": "DataFlowReference"
-					},
-					"compute": {
-						"computeType": "General",
-						"coreCount": 8
 					}
 				}
 			},
@@ -45,10 +41,6 @@
 					"dataflow": {
 						"referenceName": "LoadFromStage",
 						"type": "DataFlowReference"
-					},
-					"compute": {
-						"computeType": "General",
-						"coreCount": 8
 					}
 				}
 			},
@@ -69,6 +61,10 @@
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
+				},
+				"typeProperties": {
+					"url": "http://www.yahoo.com",
+					"method": "POST"
 				}
 			},
 			{
@@ -88,6 +84,10 @@
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
+				},
+				"typeProperties": {
+					"url": "http://www.yahoo.com",
+					"method": "POST"
 				}
 			}
 		]

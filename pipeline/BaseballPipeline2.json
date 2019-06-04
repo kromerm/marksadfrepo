@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Baseball 1 Norm Batting Stats",
+						"referenceName": "Baseball 1 Basic Stats",
 						"type": "DataFlowReference"
 					},
 					"staging": {
@@ -23,12 +23,6 @@
 							"type": "LinkedServiceReference"
 						},
 						"folderPath": "mycontainer/staging"
-					},
-					"compute": {
-						"computeType": "General",
-						"dataTransformationUnits": 4,
-						"coreCount": 8,
-						"numberOfNodes": 0
 					}
 				}
 			}
