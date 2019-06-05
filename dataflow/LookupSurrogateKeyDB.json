@@ -38,11 +38,15 @@
 				},
 				{
 					"name": "AddSKtoMaxVal",
-					"script": "SurrogateKey1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal"
+					"script": "AlterRow1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal"
 				},
 				{
 					"name": "JoinToAddMaxVal",
 					"script": "EmpFile, DimEmp join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> JoinToAddMaxVal"
+				},
+				{
+					"name": "AlterRow1",
+					"script": "SurrogateKey1 alterRow() ~> AlterRow1"
 				}
 			]
 		}
