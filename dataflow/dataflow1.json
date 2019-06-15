@@ -1,0 +1,24 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "moviesDriftSource1",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1",
+					"script": "source1 derive(each(match(substring($$,'year')), ERROR_FUNCTION('') = ERROR_FUNCTION(''))) ~> DerivedColumn1"
+				}
+			]
+		}
+	}
+}
