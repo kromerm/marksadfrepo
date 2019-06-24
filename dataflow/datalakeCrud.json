@@ -24,11 +24,11 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "moviesoutfolder",
+						"referenceName": "moviesoutputfolder_parquet",
 						"type": "DatasetReference"
 					},
 					"name": "sinkTargetFile",
-					"script": "DedupeUpdates sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviesoutnew.csv'],\n\tmapColumn(\n\t\tMovieId,\n\t\tTitle,\n\t\tGenre,\n\t\tYear,\n\t\tRating,\n\t\tRottenTom\n\t),\n\tpartitionBy('hash', 1)) ~> sinkTargetFile"
+					"script": "DedupeUpdates sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviesoutnew.parquet'],\n\tpartitionBy('hash', 1)) ~> sinkTargetFile"
 				}
 			],
 			"transformations": [
