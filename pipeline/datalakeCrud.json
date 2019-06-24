@@ -1,5 +1,5 @@
 {
-	"name": "pipeline11",
+	"name": "datalakeCrud",
 	"properties": {
 		"activities": [
 			{
@@ -14,7 +14,7 @@
 				},
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow2",
+						"referenceName": "datalakeCrud",
 						"type": "DataFlowReference"
 					}
 				}

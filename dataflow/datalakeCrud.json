@@ -1,5 +1,5 @@
 {
-	"name": "dataflow2",
+	"name": "datalakeCrud",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
