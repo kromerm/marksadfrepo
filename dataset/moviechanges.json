@@ -2,15 +2,15 @@
 	"name": "moviechanges",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "MoviesADLS",
 			"type": "LinkedServiceReference"
 		},
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
+				"type": "AzureBlobFSLocation",
 				"fileName": "movieupdates.csv",
-				"folderPath": "SampleData",
+				"folderPath": "movies",
 				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
