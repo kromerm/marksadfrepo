@@ -42,11 +42,11 @@
 				},
 				{
 					"name": "DedupeUpdates",
-					"script": "Union1 aggregate(groupBy(MovieIdDupe = MovieId,\n\t\tAction),\n\tMovieId = first(MovieId),\n\t\tTitle = first(Title),\n\t\tGenre = first(Genre),\n\t\tYear = first(Year),\n\t\tRating = first(Rating),\n\t\tRottenTom = first(RottenTom)) ~> DedupeUpdates"
+					"script": "Union1 aggregate(groupBy(MovieIdDupe = MovieId,\n\t\tAction),\n\tMovieId = first(MovieId),\n\t\tTitle = first(Title),\n\t\tGenre = first(Genre),\n\t\tYear = first(Year),\n\t\tRating = first(Rating),\n\t\tRottenTom = first(RottenTom),\n\t\tAction = first(Action)) ~> DedupeUpdates"
 				},
 				{
 					"name": "RemoveDeletes",
-					"script": "DedupeUpdates filter(Action != 'D') ~> RemoveDeletes"
+					"script": "DedupeUpdates filter(DedupeUpdates@Action != 'D') ~> RemoveDeletes"
 				}
 			]
 		}
