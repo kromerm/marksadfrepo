@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkTargetFile",
-					"script": "DedupeUpdatesAndDeletes sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviesoutnew.csv'],\n\tmapColumn(\n\t\tMovieId,\n\t\tTitle,\n\t\tGenre,\n\t\tYear,\n\t\tRating,\n\t\tRottenTom\n\t),\n\tpartitionBy('hash', 1)) ~> sinkTargetFile"
+					"script": "DedupeUpdates sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviesoutnew.csv'],\n\tmapColumn(\n\t\tMovieId,\n\t\tTitle,\n\t\tGenre,\n\t\tYear,\n\t\tRating,\n\t\tRottenTom\n\t),\n\tpartitionBy('hash', 1)) ~> sinkTargetFile"
 				}
 			],
 			"transformations": [
@@ -41,8 +41,16 @@
 					"script": "dailyChanges, SetActionUpdate union(byName: true)~> Union1"
 				},
 				{
-					"name": "DedupeUpdatesAndDeletes",
-					"script": "Union1 aggregate(groupBy(MovieIdDupe = MovieId,\n\t\tActionDupe = Action),\n\tMovieId = first(MovieId),\n\t\tTitle = first(Title),\n\t\tGenre = first(Genre),\n\t\tYear = first(Year),\n\t\tRating = first(Rating),\n\t\tRottenTom = first(RottenTom),\n\t\tAction = first(Action)) ~> DedupeUpdatesAndDeletes"
+					"name": "DedupeUpdates",
+					"script": "RemoveDeletes aggregate(groupBy(MovieIdDupe = MovieId,\n\t\tActionDupe = Action),\n\tMovieId = first(MovieId),\n\t\tTitle = first(Title),\n\t\tGenre = first(Genre),\n\t\tYear = first(Year),\n\t\tRating = first(Rating),\n\t\tRottenTom = first(RottenTom),\n\t\tAction = first(Action)) ~> DedupeUpdates"
+				},
+				{
+					"name": "DeletesOnly",
+					"script": "dailyChanges filter(Action == 'D') ~> DeletesOnly"
+				},
+				{
+					"name": "RemoveDeletes",
+					"script": "Union1, DeletesOnly exists(Union1@MovieId == dailyChanges@MovieId,\n\tnegate:true,\n\tbroadcast: 'none')~> RemoveDeletes"
 				}
 			]
 		}
