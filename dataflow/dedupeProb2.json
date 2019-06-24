@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkDupes",
-					"script": "CheckForDupes@Duplicates sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['dupes.csv']) ~> sinkDupes"
+					"script": "CheckForDupes@Duplicates sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['dupes.csv']) ~> sinkDupes"
 				},
 				{
 					"dataset": {
@@ -28,7 +28,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkNoDupes",
-					"script": "CheckForDupes@NotDupe sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['nodupes.csv']) ~> sinkNoDupes"
+					"script": "CheckForDupes@NotDupe sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['nodupes.csv']) ~> sinkNoDupes"
 				}
 			],
 			"transformations": [
@@ -90,7 +90,7 @@
 				},
 				{
 					"name": "MapNames",
-					"script": "CreateFullName select(mapColumn(\n\t\tphone = {Phone No. },\n\t\tzip = Zip,\n\t\tfullname,\n\t\tacctnum = {Emp ID}\n\t))~> MapNames"
+					"script": "CreateFullName select(mapColumn(\n\t\tphone = {Phone No. },\n\t\tzip = Zip,\n\t\tfullname,\n\t\tacctnum = {Emp ID}\n\t),\n\tpartitionBy('hash', 2,\n\t\tERROR_FUNCTION('')\n\t))~> MapNames"
 				},
 				{
 					"name": "CreateFullName",

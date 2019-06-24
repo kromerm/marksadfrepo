@@ -1,0 +1,54 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "moviechanges",
+						"type": "DatasetReference"
+					},
+					"name": "dailyChanges",
+					"script": "source(output(\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> dailyChanges"
+				},
+				{
+					"dataset": {
+						"referenceName": "moviesout",
+						"type": "DatasetReference"
+					},
+					"name": "targetFile",
+					"script": "source(output(\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> targetFile"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "moviesoutfolder",
+						"type": "DatasetReference"
+					},
+					"name": "sinkTargetFile",
+					"script": "DedupeUpdates sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviesoutnew.csv'],\n\tmapColumn(\n\t\tMovieId,\n\t\tTitle,\n\t\tGenre,\n\t\tYear,\n\t\tRating,\n\t\tRottenTom\n\t),\n\tpartitionBy('hash', 1)) ~> sinkTargetFile"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SetAction",
+					"script": "targetFile derive(Action = 'U') ~> SetAction"
+				},
+				{
+					"name": "Union1",
+					"script": "dailyChanges, SetAction union(byName: true)~> Union1"
+				},
+				{
+					"name": "RemoveDeletes",
+					"script": "Union1 filter(Action != 'D') ~> RemoveDeletes"
+				},
+				{
+					"name": "DedupeUpdates",
+					"script": "RemoveDeletes aggregate(groupBy(MovieIdDupe = MovieId,\n\t\tAction),\n\tMovieId = last(MovieId),\n\t\tTitle = last(Title),\n\t\tGenre = last(Genre),\n\t\tYear = last(Year),\n\t\tRating = last(Rating),\n\t\tRottenTom = last(RottenTom)) ~> DedupeUpdates"
+				}
+			]
+		}
+	}
+}
