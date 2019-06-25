@@ -6,19 +6,19 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "moviechanges",
+						"referenceName": "movieupdates_parquet",
 						"type": "DatasetReference"
 					},
 					"name": "dailyChanges",
-					"script": "source(output(\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> dailyChanges"
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> dailyChanges"
 				},
 				{
 					"dataset": {
-						"referenceName": "moviesout",
+						"referenceName": "moviesoutputfolder_parquet",
 						"type": "DatasetReference"
 					},
 					"name": "targetFile",
-					"script": "source(output(\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> targetFile"
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['moviesoutnew.parquet'],\n\tpartitionBy('key',\n\t\t0,\n\t\tMovieId\n\t)) ~> targetFile"
 				}
 			],
 			"sinks": [
