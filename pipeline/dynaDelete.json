@@ -1,5 +1,5 @@
 {
-	"name": "pipeline11",
+	"name": "dynaDelete",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow3",
+						"referenceName": "deleteRows",
 						"type": "DataFlowReference",
 						"parameters": {
 							"movieName": {
