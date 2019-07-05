@@ -13,7 +13,7 @@
 				}
 			],
 			"sinks": [],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+			"script": "\nparameters{\n\tmywildpath as string ('July')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('DateFiles/'+$mywildpath)]) ~> source1"
 		}
 	}
 }
