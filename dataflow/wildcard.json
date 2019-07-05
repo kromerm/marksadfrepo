@@ -13,7 +13,7 @@
 				}
 			],
 			"sinks": [],
-			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['DateFiles/*_201907*.txt']) ~> source1"
+			"script": "\nparameters{\n\tmydate as string ('201907')\n}\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('DateFiles/*'+$mydate+'*.txt')]) ~> source1"
 		}
 	}
 }
