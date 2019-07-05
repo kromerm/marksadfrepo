@@ -1,6 +1,30 @@
 {
 	"name": "pipeline11",
 	"properties": {
+		"activities": [
+			{
+				"name": "paramQuery",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "paramQuery",
+						"type": "DataFlowReference",
+						"parameters": {
+							"prodid": "'706'"
+						}
+					}
+				}
+			}
+		],
 		"annotations": []
 	}
 }
