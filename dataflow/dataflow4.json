@@ -1,0 +1,27 @@
+{
+	"name": "dataflow4",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Loans",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tid as string,\n\t\tmember_id as string,\n\t\tloan_amnt as string,\n\t\tfunded_amnt as string,\n\t\tfunded_amnt_inv as string,\n\t\tterm as string,\n\t\tint_rate as string,\n\t\tinstallment as string,\n\t\tgrade as string,\n\t\tsub_grade as string,\n\t\temp_title as string,\n\t\temp_length as string,\n\t\thome_ownership as string,\n\t\tannual_inc as string,\n\t\tverification_status as string,\n\t\tissue_d as string,\n\t\tloan_status as string,\n\t\tpymnt_plan as string,\n\t\turl as string,\n\t\tdesc as string,\n\t\tpurpose as string,\n\t\ttitle as string,\n\t\tzip_code as string,\n\t\taddr_state as string,\n\t\tdti as string,\n\t\tdelinq_2yrs as string,\n\t\tearliest_cr_line as string,\n\t\tinq_last_6mths as string,\n\t\tmths_since_last_delinq as string,\n\t\tmths_since_last_record as string,\n\t\topen_acc as string,\n\t\tpub_rec as string,\n\t\trevol_bal as string,\n\t\trevol_util as string,\n\t\ttotal_acc as string,\n\t\tinitial_list_status as string,\n\t\tout_prncp as string,\n\t\tout_prncp_inv as string,\n\t\ttotal_pymnt as string,\n\t\ttotal_pymnt_inv as string,\n\t\ttotal_rec_prncp as string,\n\t\ttotal_rec_int as string,\n\t\ttotal_rec_late_fee as string,\n\t\trecoveries as string,\n\t\tcollection_recovery_fee as string,\n\t\tlast_pymnt_d as string,\n\t\tlast_pymnt_amnt as string,\n\t\tnext_pymnt_d as string,\n\t\tlast_credit_pull_d as string,\n\t\tcollections_12_mths_ex_med as string,\n\t\tmths_since_last_major_derog as string,\n\t\tpolicy_code as string,\n\t\tapplication_type as string,\n\t\tannual_inc_joint as string,\n\t\tdti_joint as string,\n\t\tverification_status_joint as string,\n\t\tacc_now_delinq as string,\n\t\ttot_coll_amt as string,\n\t\ttot_cur_bal as string,\n\t\topen_acc_6m as string,\n\t\topen_il_6m as string,\n\t\topen_il_12m as string,\n\t\topen_il_24m as string,\n\t\tmths_since_rcnt_il as string,\n\t\ttotal_bal_il as string,\n\t\til_util as string,\n\t\topen_rv_12m as string,\n\t\topen_rv_24m as string,\n\t\tmax_bal_bc as string,\n\t\tall_util as string,\n\t\ttotal_rev_hi_lim as string,\n\t\tinq_fi as string,\n\t\ttotal_cu_tl as string,\n\t\tinq_last_12m as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 select(mapColumn(\n\t\tid,\n\t\tmember_id,\n\t\tloan_amnt,\n\t\tfunded_amnt,\n\t\tfunded_amnt_inv,\n\t\tterm,\n\t\tint_rate,\n\t\tinstallment,\n\t\tgrade,\n\t\tsub_grade,\n\t\temp_title,\n\t\temp_length,\n\t\thome_ownership,\n\t\tannual_inc,\n\t\tverification_status,\n\t\tissue_d,\n\t\tloan_status,\n\t\tpymnt_plan,\n\t\turl,\n\t\tdesc,\n\t\tpurpose,\n\t\ttitle,\n\t\tzip_code,\n\t\taddr_state,\n\t\tdti,\n\t\tdelinq_2yrs,\n\t\tearliest_cr_line,\n\t\tinq_last_6mths,\n\t\tmths_since_last_delinq,\n\t\tmths_since_last_record,\n\t\topen_acc,\n\t\tpub_rec,\n\t\trevol_bal,\n\t\trevol_util,\n\t\ttotal_acc,\n\t\tinitial_list_status,\n\t\tout_prncp,\n\t\tout_prncp_inv,\n\t\ttotal_pymnt,\n\t\ttotal_pymnt_inv,\n\t\ttotal_rec_prncp,\n\t\ttotal_rec_int,\n\t\ttotal_rec_late_fee,\n\t\trecoveries,\n\t\tcollection_recovery_fee,\n\t\tlast_pymnt_d,\n\t\tlast_pymnt_amnt,\n\t\tnext_pymnt_d,\n\t\tlast_credit_pull_d,\n\t\tcollections_12_mths_ex_med,\n\t\tmths_since_last_major_derog,\n\t\tpolicy_code,\n\t\tapplication_type,\n\t\tannual_inc_joint,\n\t\tdti_joint,\n\t\tverification_status_joint,\n\t\tacc_now_delinq,\n\t\ttot_coll_amt,\n\t\ttot_cur_bal,\n\t\topen_acc_6m,\n\t\topen_il_6m,\n\t\topen_il_12m,\n\t\topen_il_24m,\n\t\tmths_since_rcnt_il,\n\t\ttotal_bal_il,\n\t\til_util,\n\t\topen_rv_12m,\n\t\topen_rv_24m,\n\t\tmax_bal_bc,\n\t\tall_util,\n\t\ttotal_rev_hi_lim,\n\t\tinq_fi,\n\t\ttotal_cu_tl,\n\t\tinq_last_12m\n\t)) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+		}
+	}
+}
