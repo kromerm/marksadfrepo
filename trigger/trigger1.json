@@ -1,7 +1,16 @@
 {
 	"name": "trigger1",
 	"properties": {
+		"annotations": [],
 		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "DailyDWPattern",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
