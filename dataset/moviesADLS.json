@@ -1,0 +1,53 @@
+{
+	"name": "moviesADLS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MoviesADLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "movieupdates.csv",
+				"folderPath": "movies",
+				"fileSystem": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "108583",
+				"type": "String"
+			},
+			{
+				"name": "Fawlty Towers",
+				"type": "String"
+			},
+			{
+				"name": "Comedy",
+				"type": "String"
+			},
+			{
+				"name": "1980",
+				"type": "String"
+			},
+			{
+				"name": "1",
+				"type": "String"
+			},
+			{
+				"name": "54",
+				"type": "String"
+			},
+			{
+				"name": "U",
+				"type": "String"
+			}
+		]
+	}
+}
