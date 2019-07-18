@@ -21,7 +21,7 @@
 					"name": "sink1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\t{108583} as string,\n\t\t{Fawlty Towers} as string,\n\t\tComedy as string,\n\t\t{1980} as string,\n\t\t{1} as string,\n\t\t{54} as string,\n\t\tU as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpreSQLs:['create table junk (id int)']) ~> sink1"
+			"script": "\n\nsource(output(\n\t\t{108583} as string,\n\t\t{Fawlty Towers} as string,\n\t\tComedy as string,\n\t\t{1980} as string,\n\t\t{1} as string,\n\t\t{54} as string,\n\t\tU as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpreSQLs:['drop table junk']) ~> sink1"
 		}
 	}
 }
