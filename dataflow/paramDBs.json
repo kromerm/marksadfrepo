@@ -1,0 +1,19 @@
+{
+	"name": "paramDBs",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ParamDB",
+						"type": "DatasetReference"
+					},
+					"name": "SQLSource"
+				}
+			],
+			"sinks": [],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SQLSource\nSQLSource derive(MovieTitle = ERROR_FUNCTION(''),\n\t\tMovieYear = ERROR_FUNCTION(''),\n\t\tMovieRating = ERROR_FUNCTION('')) ~> MapColumns"
+		}
+	}
+}
