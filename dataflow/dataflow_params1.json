@@ -12,16 +12,14 @@
 						"referenceName": "EmployeeFiles",
 						"type": "DatasetReference"
 					},
-					"name": "DataSource",
-					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> DataSource"
+					"name": "DataSource"
 				},
 				{
 					"dataset": {
 						"referenceName": "paramsfile",
 						"type": "DatasetReference"
 					},
-					"name": "ParamsFile",
-					"script": "source(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ParamsFile"
+					"name": "ParamsFile"
 				}
 			],
 			"sinks": [
@@ -30,28 +28,10 @@
 						"referenceName": "partout",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "SelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tEmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate\n\t),\n\trowUrlColumn:'filename',\n\ttruncate:true) ~> sink1"
+					"name": "sink1"
 				}
 			],
-			"transformations": [
-				{
-					"name": "ParseFileName",
-					"script": "ParamsFile derive(filedate = split(Column_1,'=')[1],\n\t\tfilename = 'output/parts/'+split(Column_1,'=')[2]) ~> ParseFileName"
-				},
-				{
-					"name": "Join1",
-					"script": "DataSource, FilterToday join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> Join1"
-				},
-				{
-					"name": "SelectCols",
-					"script": "Join1 select(mapColumn(\n\t\tEmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tfilename\n\t))~> SelectCols"
-				},
-				{
-					"name": "FilterToday",
-					"script": "ParseFileName filter(instr(filedate,toString(currentDate(),'MM-dd-yy')) > 0) ~> FilterToday"
-				}
-			]
+			"script": "\nparameters{\n\tmyparam as string\n}\nsource(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> DataSource\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ParamsFile\nParamsFile derive(filedate = split(Column_1,'=')[1],\n\t\tfilename = 'output/parts/'+split(Column_1,'=')[2]) ~> ParseFileName\nDataSource, FilterToday join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> Join1\nJoin1 select(mapColumn(\n\t\tEmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate,\n\t\tfilename\n\t)) ~> SelectCols\nParseFileName filter(instr(filedate,toString(currentDate(),'MM-dd-yy')) > 0) ~> FilterToday\nSelectCols sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename',\n\ttruncate: true,\n\tmapColumn(\n\t\tEmpID,\n\t\tRegion,\n\t\tStatus,\n\t\tFunction,\n\t\tLevel,\n\t\tRole,\n\t\tStartDate,\n\t\tEndDate\n\t)) ~> sink1"
 		}
 	}
 }
