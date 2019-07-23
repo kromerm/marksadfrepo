@@ -21,7 +21,7 @@
 					"name": "sink1"
 				}
 			],
-			"script": "\nparameters{\n\tmywildpath as string ('July')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('DateFiles/'+$mywildpath)]) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+			"script": "\nparameters{\n\tmywildpath as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('DateFiles/'+$mywildpath)]) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 		}
 	}
 }
