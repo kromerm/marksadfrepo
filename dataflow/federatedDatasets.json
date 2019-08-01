@@ -1,0 +1,11 @@
+{
+	"name": "federatedDatasets",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"script": "\n"
+		}
+	}
+}
