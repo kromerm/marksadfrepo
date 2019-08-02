@@ -3,9 +3,31 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "movie_dataflow_source11",
+						"type": "DatasetReference"
+					},
+					"name": "moviecsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "MoviesSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "moviedb"
+				},
+				{
+					"dataset": {
+						"referenceName": "ParquetMovies",
+						"type": "DatasetReference"
+					},
+					"name": "movieparquet"
+				}
+			],
 			"sinks": [],
-			"script": "\n"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviecsv\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> moviedb\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> movieparquet\nmoviecsv, moviedb join(moviecsv@movie == moviedb@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1, movieparquet join(toInteger(moviecsv@movie) == movieparquet@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join2"
 		}
 	}
 }
