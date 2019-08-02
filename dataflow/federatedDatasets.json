@@ -13,21 +13,21 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "MoviesSQLDB",
+						"referenceName": "moviestage2",
 						"type": "DatasetReference"
 					},
-					"name": "moviedb"
+					"name": "moviesdb"
 				},
 				{
 					"dataset": {
-						"referenceName": "ParquetMovies",
+						"referenceName": "moviesoutnew_parquet2",
 						"type": "DatasetReference"
 					},
-					"name": "movieparquet"
+					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviecsv\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> moviedb\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> movieparquet\nmoviecsv, moviedb join(moviecsv@movie == moviedb@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1, movieparquet join(toInteger(moviecsv@movie) == movieparquet@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join2"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviecsv\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> moviesdb\nsource(output(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nmoviecsv, moviesdb join(moviecsv@movie == moviesdb@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1, source1 join(toInteger(moviecsv@movie) == MovieId,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join2\nJoin2 select(mapColumn(\n\t\tmovie = moviecsv@movie,\n\t\ttitle = moviecsv@title,\n\t\tyear = moviecsv@year,\n\t\tRating = moviecsv@Rating,\n\t\tmovie = moviesdb@movie,\n\t\tyear = moviesdb@year,\n\t\tRating = moviesdb@Rating,\n\t\tRottenTomato,\n\t\tdateOfETL,\n\t\tMovieIdDupe,\n\t\tActionDupe,\n\t\tMovieId,\n\t\tGenre,\n\t\tRating = source1@Rating,\n\t\tRottenTom,\n\t\tAction\n\t),\n\tskipDuplicateMapOutputs: true) ~> Select1"
 		}
 	}
 }

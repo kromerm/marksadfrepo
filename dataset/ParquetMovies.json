@@ -5,11 +5,13 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "",
+				"fileName": "moviesoutnew.parquet",
+				"folderPath": "SampleData/movies",
 				"container": "mycontainer"
 			},
 			"compressionCodec": "snappy"
