@@ -16,11 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "paramWilcards",
-						"type": "DataFlowReference",
-						"parameters": {
-							"mywildpath": "'July'"
-						}
+						"referenceName": "fuzzyLookup",
+						"type": "DataFlowReference"
 					}
 				}
 			}
