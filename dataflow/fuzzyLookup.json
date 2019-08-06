@@ -19,8 +19,16 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nsource(output(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nmoviesCSV select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating\n\t)) ~> Select1\nsource1 select(mapColumn(\n\t\tTitle,\n\t\tRottenTom\n\t)) ~> Select2\nSelect1, Select2 join(soundex(Select1@title) == soundex(Select2@Title),\n\tjoinType:'left',\n\tbroadcast: 'none')~> Join1"
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nsource(output(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nmoviesCSV select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating\n\t)) ~> PruneCols1\nsource1 select(mapColumn(\n\t\tTitle,\n\t\tRottenTom\n\t)) ~> PruneCols2\nPruneCols1, PruneCols2 join(soundex(PruneCols1@title) == soundex(PruneCols2@Title),\n\tjoinType:'left',\n\tbroadcast: 'none')~> Join1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['fuzzylookup.csv'],\n\tmapColumn(\n\t\tmovie,\n\t\ttitle = PruneCols1@title,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTom\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
