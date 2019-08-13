@@ -1,0 +1,24 @@
+{
+	"name": "fixedwidth",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "fixedwidth",
+						"type": "DatasetReference"
+					},
+					"name": "fixedsource1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "MapFields"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> fixedsource1\nfixedsource1 derive(Field1 = substring(Column_1,1,7),\n\t\tField2 = substring(Column_1,8,8),\n\t\tField3 = substring(Column_1, 15,10),\n\t\tField4 = substring(Column_1,25,11),\n\t\tField5 = substring(Column_1, 36,10),\n\t\tField6 = substring(Column_1,46,12),\n\t\tField7 = substring(Column_1,58,1)) ~> MapFields"
+		}
+	}
+}
