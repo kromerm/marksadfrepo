@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "paramWilcards",
+				"name": "fixedwidth",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "fuzzyLookup",
+						"referenceName": "fixedwidth",
 						"type": "DataFlowReference"
 					}
 				}
