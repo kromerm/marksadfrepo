@@ -1,6 +1,7 @@
 {
-	"name": "fixedwidth",
+	"name": "Fixed Width",
 	"properties": {
+		"description": "Each parameter in this data flow is defined as 'start position', 'offset' as in '1,7'.",
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
