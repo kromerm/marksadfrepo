@@ -24,9 +24,12 @@
 			"transformations": [
 				{
 					"name": "DerivedColumn1"
+				},
+				{
+					"name": "AlterRow1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as string,\n\t\tTitle as string,\n\t\tgenresgenregenre as string,\n\t\tYEAR as string,\n\t\tRating as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(id = 22,\n\t\tname = 'blah blah') ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tid as integer,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tid,\n\t\tname\n\t)) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as string,\n\t\tTitle as string,\n\t\tgenresgenregenre as string,\n\t\tYEAR as string,\n\t\tRating as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(id = 333,\n\t\tname = 'blah blah') ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nAlterRow1 sink(input(\n\t\tid as integer,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['id'],\n\tmapColumn(\n\t\tid,\n\t\tname\n\t)) ~> sink1"
 		}
 	}
 }
