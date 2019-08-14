@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/others",
+				"folderPath": "output/mydataflow123partfiles",
 				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
