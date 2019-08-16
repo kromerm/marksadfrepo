@@ -1,0 +1,27 @@
+{
+	"name": "DriversETL",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "driverscsv",
+						"type": "DatasetReference"
+					},
+					"name": "driversCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "timesheetCSV",
+						"type": "DatasetReference"
+					},
+					"name": "timesheetCSV"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tdriverId as integer,\n\t\tname as string,\n\t\tssn as string,\n\t\tlocation as string,\n\t\tcertified as boolean,\n\t\t{wage-plan} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> driversCSV\nsource(output(\n\t\tdriverId as integer,\n\t\tweek as integer,\n\t\t{hours-logged} as integer,\n\t\t{miles-logged} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> timesheetCSV"
+		}
+	}
+}

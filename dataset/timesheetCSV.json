@@ -1,0 +1,41 @@
+{
+	"name": "timesheetCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "timesheet.csv",
+				"folderPath": "SampleData/Drivers",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "driverId",
+				"type": "String"
+			},
+			{
+				"name": "week",
+				"type": "String"
+			},
+			{
+				"name": "hours-logged",
+				"type": "String"
+			},
+			{
+				"name": "miles-logged",
+				"type": "String"
+			}
+		]
+	}
+}
