@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow6",
+						"referenceName": "schemaDrift2",
 						"type": "DataFlowReference"
 					}
 				}
