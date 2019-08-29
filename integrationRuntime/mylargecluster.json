@@ -1,0 +1,16 @@
+{
+	"name": "mylargecluster",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "AutoResolve",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 68,
+					"timeToLiveInMinutes": 60
+				}
+			}
+		}
+	}
+}
