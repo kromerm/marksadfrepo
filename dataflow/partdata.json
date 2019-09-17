@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ParquetPart",
+						"referenceName": "Parquet3",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -15,14 +15,19 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ParquetPart",
+						"referenceName": "Parquet3",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
 				}
 			],
-			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'myfilename',\n\tpartitionRootPath: 'partdata',\n\twildcardPaths:['myfolder/partdata/**/**/*.parquet']) ~> source1\nsource1 sink(input(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'myfilename',\n\tpartitionBy('key',\n\t\t0,\n\t\tERROR_FUNCTION('')\n\t)) ~> sink1"
+			"transformations": [
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				}
+			],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'myfilename',\n\tpartitionRootPath: 'partdata',\n\twildcardPaths:['partdata/**/**/*.parquet']) ~> source1\nsource1 derive(MovieIdDupe = toInteger(byName('MovieIdDupe')),\n\t\tActionDupe = toString(byName('ActionDupe')),\n\t\tMovieId = toInteger(byName('MovieId')),\n\t\tTitle = toString(byName('Title')),\n\t\tGenre = toString(byName('Genre')),\n\t\tYear = toInteger(byName('Year')),\n\t\tRating = toInteger(byName('Rating')),\n\t\tRottenTom = toInteger(byName('RottenTom')),\n\t\tAction = toString(byName('Action')),\n\t\treleaseyear = toInteger(byName('releaseyear')),\n\t\tMonth = toInteger(byName('Month'))) ~> MapDrifted1\nMapDrifted1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'myfilename',\n\tpartitionBy('key',\n\t\t0,\n\t\treleaseyear,\n\t\tMonth\n\t)) ~> sink1"
 		}
 	}
 }
