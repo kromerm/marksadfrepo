@@ -1,12 +1,12 @@
 {
-	"name": "dataflow9",
+	"name": "partdata",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesD2",
+						"referenceName": "ParquetPart",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -14,15 +14,15 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "ParquetPart",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				}
 			],
-			"transformations": [
-				{
-					"name": "DerivedColumn1"
-				}
-			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(mynewcol = toString(toTimestamp('2011-11-14T18:30:02.000Z','yyyy-MM-dd\\'T\\'H:mm:ss.SSS\\'Z\\''), 'yyyy-MM-dd\\'T\\'H:mm:ss.SSS'),\n\t\tmynewcol2 = toString(toTimestamp('12/31/2016T00:12:00', 'MM/dd/yyyy\\'T\\'HH:mm:ss'), 'MM/ dd /yyyy\\'T\\' HH:mm:ss')) ~> DerivedColumn1\nDerivedColumn1 sink() ~> sink1"
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'myfilename',\n\tpartitionRootPath: 'partdata',\n\twildcardPaths:['myfolder/partdata/**/**/*.parquet']) ~> source1\nsource1 sink(input(\n\t\tMovieIdDupe as integer,\n\t\tActionDupe as string,\n\t\tMovieId as integer,\n\t\tTitle as string,\n\t\tGenre as string,\n\t\tYear as integer,\n\t\tRating as integer,\n\t\tRottenTom as integer,\n\t\tAction as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'myfilename',\n\tpartitionBy('key',\n\t\t0,\n\t\tERROR_FUNCTION('')\n\t)) ~> sink1"
 		}
 	}
 }
