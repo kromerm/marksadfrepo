@@ -1,0 +1,28 @@
+{
+	"name": "dataflow9",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(mynewcol = toString(toTimestamp('2011-11-14T18:30:02.000Z','yyyy-MM-dd\\'T\\'H:mm:ss.SSS\\'Z\\''), 'yyyy-MM-dd\\'T\\'H:mm:ss.SSS'),\n\t\tmynewcol2 = toString(toTimestamp('12/31/2016T00:12:00', 'MM/dd/yyyy\\'T\\'HH:mm:ss'), 'MM/ dd /yyyy\\'T\\' HH:mm:ss')) ~> DerivedColumn1\nDerivedColumn1 sink() ~> sink1"
+		}
+	}
+}
