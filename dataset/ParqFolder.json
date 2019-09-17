@@ -1,0 +1,20 @@
+{
+	"name": "ParqFolder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "mycontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
