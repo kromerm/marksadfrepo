@@ -1,9 +1,9 @@
 {
-	"name": "pipeline15",
+	"name": "DistinctRows",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow",
+				"name": "DistinctRows",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow9",
+						"referenceName": "DistinctRows",
 						"type": "DataFlowReference"
 					}
 				}

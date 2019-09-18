@@ -3,10 +3,25 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesCSV"
+				}
+			],
 			"sinks": [],
-			"transformations": [],
-			"script": "\n"
+			"transformations": [
+				{
+					"name": "Aggregate1"
+				},
+				{
+					"name": "Aggregate2"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesCSV\nAggregate2 aggregate() ~> Aggregate1\nMoviesCSV aggregate() ~> Aggregate2"
 		}
 	}
 }
