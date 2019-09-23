@@ -27,9 +27,15 @@
 				},
 				{
 					"name": "Exists1"
+				},
+				{
+					"name": "Unpivot1"
+				},
+				{
+					"name": "Window1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tdriverId as string,\n\t\tweek as string,\n\t\t{hours-logged} as string,\n\t\t{miles-logged} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('external', 0)) ~> source1\nExists1 alterRow(insertIf(1==2),\n\tpartitionBy('hash', 2,\n\t\tERROR_FUNCTION('')\n\t)) ~> AlterRow1\nsource1 exists(') == ERROR_FUNCTION(',\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nAlterRow1 sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string,\n\t\tColumn_12 as string,\n\t\tColumn_13 as string,\n\t\tColumn_14 as string,\n\t\tColumn_15 as string,\n\t\tColumn_16 as string,\n\t\tColumn_17 as string,\n\t\tColumn_18 as string,\n\t\tColumn_19 as string,\n\t\tColumn_20 as string,\n\t\tColumn_21 as string,\n\t\tColumn_22 as string,\n\t\tColumn_23 as string,\n\t\tColumn_24 as string,\n\t\tColumn_25 as string,\n\t\tColumn_26 as string,\n\t\tColumn_27 as string,\n\t\tColumn_28 as string,\n\t\tColumn_29 as string,\n\t\tColumn_30 as string,\n\t\tColumn_31 as string,\n\t\tColumn_32 as string,\n\t\tColumn_33 as string,\n\t\tColumn_34 as string,\n\t\tColumn_35 as string,\n\t\tColumn_36 as string,\n\t\tColumn_37 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'undefined',\n\ttruncate: true) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tdriverId as string,\n\t\tweek as string,\n\t\t{hours-logged} as string,\n\t\t{miles-logged} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('external', 0)) ~> source1\nWindow1 alterRow(insertIf(1==2),\n\tpartitionBy('hash', 2,\n\t\tERROR_FUNCTION('')\n\t)) ~> AlterRow1\nsource1 exists(') == ERROR_FUNCTION(',\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nExists1 unpivot(output(\n\t\t\n\t),\n\tlateral: true,\n\tignoreNullPivots: false) ~> Unpivot1\nUnpivot1 window() ~> Window1\nAlterRow1 sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string,\n\t\tColumn_10 as string,\n\t\tColumn_11 as string,\n\t\tColumn_12 as string,\n\t\tColumn_13 as string,\n\t\tColumn_14 as string,\n\t\tColumn_15 as string,\n\t\tColumn_16 as string,\n\t\tColumn_17 as string,\n\t\tColumn_18 as string,\n\t\tColumn_19 as string,\n\t\tColumn_20 as string,\n\t\tColumn_21 as string,\n\t\tColumn_22 as string,\n\t\tColumn_23 as string,\n\t\tColumn_24 as string,\n\t\tColumn_25 as string,\n\t\tColumn_26 as string,\n\t\tColumn_27 as string,\n\t\tColumn_28 as string,\n\t\tColumn_29 as string,\n\t\tColumn_30 as string,\n\t\tColumn_31 as string,\n\t\tColumn_32 as string,\n\t\tColumn_33 as string,\n\t\tColumn_34 as string,\n\t\tColumn_35 as string,\n\t\tColumn_36 as string,\n\t\tColumn_37 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'undefined',\n\ttruncate: true) ~> sink1"
 		}
 	}
 }
