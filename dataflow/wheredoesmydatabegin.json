@@ -23,16 +23,16 @@
 			],
 			"transformations": [
 				{
-					"name": "SurrogateKey1"
+					"name": "AddRowNums"
 				},
 				{
-					"name": "Derivedcolumn1"
+					"name": "DefineDataLines"
 				},
 				{
-					"name": "Aggregate1"
+					"name": "FindFirstLine"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 derive(datalines = iif(!isNull(toInteger(left(toString(byPosition(1)),1))),toInteger(rownum),toInteger(0))) ~> Derivedcolumn1\nDerivedcolumn1 aggregate(firstline = toInteger(minIf(datalines!=0,datalines))) ~> Aggregate1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['skiplines.csv'],\n\tmapColumn(\n\t\tfirstline\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> AddRowNums\nAddRowNums derive(datalines = iif(!isNull(toInteger(left(toString(byPosition(1)),1))),toInteger(rownum),toInteger(9999999))) ~> DefineDataLines\nDefineDataLines aggregate(firstline = min(datalines)) ~> FindFirstLine\nFindFirstLine sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['skiplines.csv'],\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
