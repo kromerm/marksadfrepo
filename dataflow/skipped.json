@@ -9,7 +9,7 @@
 						"referenceName": "salesskip",
 						"type": "DatasetReference"
 					},
-					"name": "loans"
+					"name": "skiplines"
 				}
 			],
 			"sinks": [
@@ -22,7 +22,7 @@
 				}
 			],
 			"transformations": [],
-			"script": "\nparameters{\n\tskiplines as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> loans\nloans sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\temptyLinesAsHeader: (toInteger($skiplines)),\n\tpartitionFileNames:['skippedrows.csv'],\n\tpartitionBy('hash', 1)) ~> sink1"
+			"script": "\nparameters{\n\tskiplines as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipLines: (toInteger($skiplines))) ~> skiplines\nskiplines sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\temptyLinesAsHeader: (toInteger($skiplines)),\n\tpartitionFileNames:['skippedrows.csv'],\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }

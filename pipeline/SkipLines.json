@@ -64,7 +64,7 @@
 				}
 			},
 			{
-				"name": "dataflow8",
+				"name": "WriteSkippedRows",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
@@ -92,6 +92,10 @@
 								"type": "Expression"
 							}
 						}
+					},
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
