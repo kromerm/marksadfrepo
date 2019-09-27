@@ -1,0 +1,20 @@
+{
+	"name": "wheredoesmydatabegin",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText12",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+		}
+	}
+}
