@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText12",
+						"referenceName": "salesskip",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
