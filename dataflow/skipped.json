@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "salesskip",
+						"referenceName": "readskipped",
 						"type": "DatasetReference"
 					},
 					"name": "skiplines"
