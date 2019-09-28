@@ -1,0 +1,52 @@
+{
+	"name": "JSONMoviesWithSchema",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "movies.json",
+				"folderPath": "output/json",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"movies": {
+					"type": "object",
+					"properties": {
+						"genres": {
+							"type": "object",
+							"properties": {
+								"genre1": {
+									"type": "string"
+								},
+								"genre2": {
+									"type": "string"
+								}
+							}
+						},
+						"movieid": {
+							"type": "string"
+						},
+						"rating": {
+							"type": "string"
+						},
+						"title": {
+							"type": "string"
+						},
+						"year": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	}
+}

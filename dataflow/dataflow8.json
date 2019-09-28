@@ -1,0 +1,20 @@
+{
+	"name": "dataflow8",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "JSONMoviesWithSchema",
+						"type": "DatasetReference"
+					},
+					"name": "JSONSource"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tmovies as (genres as (genre1 as string, genre2 as string), movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource"
+		}
+	}
+}
