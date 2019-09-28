@@ -26,7 +26,7 @@
 					"name": "MakeHierarchy"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(movieid=movie,\n\t\ttitle=title,\n\t\tgenres=@(genre1=iif(instr(genres,'|')!=0,split(genres,'|')[1],genres),\n\t\tgenre2=iif(instr(genres,'|')!=0,split(genres,'|')[2],'')),\n\t\tyear=year,\n\t\trating=Rating,\n\t\tRottenTomato={Rotton Tomato})) ~> MakeHierarchy\nMakeHierarchy sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movies.json'],\n\tpartitionBy('hash', 1)) ~> makeJSON"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(movieid=movie,\n\t\ttitle=title,\n\t\tgenres=@(genre1=iif(instr(genres,'|')!=0,split(genres,'|')[1],genres),\n\t\tgenre2=iif(instr(genres,'|')!=0,split(genres,'|')[2],'')),\n\t\tyear=year,\n\t\trating=Rating,\n\t\tRottenTomato={Rotton Tomato})) ~> MakeHierarchy\nMakeHierarchy sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movies.json'],\n\tmapColumn(\n\t\tmovies\n\t),\n\tpartitionBy('hash', 1)) ~> makeJSON"
 		}
 	}
 }
