@@ -22,14 +22,9 @@
 					"type": "object",
 					"properties": {
 						"genres": {
-							"type": "object",
-							"properties": {
-								"genre1": {
-									"type": "string"
-								},
-								"genre2": {
-									"type": "string"
-								}
+							"type": "array",
+							"items": {
+								"type": "string"
 							}
 						},
 						"movieid": {

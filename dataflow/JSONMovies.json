@@ -1,5 +1,5 @@
 {
-	"name": "dataflow8",
+	"name": "JSONMovies",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -13,8 +13,12 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tmovies as (genres as (genre1 as string, genre2 as string), movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource"
+			"transformations": [
+				{
+					"name": "Derivedcolumn1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource\nJSONSource derive(movies = @(movieid=movies.movieid,\n\t\ttitle=movies.title,\n\t\tgenres=map(movies.genres,upper(#item)),\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> Derivedcolumn1"
 		}
 	}
 }
