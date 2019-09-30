@@ -115,7 +115,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/home"
+				},
+				"linkedServiceName": {
+					"referenceName": "databrickswest",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []

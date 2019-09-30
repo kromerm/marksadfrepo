@@ -9,8 +9,7 @@
 						"referenceName": "ParquetMovies",
 						"type": "DatasetReference"
 					},
-					"name": "StageSource",
-					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'currentfilename',\n\twildcardPaths:['output/DWstaging/*.parquet']) ~> StageSource"
+					"name": "StageSource"
 				}
 			],
 			"sinks": [
@@ -19,24 +18,21 @@
 						"referenceName": "MoviesDW",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "FilterRows sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['yearkey']) ~> sink1"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
 				{
-					"name": "CreateAggs",
-					"script": "StageSource aggregate(groupBy(year),\n\tratingByYear = round(avg((Rating * 5) + RottenTomato),2)) ~> CreateAggs"
+					"name": "CreateAggs"
 				},
 				{
-					"name": "HashKey",
-					"script": "CreateAggs derive(yearkey = crc32(year)) ~> HashKey"
+					"name": "HashKey"
 				},
 				{
-					"name": "FilterRows",
-					"script": "HashKey alterRow(upsertIf(true())) ~> FilterRows"
+					"name": "FilterRows"
 				}
-			]
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'currentfilename') ~> StageSource\nStageSource aggregate(groupBy(year),\n\tratingByYear = round(avg((Rating * 5) + RottenTomato),2)) ~> CreateAggs\nCreateAggs derive(yearkey = crc32(year)) ~> HashKey\nHashKey alterRow(upsertIf(true())) ~> FilterRows\nFilterRows sink(input(\n\t\tyear as integer,\n\t\tratingByYear as double,\n\t\tyearkey as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tformat: 'table',\n\tkeys:['yearkey']) ~> sink1"
 		}
 	}
 }
