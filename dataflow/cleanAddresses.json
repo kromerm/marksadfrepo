@@ -1,31 +1,42 @@
 {
 	"name": "cleanAddresses",
 	"properties": {
-		"sources": [
-			{
-				"dataset": {
-					"referenceName": "Addresses_Blob",
-					"type": "DatasetReference"
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Loans",
+						"type": "DatasetReference"
+					},
+					"name": "loans",
+					"script": "source(output(\n\t\tid as string,\n\t\tmember_id as string,\n\t\tloan_amnt as string,\n\t\tfunded_amnt as string,\n\t\tfunded_amnt_inv as string,\n\t\tterm as string,\n\t\tint_rate as string,\n\t\tinstallment as string,\n\t\tgrade as string,\n\t\tsub_grade as string,\n\t\temp_title as string,\n\t\temp_length as string,\n\t\thome_ownership as string,\n\t\tannual_inc as string,\n\t\tverification_status as string,\n\t\tissue_d as string,\n\t\tloan_status as string,\n\t\tpymnt_plan as string,\n\t\turl as string,\n\t\tdesc as string,\n\t\tpurpose as string,\n\t\ttitle as string,\n\t\tzip_code as string,\n\t\taddr_state as string,\n\t\tdti as string,\n\t\tdelinq_2yrs as string,\n\t\tearliest_cr_line as string,\n\t\tinq_last_6mths as string,\n\t\tmths_since_last_delinq as string,\n\t\tmths_since_last_record as string,\n\t\topen_acc as string,\n\t\tpub_rec as string,\n\t\trevol_bal as string,\n\t\trevol_util as string,\n\t\ttotal_acc as string,\n\t\tinitial_list_status as string,\n\t\tout_prncp as string,\n\t\tout_prncp_inv as string,\n\t\ttotal_pymnt as string,\n\t\ttotal_pymnt_inv as string,\n\t\ttotal_rec_prncp as string,\n\t\ttotal_rec_int as string,\n\t\ttotal_rec_late_fee as string,\n\t\trecoveries as string,\n\t\tcollection_recovery_fee as string,\n\t\tlast_pymnt_d as string,\n\t\tlast_pymnt_amnt as string,\n\t\tnext_pymnt_d as string,\n\t\tlast_credit_pull_d as string,\n\t\tcollections_12_mths_ex_med as string,\n\t\tmths_since_last_major_derog as string,\n\t\tpolicy_code as string,\n\t\tapplication_type as string,\n\t\tannual_inc_joint as string,\n\t\tdti_joint as string,\n\t\tverification_status_joint as string,\n\t\tacc_now_delinq as string,\n\t\ttot_coll_amt as string,\n\t\ttot_cur_bal as string,\n\t\topen_acc_6m as string,\n\t\topen_il_6m as string,\n\t\topen_il_12m as string,\n\t\topen_il_24m as string,\n\t\tmths_since_rcnt_il as string,\n\t\ttotal_bal_il as string,\n\t\til_util as string,\n\t\topen_rv_12m as string,\n\t\topen_rv_24m as string,\n\t\tmax_bal_bc as string,\n\t\tall_util as string,\n\t\ttotal_rev_hi_lim as string,\n\t\tinq_fi as string,\n\t\ttotal_cu_tl as string,\n\t\tinq_last_12m as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> loans"
 				},
-				"name": "AddressSource",
-				"script": "source(output(AddressID as string,Address1 as string,Address2 as string,City as string,Prop_4 as string,Prop_5 as string,Prop_6 as string,Prop_7 as string,Prop_8 as string),allowSchemaDrift: false,validateSchema: false) ~> AddressSource"
-			}
-		],
-		"sinks": [
-			{
-				"dataset": {
-					"referenceName": "others",
-					"type": "DatasetReference"
-				},
-				"name": "sink1",
-				"script": "CleanAddress sink(saveMode:'overwrite' ) ~> sink1"
-			}
-		],
-		"transformations": [
-			{
-				"name": "CleanAddress",
-				"script": "AddressSource derive(each(match(type == 'string'), $$ + '_clean' = trim(trim($$, '.'), '  '))) ~> CleanAddress"
-			}
-		]
+				{
+					"dataset": {
+						"referenceName": "products",
+						"type": "DatasetReference"
+					},
+					"name": "products",
+					"script": "source(output(\n\t\tProductID as string,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as string,\n\t\tListPrice as string,\n\t\tSize as string,\n\t\tWeight as string,\n\t\tProductCategoryID as string,\n\t\tProductModelID as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> products"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "soccerOutput",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "Union1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['unionout.csv']) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Union1",
+					"script": "loans, products union(byName: false)~> Union1"
+				}
+			]
+		}
 	}
 }

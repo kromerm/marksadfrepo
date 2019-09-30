@@ -1,0 +1,61 @@
+{
+	"name": "TimeWritingDay2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Sample"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "TimeWritingFactDay2.csv",
+				"folderPath": "SampleData",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "employeeID",
+				"type": "String"
+			},
+			{
+				"name": "workLoadDt",
+				"type": "String"
+			},
+			{
+				"name": "WorkDt",
+				"type": "String"
+			},
+			{
+				"name": "vendorCode",
+				"type": "String"
+			},
+			{
+				"name": "CostCenter",
+				"type": "String"
+			},
+			{
+				"name": "serviceType",
+				"type": "String"
+			},
+			{
+				"name": "approveStatus",
+				"type": "String"
+			},
+			{
+				"name": "Hour",
+				"type": "String"
+			},
+			{
+				"name": "Amount",
+				"type": "String"
+			}
+		]
+	}
+}

@@ -1,0 +1,28 @@
+{
+	"name": "skipped",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "readskipped",
+						"type": "DatasetReference"
+					},
+					"name": "skiplines"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"script": "\nparameters{\n\tskiplines as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipLines: (toInteger($skiplines))) ~> skiplines\nskiplines sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\temptyLinesAsHeader: (toInteger($skiplines)),\n\tpartitionFileNames:['skippedrows.csv'],\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

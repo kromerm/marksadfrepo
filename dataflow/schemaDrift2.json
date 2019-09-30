@@ -1,0 +1,45 @@
+{
+	"name": "schemaDrift2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "moviesDriftSource1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "moviesDriftSource1",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				},
+				{
+					"name": "Join1"
+				}
+			],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource1 derive(myjoinid1 = byName('movie')) ~> DerivedColumn1\nsource2 derive(myjoinid2 = byName('movie')) ~> DerivedColumn2\nDerivedColumn1, DerivedColumn2 join(myjoinid1 == myjoinid2,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['mydriftfile.csv'],\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

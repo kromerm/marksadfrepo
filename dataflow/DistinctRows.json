@@ -1,0 +1,41 @@
+{
+	"name": "DistinctRows",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesCSV"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "OutputDistinctData"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DistinctRows"
+				},
+				{
+					"name": "RowCountDistinct"
+				},
+				{
+					"name": "OriginalData"
+				},
+				{
+					"name": "RowCountOrig"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesCSV\nMoviesCSV aggregate(groupBy(movie),\n\teach(match(name != 'movie'), $$ = first($$))) ~> DistinctRows\nDistinctRows aggregate(rowcount_agg = count(1)) ~> RowCountDistinct\nMoviesCSV select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t)) ~> OriginalData\nOriginalData aggregate(rowcount_orig = count(1)) ~> RowCountOrig\nDistinctRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> OutputDistinctData"
+		}
+	}
+}

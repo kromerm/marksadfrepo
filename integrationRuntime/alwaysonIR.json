@@ -1,0 +1,11 @@
+{
+	"name": "alwaysonIR",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "Central US"
+			}
+		}
+	}
+}

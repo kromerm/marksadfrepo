@@ -1,0 +1,110 @@
+{
+	"name": "soccer_events_dt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "events.csv",
+				"folderPath": "SampleData/Soccer",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "id_odsp",
+				"type": "String"
+			},
+			{
+				"name": "id_event",
+				"type": "String"
+			},
+			{
+				"name": "sort_order",
+				"type": "String"
+			},
+			{
+				"name": "time",
+				"type": "String"
+			},
+			{
+				"name": "text",
+				"type": "String"
+			},
+			{
+				"name": "event_type",
+				"type": "String"
+			},
+			{
+				"name": "event_type2",
+				"type": "String"
+			},
+			{
+				"name": "side",
+				"type": "String"
+			},
+			{
+				"name": "event_team",
+				"type": "String"
+			},
+			{
+				"name": "opponent",
+				"type": "String"
+			},
+			{
+				"name": "player",
+				"type": "String"
+			},
+			{
+				"name": "player2",
+				"type": "String"
+			},
+			{
+				"name": "player_in",
+				"type": "String"
+			},
+			{
+				"name": "player_out",
+				"type": "String"
+			},
+			{
+				"name": "shot_place",
+				"type": "String"
+			},
+			{
+				"name": "shot_outcome",
+				"type": "String"
+			},
+			{
+				"name": "is_goal",
+				"type": "String"
+			},
+			{
+				"name": "location",
+				"type": "String"
+			},
+			{
+				"name": "bodypart",
+				"type": "String"
+			},
+			{
+				"name": "assist_method",
+				"type": "String"
+			},
+			{
+				"name": "situation",
+				"type": "String"
+			},
+			{
+				"name": "fast_break",
+				"type": "String"
+			}
+		]
+	}
+}

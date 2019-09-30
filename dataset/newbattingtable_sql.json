@@ -1,0 +1,242 @@
+{
+	"name": "newbattingtable_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "playerID_yearID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "BA",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "OBP",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "SLG",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TB",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "birthYear",
+				"type": "nvarchar"
+			},
+			{
+				"name": "birthMonth",
+				"type": "nvarchar"
+			},
+			{
+				"name": "birthDay",
+				"type": "nvarchar"
+			},
+			{
+				"name": "birthCountry",
+				"type": "nvarchar"
+			},
+			{
+				"name": "birthState",
+				"type": "nvarchar"
+			},
+			{
+				"name": "birthCity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathYear",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathMonth",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathDay",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathCountry",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathState",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathCity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "nameFirst",
+				"type": "nvarchar"
+			},
+			{
+				"name": "nameLast",
+				"type": "nvarchar"
+			},
+			{
+				"name": "nameGiven",
+				"type": "nvarchar"
+			},
+			{
+				"name": "weight",
+				"type": "nvarchar"
+			},
+			{
+				"name": "height",
+				"type": "nvarchar"
+			},
+			{
+				"name": "bats",
+				"type": "nvarchar"
+			},
+			{
+				"name": "throws",
+				"type": "nvarchar"
+			},
+			{
+				"name": "debut",
+				"type": "nvarchar"
+			},
+			{
+				"name": "finalGame",
+				"type": "nvarchar"
+			},
+			{
+				"name": "retroID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "bbrefID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "playerID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "yearID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "stint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "teamID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "lgID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "G",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AB",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "R",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "H",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "H2B",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "H3B",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "HR",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RBI",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SB",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CS",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "BB",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IBB",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "HBP",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SH",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SF",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "GIDP",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "currenttime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"tableName": "dbo.batting1"
+		}
+	}
+}

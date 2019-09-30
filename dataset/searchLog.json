@@ -1,0 +1,49 @@
+{
+	"name": "searchLog",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SearchLog.tsv",
+				"folderPath": "SampleData/USQL",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": "\t"
+		},
+		"schema": [
+			{
+				"name": "_c0",
+				"type": "String"
+			},
+			{
+				"name": "_c1",
+				"type": "String"
+			},
+			{
+				"name": "_c2",
+				"type": "String"
+			},
+			{
+				"name": "_c3",
+				"type": "String"
+			},
+			{
+				"name": "_c4",
+				"type": "String"
+			},
+			{
+				"name": "_c5",
+				"type": "String"
+			},
+			{
+				"name": "_c6",
+				"type": "String"
+			}
+		]
+	}
+}

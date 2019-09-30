@@ -1,0 +1,41 @@
+{
+	"name": "ruleBasedPatterns",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "moviesDB2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "MapCanonicalModel"
+				},
+				{
+					"name": "Cast"
+				},
+				{
+					"name": "AvgRatingByYear"
+				},
+				{
+					"name": "Filter1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovies as string,\n\t\tTitle as string,\n\t\tgenresgenregenre as string,\n\t\tYEAR as string,\n\t\tRating as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 select(mapColumn(\n\t\teach(match(locate('title',lower(name))!=0),\n\t\t\t'title' = $$),\n\t\teach(match(locate('year',lower(name))!=0),\n\t\t\t'year' = $$),\n\t\teach(match(locate('rating',lower(name))!=0),\n\t\t\t'rating' = $$),\n\t\teach(match(locate('genre',lower(name))!=0),\n\t\t\t'genre' = $$)\n\t)) ~> MapCanonicalModel\nFilter1 derive(year = toInteger(year),\n\t\trating = toInteger(rating)) ~> Cast\nCast aggregate(groupBy(year),\n\tAvgRating = round(avg(rating),2)) ~> AvgRatingByYear\nMapCanonicalModel filter(year == '1986') ~> Filter1\nAvgRatingByYear sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+		}
+	}
+}

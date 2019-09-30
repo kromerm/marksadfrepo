@@ -5,6 +5,7 @@
 			{
 				"name": "SchemaDrift",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,9 +13,10 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SchemaDrift",
+						"referenceName": "schemaDrift2",
 						"type": "DataFlowReference"
 					}
 				}
@@ -22,7 +24,8 @@
 		],
 		"folder": {
 			"name": "Drifts"
-		}
+		},
+		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

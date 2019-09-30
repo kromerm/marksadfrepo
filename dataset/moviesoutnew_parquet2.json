@@ -1,0 +1,58 @@
+{
+	"name": "moviesoutnew_parquet2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MoviesADLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "moviesoutnew.parquet",
+				"folderPath": "movies/output",
+				"fileSystem": "mycontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "MovieIdDupe",
+				"type": "INT32"
+			},
+			{
+				"name": "ActionDupe",
+				"type": "UTF8"
+			},
+			{
+				"name": "MovieId",
+				"type": "INT32"
+			},
+			{
+				"name": "Title",
+				"type": "UTF8"
+			},
+			{
+				"name": "Genre",
+				"type": "UTF8"
+			},
+			{
+				"name": "Year",
+				"type": "INT32"
+			},
+			{
+				"name": "Rating",
+				"type": "INT32"
+			},
+			{
+				"name": "RottenTom",
+				"type": "INT32"
+			},
+			{
+				"name": "Action",
+				"type": "UTF8"
+			}
+		]
+	}
+}

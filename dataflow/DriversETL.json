@@ -1,0 +1,45 @@
+{
+	"name": "DriversETL",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "driverscsv",
+						"type": "DatasetReference"
+					},
+					"name": "driversCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "timesheetCSV",
+						"type": "DatasetReference"
+					},
+					"name": "timesheetCSV"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SumHoursAndMiles"
+				},
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "Select1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tdriverId as integer,\n\t\tname as string,\n\t\tssn as string,\n\t\tlocation as string,\n\t\tcertified as boolean,\n\t\t{wage-plan} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> driversCSV\nsource(output(\n\t\tdriverId as integer,\n\t\tweek as integer,\n\t\t{hours-logged} as integer,\n\t\t{miles-logged} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> timesheetCSV\ntimesheetCSV aggregate(groupBy(driverId),\n\tsum_hourslogged = sum({hours-logged}),\n\t\tsum_mileslogged = sum({miles-logged})) ~> SumHoursAndMiles\ndriversCSV, SumHoursAndMiles join(driversCSV@driverId == SumHoursAndMiles@driverId,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1 select(mapColumn(\n\t\tdriverId = driversCSV@driverId,\n\t\tname,\n\t\tssn,\n\t\tlocation,\n\t\tcertified,\n\t\t{wage-plan},\n\t\tdriverId = SumHoursAndMiles@driverId,\n\t\tsum_hourslogged,\n\t\tsum_mileslogged\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+		}
+	}
+}

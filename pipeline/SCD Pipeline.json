@@ -5,6 +5,7 @@
 			{
 				"name": "SCDType2",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,16 +13,13 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "SCDType2",
 						"type": "DataFlowReference"
 					},
 					"staging": {
-						"linkedService": {
-							"referenceName": "AzureBlobStorage1",
-							"type": "LinkedServiceReference"
-						},
 						"folderPath": "mycontainer/staging"
 					}
 				}
@@ -29,6 +27,7 @@
 		],
 		"folder": {
 			"name": "Demos"
-		}
+		},
+		"annotations": []
 	}
 }

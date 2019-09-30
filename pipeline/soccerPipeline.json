@@ -1,0 +1,30 @@
+{
+	"name": "soccerPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "soccerETL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 3,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "soccerETL",
+						"type": "DataFlowReference"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Demos"
+		},
+		"annotations": []
+	}
+}

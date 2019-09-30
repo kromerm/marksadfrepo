@@ -1,0 +1,36 @@
+{
+	"name": "ParquetInput1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MoviesADLS",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ParquetCrud"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "parquetCrud/input/tables",
+				"fileSystem": "sample-data"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "PK",
+				"type": "INT32"
+			},
+			{
+				"name": "col1",
+				"type": "UTF8"
+			},
+			{
+				"name": "col2",
+				"type": "UTF8"
+			}
+		]
+	}
+}

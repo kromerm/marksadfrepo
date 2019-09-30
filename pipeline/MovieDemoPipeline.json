@@ -5,22 +5,20 @@
 			{
 				"name": "ExecuteMovieDemoDataFlow",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "MovieDemo",
+						"referenceName": "MovieDemo1",
 						"type": "DataFlowReference"
 					},
 					"staging": {
-						"linkedService": {
-							"referenceName": "AzureBlobStorage1",
-							"type": "LinkedServiceReference"
-						},
 						"folderPath": "mycontainer/staging"
 					}
 				}
@@ -28,7 +26,8 @@
 		],
 		"folder": {
 			"name": "Demos"
-		}
+		},
+		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

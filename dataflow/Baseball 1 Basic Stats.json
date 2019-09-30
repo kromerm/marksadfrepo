@@ -4,55 +4,58 @@
 		"folder": {
 			"name": "Baseball"
 		},
-		"sources": [
-			{
-				"dataset": {
-					"referenceName": "BaseballBatting",
-					"type": "DatasetReference"
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sourceBatting",
+						"type": "DatasetReference"
+					},
+					"name": "sourceBatting",
+					"script": "source(output(\n\t\tplayerID as string,\n\t\tyearID as string,\n\t\tstint as string,\n\t\tteamID as string,\n\t\tlgID as string,\n\t\tG as integer,\n\t\tAB as integer,\n\t\tR as integer,\n\t\tH as integer,\n\t\tH2B as integer,\n\t\tH3B as integer,\n\t\tHR as integer,\n\t\tRBI as integer,\n\t\tSB as integer,\n\t\tCS as integer,\n\t\tBB as integer,\n\t\tSO as integer,\n\t\tIBB as integer,\n\t\tHBP as integer,\n\t\tSH as integer,\n\t\tSF as integer,\n\t\tGIDP as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> sourceBatting"
 				},
-				"name": "sourceBatting",
-				"script": "source(output(playerID as string,yearID as string,stint as string,teamID as string,lgID as string,G as integer,AB as integer,R as integer,H as integer,H2B as integer,H3B as integer,HR as integer,RBI as integer,SB as integer,CS as integer,BB as integer,SO as integer,IBB as integer,HBP as integer,SH as integer,SF as integer,GIDP as integer),allowSchemaDrift: false,validateSchema: false) ~> sourceBatting"
-			},
-			{
-				"dataset": {
-					"referenceName": "PlayersBlob",
-					"type": "DatasetReference"
+				{
+					"dataset": {
+						"referenceName": "sourcePlayer",
+						"type": "DatasetReference"
+					},
+					"name": "sourcePlayer",
+					"script": "source(output(\n\t\tplayerID as string,\n\t\tbirthYear as string,\n\t\tbirthMonth as string,\n\t\tbirthDay as string,\n\t\tbirthCountry as string,\n\t\tbirthState as string,\n\t\tbirthCity as string,\n\t\tdeathYear as string,\n\t\tdeathMonth as string,\n\t\tdeathDay as string,\n\t\tdeathCountry as string,\n\t\tdeathState as string,\n\t\tdeathCity as string,\n\t\tnameFirst as string,\n\t\tnameLast as string,\n\t\tnameGiven as string,\n\t\tweight as string,\n\t\theight as string,\n\t\tbats as string,\n\t\tthrows as string,\n\t\tdebut as string,\n\t\tfinalGame as string,\n\t\tretroID as string,\n\t\tbbrefID as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> sourcePlayer"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "newbattingtable_sql",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "addTimestamp sink(input(\n\t\tplayerID_yearID as string,\n\t\tBA as double,\n\t\tOBP as double,\n\t\tSLG as double,\n\t\tTB as integer,\n\t\tbirthYear as string,\n\t\tbirthMonth as string,\n\t\tbirthDay as string,\n\t\tbirthCountry as string,\n\t\tbirthState as string,\n\t\tbirthCity as string,\n\t\tdeathYear as string,\n\t\tdeathMonth as string,\n\t\tdeathDay as string,\n\t\tdeathCountry as string,\n\t\tdeathState as string,\n\t\tdeathCity as string,\n\t\tnameFirst as string,\n\t\tnameLast as string,\n\t\tnameGiven as string,\n\t\tweight as string,\n\t\theight as string,\n\t\tbats as string,\n\t\tthrows as string,\n\t\tdebut as string,\n\t\tfinalGame as string,\n\t\tretroID as string,\n\t\tbbrefID as string,\n\t\tplayerID as string,\n\t\tyearID as string,\n\t\tstint as string,\n\t\tteamID as string,\n\t\tlgID as string,\n\t\tG as integer,\n\t\tAB as integer,\n\t\tR as integer,\n\t\tH as integer,\n\t\tH2B as integer,\n\t\tH3B as integer,\n\t\tHR as integer,\n\t\tRBI as integer,\n\t\tSB as integer,\n\t\tCS as integer,\n\t\tBB as integer,\n\t\tSO as integer,\n\t\tIBB as integer,\n\t\tHBP as integer,\n\t\tSH as integer,\n\t\tSF as integer,\n\t\tGIDP as integer,\n\t\tcurrenttime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "origSourceBatting",
+					"script": "sourceBatting select(mapColumn(\n\t\tplayerID,\n\t\tyearID,\n\t\tstint,\n\t\tteamID,\n\t\tlgID,\n\t\tG,\n\t\tAB,\n\t\tR,\n\t\tH,\n\t\tH2B,\n\t\tH3B,\n\t\tHR,\n\t\tRBI,\n\t\tSB,\n\t\tCS,\n\t\tBB,\n\t\tSO,\n\t\tIBB,\n\t\tHBP,\n\t\tSH,\n\t\tSF,\n\t\tGIDP\n\t))~> origSourceBatting"
 				},
-				"name": "sourcePlayer",
-				"script": "source(output(playerID as string,birthYear as string,birthMonth as string,birthDay as string,birthCountry as string,birthState as string,birthCity as string,deathYear as string,deathMonth as string,deathDay as string,deathCountry as string,deathState as string,deathCity as string,nameFirst as string,nameLast as string,nameGiven as string,weight as string,height as string,bats as string,throws as string,debut as string,finalGame as string,retroID as string,bbrefID as string),allowSchemaDrift: false,validateSchema: false) ~> sourcePlayer"
-			}
-		],
-		"sinks": [
-			{
-				"dataset": {
-					"referenceName": "newbattingtable",
-					"type": "DatasetReference"
+				{
+					"name": "createAggs",
+					"script": "sourceBatting aggregate(groupBy(playerID_yearID = playerID+'_'+yearID),\n\tBA = round(avg(H/AB),3),\n\t\tOBP = round(avg((H+BB+HBP)/(AB+BB+HBP+SF)),3),\n\t\tSLG = round(avg(((HR * 4) + (H3B * 3) + (H2B * 2) + (H-H2B-H3B-HR))/AB),3),\n\t\tTB = max((HR * 4) + (H3B * 3) + (H2B * 2) + (H-H2B-H3B-HR))) ~> createAggs"
 				},
-				"name": "sink1",
-				"script": "AddTimestamp sink(saveMode:'overwrite' , mapColumn(playerID_yearID,BA,OBP,SLG,TB,birthYear,birthMonth,birthDay,birthCountry,birthState,birthCity,deathYear,deathMonth,deathDay,deathCountry,deathState,deathCity,nameFirst,nameLast,nameGiven,weight,height,bats,throws,debut,finalGame,retroID,bbrefID,playerID = OrigSourceBatting@playerID,yearID,stint,teamID,lgID,G,AB,R,H,H2B,H3B,HR,RBI,SB,CS,BB,SO,IBB,HBP,SH,SF,GIDP,currenttime)) ~> sink1"
-			}
-		],
-		"transformations": [
-			{
-				"name": "createAggs",
-				"script": "sourceBatting aggregate(groupBy(playerID_yearID = playerID + '_'+yearID),BA = round(avg(H/AB),3),OBP = round(avg((H+BB+HBP)/(AB+BB+HBP+SF)),3),SLG = round(avg(((HR * 4) + (H3B * 3) + (H2B * 2) + (H-H2B-H3B-HR))/AB),3),TB = max((HR * 4) + (H3B * 3) + (H2B * 2) + (H-H2B-H3B-HR))) ~> createAggs"
-			},
-			{
-				"name": "Join1",
-				"script": "createAggs, PlayerInfoPlusOrigStats join(playerID_yearID == sourcePlayer@playerID + '_'+yearID,joinType:'inner',broadcast: 'none')~> Join1"
-			},
-			{
-				"name": "PlayerInfoPlusOrigStats",
-				"script": "sourcePlayer, OrigSourceBatting join(sourcePlayer@playerID == OrigSourceBatting@playerID,joinType:'inner',broadcast: 'none')~> PlayerInfoPlusOrigStats"
-			},
-			{
-				"name": "OrigSourceBatting",
-				"script": "sourceBatting select()~> OrigSourceBatting"
-			},
-			{
-				"name": "AddTimestamp",
-				"script": "Join1 derive(currenttime = currentTimestamp()) ~> AddTimestamp"
-			}
-		]
+				{
+					"name": "PlayerInfoPlusOrigStats",
+					"script": "sourcePlayer, origSourceBatting join(sourcePlayer@playerID == origSourceBatting@playerID,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> PlayerInfoPlusOrigStats"
+				},
+				{
+					"name": "Join1",
+					"script": "createAggs, origSourceBatting join(playerID_yearID == playerID + '_'+yearID,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1"
+				},
+				{
+					"name": "addTimestamp",
+					"script": "Join1 derive(currenttime = currentTimestamp()) ~> addTimestamp"
+				}
+			]
+		}
 	}
 }

@@ -1,0 +1,31 @@
+{
+	"name": "Duplicates",
+	"properties": {
+		"activities": [
+			{
+				"name": "Dedupe",
+				"type": "ExecuteDataFlow",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dedupeProb2",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"coreCount": 8
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Demos"
+		}
+	}
+}

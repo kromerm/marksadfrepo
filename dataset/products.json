@@ -1,0 +1,167 @@
+{
+	"name": "products",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Product2.csv",
+				"folderPath": "SampleData/AW",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "_c0",
+				"type": "String"
+			},
+			{
+				"name": "_c1",
+				"type": "String"
+			},
+			{
+				"name": "_c2",
+				"type": "String"
+			},
+			{
+				"name": "_c3",
+				"type": "String"
+			},
+			{
+				"name": "_c4",
+				"type": "String"
+			},
+			{
+				"name": "_c5",
+				"type": "String"
+			},
+			{
+				"name": "_c6",
+				"type": "String"
+			},
+			{
+				"name": "_c7",
+				"type": "String"
+			},
+			{
+				"name": "_c8",
+				"type": "String"
+			},
+			{
+				"name": "_c9",
+				"type": "String"
+			},
+			{
+				"name": "_c10",
+				"type": "String"
+			},
+			{
+				"name": "_c11",
+				"type": "String"
+			},
+			{
+				"name": "_c12",
+				"type": "String"
+			},
+			{
+				"name": "_c13",
+				"type": "String"
+			},
+			{
+				"name": "_c14",
+				"type": "String"
+			},
+			{
+				"name": "_c15",
+				"type": "String"
+			},
+			{
+				"name": "_c16",
+				"type": "String"
+			},
+			{
+				"name": "_c17",
+				"type": "String"
+			},
+			{
+				"name": "_c18",
+				"type": "String"
+			},
+			{
+				"name": "_c19",
+				"type": "String"
+			},
+			{
+				"name": "_c20",
+				"type": "String"
+			},
+			{
+				"name": "_c21",
+				"type": "String"
+			},
+			{
+				"name": "_c22",
+				"type": "String"
+			},
+			{
+				"name": "_c23",
+				"type": "String"
+			},
+			{
+				"name": "_c24",
+				"type": "String"
+			},
+			{
+				"name": "_c25",
+				"type": "String"
+			},
+			{
+				"name": "_c26",
+				"type": "String"
+			},
+			{
+				"name": "_c27",
+				"type": "String"
+			},
+			{
+				"name": "_c28",
+				"type": "String"
+			},
+			{
+				"name": "_c29",
+				"type": "String"
+			},
+			{
+				"name": "_c30",
+				"type": "String"
+			},
+			{
+				"name": "_c31",
+				"type": "String"
+			},
+			{
+				"name": "_c32",
+				"type": "String"
+			},
+			{
+				"name": "_c33",
+				"type": "String"
+			},
+			{
+				"name": "_c34",
+				"type": "String"
+			},
+			{
+				"name": "_c35",
+				"type": "String"
+			}
+		]
+	}
+}

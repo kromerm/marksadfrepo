@@ -1,0 +1,42 @@
+{
+	"name": "AppendToFile",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "CurrencyDatasetUSD1",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"script": "source(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'nnn') ~> source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText6",
+						"type": "DatasetReference"
+					},
+					"name": "source2",
+					"script": "source(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'nnn') ~> source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "USDOutput1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"script": "Union1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tpartitionFileNames:['combo.tsv'],\n\ttruncate:true) ~> sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Union1",
+					"script": "source1, source2 union(byName: true)~> Union1"
+				}
+			]
+		}
+	}
+}
