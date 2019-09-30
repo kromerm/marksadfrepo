@@ -12,13 +12,21 @@
 					"name": "JSONSource"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Derivedcolumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource\nJSONSource derive(movies = @(movieid=movies.movieid,\n\t\ttitle=movies.title,\n\t\tgenres=map(movies.genres,upper(#item)),\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> Derivedcolumn1"
+			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource\nJSONSource derive(movies = @(movieid=movies.movieid,\n\t\ttitle=movies.title,\n\t\tgenres=map(movies.genres,upper(#item)),\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> Derivedcolumn1\nDerivedcolumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 		}
 	}
 }

@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "sqltablev2",
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -29,16 +29,10 @@
 					"name": "Aggregate1"
 				},
 				{
-					"name": "Filter1"
-				},
-				{
-					"name": "Sort1"
-				},
-				{
 					"name": "Select1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesource\nmoviesource alterRow(deleteIf(year<1900),\n\tupsertIf(true())) ~> deletebaddata\nSort1 aggregate(groupBy(year),\n\tAverageRate = toDecimal(avg(Rating),10,2)) ~> Aggregate1\ndeletebaddata filter(ERROR_FUNCTION('')) ~> Filter1\nFilter1 sort(asc(ERROR_FUNCTION(''), true)) ~> Sort1\ndeletebaddata select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t)) ~> Select1\nAggregate1 sink(input(\n\t\tAddressID as integer,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tStateProvince as string,\n\t\tCountryRegion as string,\n\t\tPostalCode as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:true) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesource\nmoviesource alterRow(deleteIf(year<1900),\n\tupsertIf(true())) ~> deletebaddata\ndeletebaddata aggregate(groupBy(year),\n\tAverageRate = toDecimal(avg(Rating),10,2)) ~> Aggregate1\ndeletebaddata select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t)) ~> Select1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 		}
 	}
 }
