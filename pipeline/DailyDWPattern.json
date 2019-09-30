@@ -68,7 +68,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": "http://www.yahoo.com",
-					"method": "POST"
+					"method": "POST",
+					"body": "'hello'"
 				}
 			},
 			{
@@ -92,7 +93,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": "http://www.yahoo.com",
-					"method": "POST"
+					"method": "POST",
+					"body": "'process'"
 				}
 			},
 			{
