@@ -16,12 +16,41 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "processLonas",
+						"referenceName": "RankMovies",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "processLonas",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "myvar",
+					"value": {
+						"value": "@activity('processLonas').output",
+						"type": "Expression"
 					}
 				}
 			}
 		],
+		"variables": {
+			"myvar": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
