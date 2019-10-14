@@ -34,9 +34,12 @@
 				},
 				{
 					"name": "MapDriftedColumn"
+				},
+				{
+					"name": "Select1"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> SchemaOnRead\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesWithSchema\nMapDriftedColumn, MoviesWithSchema join(MapDriftedColumn@movie == MoviesWithSchema@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nSchemaOnRead derive(movie = toInteger(byName('movie')),\n\t\teach(match(type == 'string'), $$ = initCap($$))) ~> MapDriftedColumn\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['parquetMovies.parquet'],\n\tmapColumn(\n\t\tmovie = MapDriftedColumn@movie,\n\t\tmovie = MoviesWithSchema@movie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTom = {Rotton Tomato}\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> SchemaOnRead\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesWithSchema\nMapDriftedColumn, MoviesWithSchema join(MapDriftedColumn@movie == MoviesWithSchema@movie,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nSchemaOnRead derive(movie = toInteger(byName('movie')),\n\t\teach(match(type == 'string'), $$+'_caps' = initCap($$))) ~> MapDriftedColumn\nJoin1 select(mapColumn(\n\t\teach(match(true()),\n\t\t\treplace($$,' ') = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['parquetMovies.parquet'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
