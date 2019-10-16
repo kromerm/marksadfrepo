@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DBStage",
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -36,20 +36,23 @@
 					"name": "PickCols2"
 				},
 				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "checkMatch"
+				},
+				{
+					"name": "UpdateSetAttrs"
+				},
+				{
 					"name": "MapDrifted1",
 					"description": "Creates an explicit mapping for each drifted column"
 				},
 				{
-					"name": "Lookup1"
-				},
-				{
-					"name": "ConditionalSplit1"
-				},
-				{
-					"name": "UpdateSetAttrs"
+					"name": "isMatching"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> NewMembers1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> ExistingMembers\nNewMembers1 derive(businesskey1 = toString(byPosition(2)),\n\t\tname1 = toString(byPosition(6))) ~> PickCols1\nExistingMembers derive(each(match(instr(name, 'ID') > 0), 'surrogatekey2' = toInteger($$)),\n\t\teach(match(instr(name,'Number') >0), 'businesskey2' = toString($$))) ~> PickCols2\nPickCols2 derive(surrogatekey2 = toInteger(byName('surrogatekey2')),\n\t\tbusinesskey2 = toString(byName('businesskey2'))) ~> MapDrifted1\nPickCols1, MapDrifted1 lookup(businesskey1 == businesskey2,\n\tbroadcast: 'none')~> Lookup1\nLookup1 split(!isNull(surrogatekey2),\n\tdisjoint: false) ~> ConditionalSplit1@(match, nomatch)\nConditionalSplit1@match derive({_LastUpdated} = currentTimestamp(),\n\t\tDWhash = sha2(256,name1)) ~> UpdateSetAttrs\nUpdateSetAttrs sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\teach(patternMatch(`(?!_.+_)`))\n\t)) ~> sink1"
+			"script": "\nparameters{\n\tdimname as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> NewMembers1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> ExistingMembers\nNewMembers1 derive(businesskey1 = toString(byPosition(2)),\n\t\tname1 = toString(byPosition(6))) ~> PickCols1\nExistingMembers derive(each(match(instr(name,'ID')>0), 'surrogatekey2' = toInteger($$)),\n\t\teach(match(instr(name,'Number')>0), 'businesskey2' = toString($$))) ~> PickCols2\nPickCols1, MapDrifted1 lookup(businesskey1 == businesskey2,\n\tbroadcast: 'none')~> Lookup1\nisMatching split(match,\n\tdisjoint: false) ~> checkMatch@(match, nomatch)\ncheckMatch@match derive({_LastUpdated} = currentTimestamp(),\n\t\tDWhash = sha2(256,name1)) ~> UpdateSetAttrs\nPickCols2 derive(ProductID = toInteger(byName('ProductID')),\n\t\tName = toString(byName('Name')),\n\t\tProductNumber = toString(byName('ProductNumber')),\n\t\tColor = toString(byName('Color')),\n\t\tStandardCost = toDecimal(byName('StandardCost')),\n\t\tListPrice = toDecimal(byName('ListPrice')),\n\t\t{_Inserted} = toTimestamp(byName('_Inserted')),\n\t\t{_LastUpdated} = toTimestamp(byName('_LastUpdated')),\n\t\tDWhash = toString(byName('DWhash')),\n\t\tsurrogatekey2 = toInteger(byName('surrogatekey2')),\n\t\tbusinesskey2 = toString(byName('businesskey2'))) ~> MapDrifted1\nLookup1 derive(match = isMatch()) ~> isMatching\nUpdateSetAttrs sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:[(concat($dimname + '_new.csv'))],\n\tmapColumn(\n\t\teach(match(right(name,length(name))!='_'))\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
