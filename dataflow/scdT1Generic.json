@@ -9,7 +9,7 @@
 						"referenceName": "BlobInputFolder",
 						"type": "DatasetReference"
 					},
-					"name": "NewMember"
+					"name": "NewMembers1"
 				},
 				{
 					"dataset": {
@@ -19,7 +19,15 @@
 					"name": "ExistingMembers"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DBStage",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "PickCols1"
@@ -32,10 +40,16 @@
 					"description": "Creates an explicit mapping for each drifted column"
 				},
 				{
-					"name": "Join1"
+					"name": "Lookup1"
+				},
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "UpdateSetAttrs"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> NewMember\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> ExistingMembers\nNewMember derive(businesskey1 = toString(byPosition(2)),\n\t\tname1 = toString(byPosition(6))) ~> PickCols1\nExistingMembers derive(each(match(instr(name, 'ID') > 0), 'surrogatekey2' = toInteger($$)),\n\t\teach(match(instr(name,'Number') >0), 'businesskey2' = toString($$))) ~> PickCols2\nPickCols2 derive(surrogatekey2 = toInteger(byName('surrogatekey2')),\n\t\tbusinesskey2 = toString(byName('businesskey2'))) ~> MapDrifted1\nPickCols1, MapDrifted1 join(businesskey1 == businesskey2,\n\tjoinType:'left',\n\tbroadcast: 'none')~> Join1"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> NewMembers1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> ExistingMembers\nNewMembers1 derive(businesskey1 = toString(byPosition(2)),\n\t\tname1 = toString(byPosition(6))) ~> PickCols1\nExistingMembers derive(each(match(instr(name, 'ID') > 0), 'surrogatekey2' = toInteger($$)),\n\t\teach(match(instr(name,'Number') >0), 'businesskey2' = toString($$))) ~> PickCols2\nPickCols2 derive(surrogatekey2 = toInteger(byName('surrogatekey2')),\n\t\tbusinesskey2 = toString(byName('businesskey2'))) ~> MapDrifted1\nPickCols1, MapDrifted1 lookup(businesskey1 == businesskey2,\n\tbroadcast: 'none')~> Lookup1\nLookup1 split(!isNull(surrogatekey2),\n\tdisjoint: false) ~> ConditionalSplit1@(match, nomatch)\nConditionalSplit1@match derive({_LastUpdated} = currentTimestamp(),\n\t\tDWhash = sha2(256,name1)) ~> UpdateSetAttrs\nUpdateSetAttrs sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\teach(patternMatch(`(?!_.+_)`))\n\t)) ~> sink1"
 		}
 	}
 }
