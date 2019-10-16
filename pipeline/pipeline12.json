@@ -26,9 +26,13 @@
 								"filename": "DimProducts.csv"
 							},
 							"ExistingMembers": {
-								"tablename": "DimProduct"
+								"tablename": "DimProducts"
 							}
 						}
+					},
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
