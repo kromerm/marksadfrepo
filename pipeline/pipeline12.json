@@ -16,8 +16,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow2",
-						"type": "DataFlowReference"
+						"referenceName": "scdT1Generic",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"ExistingMembers": {
+								"tablename": "DimProduct"
+							}
+						}
 					}
 				}
 			}
