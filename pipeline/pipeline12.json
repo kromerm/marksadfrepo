@@ -18,7 +18,13 @@
 					"dataflow": {
 						"referenceName": "scdT1Generic",
 						"type": "DataFlowReference",
+						"parameters": {
+							"dimname": "'dimprods'"
+						},
 						"datasetParameters": {
+							"NewMembers1": {
+								"filename": "DimProducts.csv"
+							},
 							"ExistingMembers": {
 								"tablename": "DimProduct"
 							}
