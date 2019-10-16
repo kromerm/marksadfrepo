@@ -8,7 +8,7 @@
 		"parameters": {
 			"filename": {
 				"type": "string",
-				"defaultValue": "DimProduct.csv"
+				"defaultValue": "DimProducts.csv"
 			}
 		},
 		"annotations": [],
@@ -24,7 +24,7 @@
 				"container": "mycontainer"
 			},
 			"columnDelimiter": "|",
-			"encodingName": "UTF-16BE",
+			"encodingName": "UTF-8",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},
