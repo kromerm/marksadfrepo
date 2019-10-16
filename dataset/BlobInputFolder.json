@@ -24,6 +24,7 @@
 				"container": "mycontainer"
 			},
 			"columnDelimiter": "|",
+			"encodingName": "UTF-16BE",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},

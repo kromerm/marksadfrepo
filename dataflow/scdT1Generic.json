@@ -25,7 +25,7 @@
 						"referenceName": "ParquetOutput",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "loadToDimTable"
 				}
 			],
 			"transformations": [
@@ -36,7 +36,7 @@
 					"name": "PickCols2"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> NewMembers\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> ExistingMembers\nNewMembers derive(businesskey1 = toString(byPosition(2)),\n\t\t{} = ERROR_FUNCTION('')) ~> PickCols1\nExistingMembers derive(each(match(instr(name, 'ID') > 0), 'surrogatekey2' = toInteger($$)),\n\t\teach(match(instr(name,'Number') >0), 'businesskey2' = toString($$))) ~> PickCols2\nPickCols1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true) ~> sink1"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true) ~> NewMembers\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> ExistingMembers\nNewMembers derive(businesskey1 = toString(byPosition(2)),\n\t\tname1 = toString(byPosition(6))) ~> PickCols1\nExistingMembers derive(each(match(instr(name, 'ID') > 0), 'surrogatekey2' = toInteger($$)),\n\t\teach(match(instr(name,'Number') >0), 'businesskey2' = toString($$))) ~> PickCols2\nPickCols1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true) ~> loadToDimTable"
 		}
 	}
 }
