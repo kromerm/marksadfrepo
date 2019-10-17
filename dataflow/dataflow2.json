@@ -3,10 +3,14 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"name": "source1"
+				}
+			],
 			"sinks": [],
 			"transformations": [],
-			"script": "\n"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
 		}
 	}
 }
