@@ -27,6 +27,9 @@
 							},
 							"ExistingMembers": {
 								"tablename": "DimProducts"
+							},
+							"sink1": {
+								"tablename": "DimProducts"
 							}
 						}
 					},
