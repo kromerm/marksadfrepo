@@ -28,7 +28,13 @@
 							"ExistingMembers": {
 								"tablename": "DimProducts"
 							},
+							"SetMaxKey": {
+								"tablename": "DimProducts"
+							},
 							"sink1": {
+								"tablename": "DimProducts"
+							},
+							"sink2": {
 								"tablename": "DimProducts"
 							}
 						}
