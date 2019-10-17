@@ -3,24 +3,29 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "CosmosDB",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
 				"typeProperties": {
-					"items": {
-						"value": "{1,2,3}",
-						"type": "Expression"
+					"dataflow": {
+						"referenceName": "cosmosdb2",
+						"type": "DataFlowReference"
 					},
-					"activities": [
-						{
-							"name": "Wait1",
-							"type": "Wait",
-							"typeProperties": {
-								"waitTimeInSeconds": 120
-							}
-						}
-					]
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
+					}
 				}
 			}
-		]
+		],
+		"annotations": []
 	}
 }

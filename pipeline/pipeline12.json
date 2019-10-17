@@ -19,13 +19,25 @@
 						"referenceName": "scdT1Generic",
 						"type": "DataFlowReference",
 						"parameters": {
-							"dimname": "'dimprods'"
+							"dimname": "'dimprods'",
+							"keycol": "'ProductNumber'",
+							"SurrogateKey": "'ProductID'",
+							"tablename": "'DimProducts'"
 						},
 						"datasetParameters": {
 							"NewMembers1": {
 								"filename": "DimProducts.csv"
 							},
 							"ExistingMembers": {
+								"tablename": "DimProducts"
+							},
+							"SetMaxKey": {
+								"tablename": "DimProducts"
+							},
+							"sink1": {
+								"tablename": "DimProducts"
+							},
+							"sink2": {
 								"tablename": "DimProducts"
 							}
 						}
