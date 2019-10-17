@@ -19,7 +19,10 @@
 						"referenceName": "scdT1Generic",
 						"type": "DataFlowReference",
 						"parameters": {
-							"dimname": "'dimprods'"
+							"dimname": "'dimprods'",
+							"keycol": "'ProductNumber'",
+							"SurrogateKey": "'ProductID'",
+							"tablename": "'DimProducts'"
 						},
 						"datasetParameters": {
 							"NewMembers1": {
@@ -44,6 +47,19 @@
 						"type": "IntegrationRuntimeReference"
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "scdT1Generic",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"annotations": []
