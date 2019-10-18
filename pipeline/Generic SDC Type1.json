@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SDC Type1 Generic",
+				"name": "SCD Type1 Generic",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
