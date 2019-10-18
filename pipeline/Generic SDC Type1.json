@@ -1,6 +1,7 @@
 {
 	"name": "Generic SDC Type1",
 	"properties": {
+		"description": "https://techcommunity.microsoft.com/t5/Azure-Data-Factory/Create-Generic-SCD-Pattern-in-ADF-Mapping-Data-Flows/ba-p/918519",
 		"activities": [
 			{
 				"name": "SCD Type1 Generic",
