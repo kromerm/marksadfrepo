@@ -1,9 +1,9 @@
 {
-	"name": "pipeline12",
+	"name": "Generic SDC Type1",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow2",
+				"name": "SDC Type1 Generic",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
