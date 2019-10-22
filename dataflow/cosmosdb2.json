@@ -26,7 +26,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document') ~> source1\nsource1 derive(genre1 = genres[1]) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+			"script": "\n\nsource(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document',\n\tthroughput: 2000) ~> source1\nsource1 derive(genre1 = genres[1]) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true) ~> sink1"
 		}
 	}
 }
