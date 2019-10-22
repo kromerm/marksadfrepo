@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "movies.json",
-				"folderPath": "output/json",
+				"folderPath": "SampleData/json",
 				"container": "mycontainer"
 			}
 		},
