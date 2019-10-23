@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "CosmosDbSqlApiCollection4",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
 				}
 			],
 			"sinks": [
@@ -26,10 +33,16 @@
 					"name": "AlterRow1"
 				},
 				{
-					"name": "DerivedColumn1"
+					"name": "Filter1"
+				},
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "Aggregate1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> source1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nsource1 derive(title = title+'_updated') ~> DerivedColumn1\nAlterRow1 sink(input(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\ttitle,\n\t\tyear,\n\t\tcast,\n\t\tgenres\n\t)) ~> sink1"
+			"script": "\n\nsource(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> source1\nsource(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true) ~> source2\nAggregate1 alterRow(updateIf(true())) ~> AlterRow1\nsource1 filter(title == 'Caught' && toInteger(year) == 1900) ~> Filter1\nFilter1, source2 join(source1@title == source2@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1 aggregate(groupBy(source1@id),\n\tidnew = first(source2@id),\n\t\ttitle = first(source1@title)) ~> Aggregate1\nAlterRow1 sink(input(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tid,\n\t\ttitle\n\t)) ~> sink1"
 		}
 	}
 }
