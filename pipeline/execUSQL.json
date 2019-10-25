@@ -1,9 +1,9 @@
 {
-	"name": "pipeline15",
+	"name": "execUSQL",
 	"properties": {
 		"activities": [
 			{
-				"name": "cosmosdb2",
+				"name": "execPostCodesUSQL",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "cosmosdb2",
+						"referenceName": "USQL",
 						"type": "DataFlowReference"
 					}
 				}
