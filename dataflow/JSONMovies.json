@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "MoviesJSON",
+						"referenceName": "Avro1",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -26,7 +26,7 @@
 					"name": "Derivedcolumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource\nJSONSource derive(movies = @(movieid=movies.movieid,\n\t\ttitle=movies.title,\n\t\tgenres=map(movies.genres,upper(#item)),\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> Derivedcolumn1\nDerivedcolumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource\nJSONSource derive(movies = @(movieid=movies.movieid,\n\t\ttitle=movies.title,\n\t\tgenres=map(movies.genres,upper(#item)),\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> Derivedcolumn1\nDerivedcolumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
