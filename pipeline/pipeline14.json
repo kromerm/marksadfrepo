@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "badrows",
+						"referenceName": "ErrorRows",
 						"type": "DataFlowReference"
 					}
 				}
