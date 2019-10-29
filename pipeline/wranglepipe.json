@@ -1,10 +1,11 @@
 {
-	"name": "pipeline6",
+	"name": "wranglepipe",
 	"properties": {
 		"activities": [
 			{
-				"name": "My Data Flow",
-				"type": "ExecuteDataFlow",
+				"name": "WranglingDataFlow2",
+				"type": "ExecuteWranglingDataflow",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,9 +13,10 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dedupeProb2",
+						"referenceName": "WranglingDataFlow2",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -23,6 +25,7 @@
 					}
 				}
 			}
-		]
+		],
+		"annotations": []
 	}
 }
