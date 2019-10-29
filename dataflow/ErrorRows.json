@@ -30,13 +30,13 @@
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1"
+					"name": "TypeCast"
 				},
 				{
 					"name": "ErrorRows"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie)) ~> DerivedColumn1\nDerivedColumn1 split(length(title) <= 5,\n\tdisjoint: false) ~> ErrorRows@(GoodRows, BadRows)\nErrorRows@GoodRows sink(input(\n\t\tname as string,\n\t\tid as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tname = title,\n\t\tid = movie\n\t)) ~> WriteToDatabase\nErrorRows@BadRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['badrows.csv'],\n\tpartitionBy('hash', 1)) ~> LogBadRows"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie)) ~> TypeCast\nTypeCast split(length(title) <= 5,\n\tdisjoint: false) ~> ErrorRows@(GoodRows, BadRows)\nErrorRows@GoodRows sink(input(\n\t\tname as string,\n\t\tid as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tname = title,\n\t\tid = movie\n\t)) ~> WriteToDatabase\nErrorRows@BadRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['badrows.csv'],\n\tpartitionBy('hash', 1)) ~> LogBadRows"
 		}
 	}
 }

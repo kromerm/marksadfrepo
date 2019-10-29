@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "notebookScalaETL",
+						"referenceName": "badrows",
 						"type": "DataFlowReference"
 					}
 				}
