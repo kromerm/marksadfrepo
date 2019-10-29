@@ -1,0 +1,32 @@
+{
+	"name": "WranglingDataFlow2",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "Loans",
+					"script": "",
+					"dataset": {
+						"referenceName": "Loans",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				}
+			],
+			"sinks": [
+				{
+					"name": "wrangleout",
+					"dataset": {
+						"referenceName": "wrangleout",
+						"type": "DatasetReference"
+					},
+					"script": ""
+				}
+			],
+			"script": "section Section1; shared #\"Loans\" = let AdfDoc = Web.Contents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/loan.csv?sv=2018-03-28&sig=ZwKkGeYNCKgdh5tKo%2B0Nggd64TYmPY2KtzOXQI9A%2BaU%3D&spr=https&se=2019-10-30T17%3A08%3A58Z&srt=sco&ss=bf&sp=rwl\"), Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.None]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]), TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName)) in TrimmedHeaders;\r\nshared UserQuery = let\r\n  Source = Loans,\r\n  #\"Changed column type\" = Table.TransformColumnTypes(Source, {{\"loan_amnt\", type number}})\r\nin\r\n  #\"Changed column type\";"
+		}
+	}
+}
