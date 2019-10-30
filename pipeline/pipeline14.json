@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "ErrorRows",
+						"referenceName": "JSONMovies",
 						"type": "DataFlowReference"
 					}
 				}
