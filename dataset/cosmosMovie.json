@@ -7,36 +7,8 @@
 		},
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
-		"schema": {
-			"type": "object",
-			"properties": {
-				"movies": {
-					"type": "object",
-					"properties": {
-						"year": {
-							"type": "integer"
-						},
-						"genres": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"rating": {
-							"type": "integer"
-						},
-						"movieid": {
-							"type": "string"
-						},
-						"title": {
-							"type": "string"
-						}
-					}
-				}
-			}
-		},
 		"typeProperties": {
-			"collectionName": "moviesorig2"
+			"collectionName": "moviesdemo"
 		}
 	}
 }

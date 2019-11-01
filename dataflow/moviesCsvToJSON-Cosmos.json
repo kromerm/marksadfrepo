@@ -32,19 +32,19 @@
 					"name": "Join1"
 				},
 				{
-					"name": "Select1"
+					"name": "orig"
 				},
 				{
 					"name": "SurrogateKey1"
 				},
 				{
-					"name": "Select2"
+					"name": "cleanup"
 				},
 				{
-					"name": "DerivedColumn1"
+					"name": "typecast"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(movieid=movie,\n\t\ttitle=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(titlegrp = title),\n\ttitle = first(title)) ~> Aggregate1\nAggregate1, Select1 join(Aggregate1@title == Select1@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nMakeHierarchy select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect2 keyGenerate(output(skey as long),\n\tstartAt: 1L) ~> SurrogateKey1\nJoin1 select(mapColumn(\n\t\ttitlegrp,\n\t\ttitle = Aggregate1@title,\n\t\tmovie,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nSurrogateKey1 derive(skey = toString(skey)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> makeJSON"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(movieid=movie,\n\t\ttitle=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(titlegrp = title),\n\ttitle = first(title)) ~> Aggregate1\nAggregate1, orig join(Aggregate1@title == orig@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nMakeHierarchy select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> orig\ncleanup keyGenerate(output(skey as long),\n\tstartAt: 1L) ~> SurrogateKey1\nJoin1 select(mapColumn(\n\t\ttitlegrp,\n\t\ttitle = Aggregate1@title,\n\t\tmovie,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> cleanup\nSurrogateKey1 derive(skey = toString(skey)) ~> typecast\ntypecast sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tmovies,\n\t\tskey\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> makeJSON"
 		}
 	}
 }
