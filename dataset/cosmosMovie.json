@@ -8,7 +8,7 @@
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
 		"typeProperties": {
-			"collectionName": "moviesorig"
+			"collectionName": "moviesorig2"
 		}
 	}
 }
