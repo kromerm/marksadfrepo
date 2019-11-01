@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "moviesCsvToJSON-Cosmos",
+						"referenceName": "cosmosdb",
 						"type": "DataFlowReference"
 					}
 				}

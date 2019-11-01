@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesD2",
+						"referenceName": "cosmosMovie",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -26,10 +26,10 @@
 					"name": "AlterRow1"
 				},
 				{
-					"name": "Aggregate1"
+					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nAggregate1 alterRow(updateIf(true())) ~> AlterRow1\nsource1 aggregate(groupBy(year = movies.year,\n\t\tgenre1 = movies.genres[1]),\n\tavgrating = round(avg(movies.rating),2)) ~> Aggregate1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/titles'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tavgrating\n\t)) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true) ~> source1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nsource1 derive(movies = @(movieis=movies.movieid,\n\t\ttitle=movies.title,\n\t\tgenres=movies.genres,\n\t\tyear=movies.year+100,\n\t\trating=movies.rating)) ~> DerivedColumn1\nAlterRow1 sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tmovies = DerivedColumn1@movies,\n\t\tid,\n\t\ttitle = DerivedColumn1@movies\n\t)) ~> sink1"
 		}
 	}
 }
