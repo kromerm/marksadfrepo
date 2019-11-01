@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "moviesCsvToJSON",
+						"referenceName": "moviesCsvToJSON-Cosmos",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
