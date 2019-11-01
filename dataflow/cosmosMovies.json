@@ -29,7 +29,7 @@
 					"name": "AlterRow1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (movieid as string, year as integer, rating as integer, genres as string[], title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tthroughput: 2000) ~> source1\nsource1 derive(movies = @(movieid=movies.movieid,\n\t\ttitle=reverse(movies.title),\n\t\tgenres=movies.genres,\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(instr(reverse(lower(movies.title)),'toy story') > 0)) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (movieid as string, year as integer, rating as integer, genres as string[], title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> source1\nsource1 derive(movies = @(movieid=movies.movieid,\n\t\ttitle=reverse(movies.title),\n\t\tgenres=movies.genres,\n\t\tyear=movies.year,\n\t\trating=movies.rating,\n\t\trottentomato=movies.rating+1)) ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tmovies,\n\t\tid\n\t)) ~> sink1"
 		}
 	}
 }
