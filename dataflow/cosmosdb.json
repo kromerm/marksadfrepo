@@ -29,7 +29,7 @@
 					"name": "AlterRow1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (movieid as string, year as integer, rating as integer, genres as string[], title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> source1\nsource1 derive(movies = @(movieis=movies.movieid,\n\t\tyear=movies.year,\n\t\trating=movies.rating * 10,\n\t\tgenres=movies.genres,\n\t\ttitle=movies.title)) ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tmapColumn(\n\t\tmovies,\n\t\tid\n\t)) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (movieid as string, year as integer, rating as integer, genres as string[], title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> source1\nsource1 derive(movies = @(movieis=movies.movieid,\n\t\tyear=movies.year,\n\t\trating=movies.rating * 10,\n\t\tgenres=movies.genres,\n\t\ttitle=movies.title)) ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/titles'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tmovies,\n\t\tid\n\t)) ~> sink1"
 		}
 	}
 }
