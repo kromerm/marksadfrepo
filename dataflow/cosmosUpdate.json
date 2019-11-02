@@ -19,7 +19,15 @@
 					"name": "lookupCosmos"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "cosmosMovie",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "MakeHierarchy"
@@ -35,9 +43,15 @@
 				},
 				{
 					"name": "Lookup1"
+				},
+				{
+					"name": "cleanup"
+				},
+				{
+					"name": "AlterRow1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document') ~> lookupCosmos\nmoviesCSV derive(movies = @(movieid=movie,\n\t\ttitle=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(titlegrp = title),\n\ttitle = first(title)) ~> Aggregate1\nAggregate1, orig join(Aggregate1@title == orig@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nMakeHierarchy select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> orig\nJoin1, lookupCosmos lookup(movie == lookupCosmos@movies.movieid,\n\tbroadcast: 'none')~> Lookup1"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> lookupCosmos\nmoviesCSV derive(movies = @(year=toInteger(year),\n\t\tgenres=split(genres,'|'),\n\t\trating=toInteger(Rating) * 10,\n\t\tmovieid=movie,\n\t\ttitle=title)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(titlegrp = title),\n\ttitle = first(title)) ~> Aggregate1\nAggregate1, orig join(Aggregate1@title == orig@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nMakeHierarchy select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> orig\nJoin1, lookupCosmos lookup(movie == lookupCosmos@movies.movieid,\n\tbroadcast: 'none')~> Lookup1\nLookup1 select(mapColumn(\n\t\tmovies = orig@movies,\n\t\tid\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> cleanup\ncleanup alterRow(updateIf(true())) ~> AlterRow1\nAlterRow1 sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000) ~> sink1"
 		}
 	}
 }
