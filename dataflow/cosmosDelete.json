@@ -32,7 +32,7 @@
 					"name": "AlterRow1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos alterRow(deleteIf(instr(movies.title,'The')>0)) ~> DeletePolicy\nDeletePolicy derive({movies.title} = '/movies/title') ~> CreatePartKey\nCreatePartKey alterRow(deleteIf(instr(movies.title,'The') > 0)) ~> AlterRow1\nAlterRow1 sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document') ~> sink1"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos alterRow(deleteIf(instr(movies.title,'The')>0)) ~> DeletePolicy\nDeletePolicy derive({movies.title} = '/movies/title') ~> CreatePartKey\nCreatePartKey alterRow(deleteIf(instr(movies.title,'The') > 0)) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document') ~> sink1"
 		}
 	}
 }
