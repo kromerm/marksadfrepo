@@ -29,7 +29,7 @@
 					"name": "updatePolicy"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], rating as integer, title as string, year as integer),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos derive(movies = @(year=movies.year,\n\t\tgenres=movies.genres,\n\t\trating=movies.rating*10,\n\t\ttitle=movies.title)) ~> MakeHierarchy\nMakeHierarchy alterRow(updateIf(true())) ~> updatePolicy\nupdatePolicy sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\ttitlekey,\n\t\tid,\n\t\tmovies\n\t)) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (genres as string[], rating as integer, title as string, year as integer),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos derive(movies = @(year=movies.year,\n\t\tgenres=movies.genres,\n\t\trating=movies.rating*10,\n\t\ttitle=movies.title)) ~> MakeHierarchy\nMakeHierarchy alterRow(upsertIf(true())) ~> updatePolicy\nupdatePolicy sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\ttitlekey,\n\t\tid,\n\t\tmovies\n\t)) ~> sink1"
 		}
 	}
 }
