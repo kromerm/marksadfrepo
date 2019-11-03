@@ -26,7 +26,7 @@
 					"name": "DeletePolicy"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos alterRow(deleteIf(instr(movies.title,'The')>0)) ~> DeletePolicy\nDeletePolicy sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['movies/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tid,\n\t\tmovies\n\t)) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos alterRow(deleteIf(instr(movies.title,'The')>0)) ~> DeletePolicy\nDeletePolicy sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tid,\n\t\tmovies\n\t)) ~> sink1"
 		}
 	}
 }
