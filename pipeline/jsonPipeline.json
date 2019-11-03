@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "moviesCsvToJSON",
+				"name": "My Data Flow Task",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "cosmosUpsert",
+						"referenceName": "cosmosDelete",
 						"type": "DataFlowReference"
 					}
 				}
