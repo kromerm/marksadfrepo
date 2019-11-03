@@ -26,7 +26,7 @@
 					"name": "MakeHierarchy"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true) ~> moviesCosmos\nmoviesCosmos derive(movies = @(year=movies.year,\n\t\tgenres=movies.genres,\n\t\trating=movies.rating,\n\t\tmovieid=movies.movieid,\n\t\treverseTitle=reverse(movies.title),\n\t\ttitle=movies.title)) ~> MakeHierarchy\nMakeHierarchy sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true) ~> moviesCosmos\nmoviesCosmos derive(movies = @(year=movies.year,\n\t\tgenres=movies.genres,\n\t\trating=movies.rating,\n\t\tmovieid=movies.movieid,\n\t\treverseTitle=reverse(movies.title),\n\t\ttitle=movies.title)) ~> MakeHierarchy\nMakeHierarchy sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000) ~> sink1"
 		}
 	}
 }
