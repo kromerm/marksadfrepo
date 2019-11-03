@@ -1,0 +1,32 @@
+{
+	"name": "cosmosUpdate",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cosmosMovie",
+						"type": "DatasetReference"
+					},
+					"name": "moviesCosmos"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "cosmosMovie",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "MakeHierarchy"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true) ~> moviesCosmos\nmoviesCosmos derive(movies = @(year=movies.year,\n\t\tgenres=movies.genres,\n\t\trating=movies.rating,\n\t\tmovieid=movies.movieid,\n\t\treverseTitle=reverse(movies.title),\n\t\ttitle=movies.title)) ~> MakeHierarchy\nMakeHierarchy sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, movieid as string, title as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tmovies,\n\t\tid\n\t)) ~> sink1"
+		}
+	}
+}
