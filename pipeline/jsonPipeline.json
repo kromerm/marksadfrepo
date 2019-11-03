@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "cosmosUpdate",
+						"referenceName": "cosmosUpsert",
 						"type": "DataFlowReference"
 					}
 				}
