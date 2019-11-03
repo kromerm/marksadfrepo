@@ -26,19 +26,10 @@
 					"name": "MakeHierarchy"
 				},
 				{
-					"name": "Aggregate1"
-				},
-				{
-					"name": "Join1"
-				},
-				{
-					"name": "orig"
-				},
-				{
-					"name": "cleanup"
+					"name": "Dedupe"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(title=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(titlegrp = title),\n\ttitle = first(title)) ~> Aggregate1\nAggregate1, orig join(Aggregate1@title == orig@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nMakeHierarchy select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> orig\nJoin1 select(mapColumn(\n\t\ttitlekey = Aggregate1@title,\n\t\tid = movie,\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> cleanup\ncleanup sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\ttitlekey,\n\t\tid,\n\t\tmovies\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> loadCosmos"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(title=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(moviegrp = movie),\n\tid = first(movie),\n\t\tmovies = first(movies),\n\t\tpartkey = first(title)) ~> Dedupe\nDedupe sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tid,\n\t\tmovies,\n\t\tpartkey\n\t)) ~> loadCosmos"
 		}
 	}
 }
