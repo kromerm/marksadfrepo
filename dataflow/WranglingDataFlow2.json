@@ -23,10 +23,10 @@
 						"referenceName": "wrangleout",
 						"type": "DatasetReference"
 					},
-					"script": ""
+					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> wrangleout"
 				}
 			],
-			"script": "section Section1; shared #\"Loans\" = let AdfDoc = Web.Contents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/loan.csv?sv=2018-03-28&sig=2HT7CuTUU7%2Fm72XRnSoayzRjpGPjZM8JVOv7masc%2FxU%3D&spr=https&se=2019-11-02T18%3A21%3A33Z&srt=sco&ss=bf&sp=rwl\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]), TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName)) in TrimmedHeaders;\r\nshared UserQuery = let\r\n  Source = Loans,\r\n  #\"Changed column type\" = Table.TransformColumnTypes(Source, {{\"loan_amnt\", type number}, {\"funded_amnt_inv\", Int64.Type}})\r\nin\r\n  #\"Changed column type\";"
+			"script": "section Section1;\r\nshared Loans = let\r\n  AdfDoc = Web.Contents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/loan.csv?sv=2018-03-28&sig=3bTWQBb4Q%2BPfDgLF9T5WlKJRxT%2BK02jQiCCdBvu62Go%3D&spr=https&se=2019-11-04T20%3A57%3A46Z&srt=sco&ss=bf&sp=rwl\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName))\r\nin\r\n  TrimmedHeaders;\r\nshared UserQuery = let\r\n  Source = Loans,\r\n  #\"Changed column type\" = Table.TransformColumnTypes(Source, {{\"loan_amnt\", type number}, {\"funded_amnt_inv\", Int64.Type}, {\"id\", Int64.Type}})\r\nin\r\n  #\"Changed column type\";\r\n"
 		}
 	}
 }
