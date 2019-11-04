@@ -1,0 +1,321 @@
+{
+	"name": "Loans2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "loans2.csv",
+				"folderPath": "SampleData",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "member_id",
+				"type": "String"
+			},
+			{
+				"name": "loan_amnt",
+				"type": "String"
+			},
+			{
+				"name": "funded_amnt",
+				"type": "String"
+			},
+			{
+				"name": "funded_amnt_inv",
+				"type": "String"
+			},
+			{
+				"name": "term",
+				"type": "String"
+			},
+			{
+				"name": "int_rate",
+				"type": "String"
+			},
+			{
+				"name": "installment",
+				"type": "String"
+			},
+			{
+				"name": "grade",
+				"type": "String"
+			},
+			{
+				"name": "sub_grade",
+				"type": "String"
+			},
+			{
+				"name": "emp_title",
+				"type": "String"
+			},
+			{
+				"name": "emp_length",
+				"type": "String"
+			},
+			{
+				"name": "home_ownership",
+				"type": "String"
+			},
+			{
+				"name": "annual_inc",
+				"type": "String"
+			},
+			{
+				"name": "verification_status",
+				"type": "String"
+			},
+			{
+				"name": "issue_d",
+				"type": "String"
+			},
+			{
+				"name": "loan_status",
+				"type": "String"
+			},
+			{
+				"name": "pymnt_plan",
+				"type": "String"
+			},
+			{
+				"name": "url",
+				"type": "String"
+			},
+			{
+				"name": "desc",
+				"type": "String"
+			},
+			{
+				"name": "purpose",
+				"type": "String"
+			},
+			{
+				"name": "title",
+				"type": "String"
+			},
+			{
+				"name": "zip_code",
+				"type": "String"
+			},
+			{
+				"name": "addr_state",
+				"type": "String"
+			},
+			{
+				"name": "dti",
+				"type": "String"
+			},
+			{
+				"name": "delinq_2yrs",
+				"type": "String"
+			},
+			{
+				"name": "earliest_cr_line",
+				"type": "String"
+			},
+			{
+				"name": "inq_last_6mths",
+				"type": "String"
+			},
+			{
+				"name": "mths_since_last_delinq",
+				"type": "String"
+			},
+			{
+				"name": "mths_since_last_record",
+				"type": "String"
+			},
+			{
+				"name": "open_acc",
+				"type": "String"
+			},
+			{
+				"name": "pub_rec",
+				"type": "String"
+			},
+			{
+				"name": "revol_bal",
+				"type": "String"
+			},
+			{
+				"name": "revol_util",
+				"type": "String"
+			},
+			{
+				"name": "total_acc",
+				"type": "String"
+			},
+			{
+				"name": "initial_list_status",
+				"type": "String"
+			},
+			{
+				"name": "out_prncp",
+				"type": "String"
+			},
+			{
+				"name": "out_prncp_inv",
+				"type": "String"
+			},
+			{
+				"name": "total_pymnt",
+				"type": "String"
+			},
+			{
+				"name": "total_pymnt_inv",
+				"type": "String"
+			},
+			{
+				"name": "total_rec_prncp",
+				"type": "String"
+			},
+			{
+				"name": "total_rec_int",
+				"type": "String"
+			},
+			{
+				"name": "total_rec_late_fee",
+				"type": "String"
+			},
+			{
+				"name": "recoveries",
+				"type": "String"
+			},
+			{
+				"name": "collection_recovery_fee",
+				"type": "String"
+			},
+			{
+				"name": "last_pymnt_d",
+				"type": "String"
+			},
+			{
+				"name": "last_pymnt_amnt",
+				"type": "String"
+			},
+			{
+				"name": "next_pymnt_d",
+				"type": "String"
+			},
+			{
+				"name": "last_credit_pull_d",
+				"type": "String"
+			},
+			{
+				"name": "collections_12_mths_ex_med",
+				"type": "String"
+			},
+			{
+				"name": "mths_since_last_major_derog",
+				"type": "String"
+			},
+			{
+				"name": "policy_code",
+				"type": "String"
+			},
+			{
+				"name": "application_type",
+				"type": "String"
+			},
+			{
+				"name": "annual_inc_joint",
+				"type": "String"
+			},
+			{
+				"name": "dti_joint",
+				"type": "String"
+			},
+			{
+				"name": "verification_status_joint",
+				"type": "String"
+			},
+			{
+				"name": "acc_now_delinq",
+				"type": "String"
+			},
+			{
+				"name": "tot_coll_amt",
+				"type": "String"
+			},
+			{
+				"name": "tot_cur_bal",
+				"type": "String"
+			},
+			{
+				"name": "open_acc_6m",
+				"type": "String"
+			},
+			{
+				"name": "open_il_6m",
+				"type": "String"
+			},
+			{
+				"name": "open_il_12m",
+				"type": "String"
+			},
+			{
+				"name": "open_il_24m",
+				"type": "String"
+			},
+			{
+				"name": "mths_since_rcnt_il",
+				"type": "String"
+			},
+			{
+				"name": "total_bal_il",
+				"type": "String"
+			},
+			{
+				"name": "il_util",
+				"type": "String"
+			},
+			{
+				"name": "open_rv_12m",
+				"type": "String"
+			},
+			{
+				"name": "open_rv_24m",
+				"type": "String"
+			},
+			{
+				"name": "max_bal_bc",
+				"type": "String"
+			},
+			{
+				"name": "all_util",
+				"type": "String"
+			},
+			{
+				"name": "total_rev_hi_lim",
+				"type": "String"
+			},
+			{
+				"name": "inq_fi",
+				"type": "String"
+			},
+			{
+				"name": "total_cu_tl",
+				"type": "String"
+			},
+			{
+				"name": "inq_last_12m",
+				"type": "String"
+			}
+		]
+	}
+}
