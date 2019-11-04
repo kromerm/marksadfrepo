@@ -1,5 +1,5 @@
 {
-	"name": "jsonPipeline",
+	"name": "Cosmos Pipeline",
 	"properties": {
 		"activities": [
 			{
