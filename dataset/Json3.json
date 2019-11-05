@@ -1,0 +1,248 @@
+{
+	"name": "Json3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "TaskRun_Config_Sample.json",
+				"folderPath": "SampleData/json",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"serviceRequestIdToObjectId": {
+					"type": "string"
+				},
+				"version": {
+					"type": "integer"
+				},
+				"updatedDateTime": {
+					"type": "string"
+				},
+				"_id": {
+					"type": "string"
+				},
+				"engagementId": {
+					"type": "string"
+				},
+				"serviceRequestId": {
+					"type": "string"
+				},
+				"_class": {
+					"type": "string"
+				},
+				"deliverySprints": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"timeTracked": {
+								"type": "object",
+								"properties": {
+									"reviewAndReworkTime": {
+										"type": "string"
+									},
+									"additionalTime": {
+										"type": "string"
+									}
+								}
+							},
+							"status": {
+								"type": "string"
+							},
+							"activities": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"selected": {
+											"type": "boolean"
+										},
+										"predecessors": {
+											"type": "string"
+										},
+										"activityId": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"traitMapping": {
+											"type": "array"
+										},
+										"dependsOn": {
+											"type": "array"
+										},
+										"activityDescription": {
+											"type": "string"
+										},
+										"serviceActivityId": {
+											"type": "string"
+										},
+										"activityName": {
+											"type": "string"
+										},
+										"tasks": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"taskId": {
+														"type": "string"
+													},
+													"braidTaskId": {
+														"type": "string"
+													},
+													"serviceTaskId": {
+														"type": "string"
+													},
+													"taskConfig": {
+														"type": "object",
+														"properties": {
+															"predecessors": {
+																"type": "string"
+															},
+															"taskForm": {
+																"type": "object",
+																"properties": {
+																	"fieldComponents": {
+																		"type": "array"
+																	}
+																}
+															},
+															"taskName": {
+																"type": "string"
+															},
+															"description": {
+																"type": "string"
+															},
+															"assignee": {
+																"type": "string"
+															},
+															"estimatedDuration": {
+																"type": "string"
+															},
+															"dependsOn": {
+																"type": "array"
+															},
+															"taskResourcing": {
+																"type": "object",
+																"properties": {
+																	"resourcingStatus": {
+																		"type": "string"
+																	},
+																	"traitMapping": {
+																		"type": "array"
+																	},
+																	"resourcingAction": {
+																		"type": "string"
+																	},
+																	"resourceGroups": {
+																		"type": "array",
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"name": {
+																					"type": "string"
+																				},
+																				"braidResourceGroupId": {
+																					"type": "string"
+																				}
+																			}
+																		}
+																	}
+																}
+															},
+															"assigneeHistory": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"assignee": {
+																			"type": "string"
+																		},
+																		"assigneeName": {
+																			"type": "string"
+																		},
+																		"partyId": {
+																			"type": "string"
+																		},
+																		"timeTracked": {
+																			"type": "string"
+																		},
+																		"ppid": {
+																			"type": "string"
+																		}
+																	}
+																}
+															},
+															"earliestStartTime": {
+																"type": "string"
+															},
+															"taskSequenceNo": {
+																"type": "integer"
+															},
+															"deletable": {
+																"type": "boolean"
+															},
+															"dueDate": {
+																"type": "string"
+															}
+														}
+													},
+													"currentWorkflowStep": {
+														"type": "object",
+														"properties": {
+															"status": {
+																"type": "string"
+															},
+															"processInstanceId": {
+																"type": "string"
+															},
+															"currentprocessStep": {
+																"type": "string"
+															}
+														}
+													}
+												}
+											}
+										},
+										"activitySequenceNo": {
+											"type": "integer"
+										}
+									}
+								}
+							},
+							"name": {
+								"type": "string"
+							},
+							"startDate": {
+								"type": "string"
+							},
+							"deliverySprintId": {
+								"type": "string"
+							},
+							"deletable": {
+								"type": "boolean"
+							},
+							"dueDate": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"ExtractDate": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

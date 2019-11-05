@@ -7,28 +7,7 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",
-		"schema": [
-			{
-				"name": "firstName",
-				"type": "nvarchar"
-			},
-			{
-				"name": "lastName",
-				"type": "nvarchar"
-			},
-			{
-				"name": "gender",
-				"type": "nvarchar"
-			},
-			{
-				"name": "location",
-				"type": "nvarchar"
-			},
-			{
-				"name": "subscription_type",
-				"type": "nvarchar"
-			}
-		],
+		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
 			"table": "radio"

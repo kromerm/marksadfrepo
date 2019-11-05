@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "AppendFiles",
+				"name": "RadioDataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "AppendFiles",
+						"referenceName": "myDataFlowRadio",
 						"type": "DataFlowReference"
 					}
 				}
