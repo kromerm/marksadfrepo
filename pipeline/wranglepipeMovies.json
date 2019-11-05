@@ -1,10 +1,10 @@
 {
-	"name": "pipeline14",
+	"name": "wranglepipeMovies",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow2",
-				"type": "ExecuteDataFlow",
+				"name": "WranglingDataFlow3",
+				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -16,8 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "JSONMovies",
+						"referenceName": "WranglingDataFlow3",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "mylargecluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
