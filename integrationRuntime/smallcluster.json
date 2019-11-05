@@ -1,0 +1,16 @@
+{
+	"name": "smallcluster",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "AutoResolve",
+				"dataFlowProperties": {
+					"computeType": "ComputeOptimized",
+					"coreCount": 32,
+					"timeToLive": 10
+				}
+			}
+		}
+	}
+}
