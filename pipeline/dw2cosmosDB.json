@@ -1,5 +1,5 @@
 {
-	"name": "pipeline10",
+	"name": "dw2cosmosDB",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "ErrorRows",
+						"referenceName": "DW2CosmosDB",
 						"type": "DataFlowReference"
 					}
 				}
