@@ -2,7 +2,7 @@
 	"name": "cosmos_factsales",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "CosmosDbDW",
+			"referenceName": "CosmosDW",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
