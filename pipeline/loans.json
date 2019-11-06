@@ -1,10 +1,11 @@
 {
-	"name": "pipeline6",
+	"name": "loans",
 	"properties": {
 		"activities": [
 			{
-				"name": "My Data Flow",
+				"name": "Loans",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,17 +13,19 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dedupeProb2",
+						"referenceName": "MyLoansDemo1",
 						"type": "DataFlowReference"
 					},
-					"compute": {
-						"computeType": "General",
-						"coreCount": 8
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
-		]
+		],
+		"annotations": []
 	}
 }

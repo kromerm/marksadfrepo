@@ -1,0 +1,43 @@
+{
+	"name": "WranglingDataFlow3",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "MoviesD2",
+					"script": "",
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				},
+				{
+					"name": "moviesDB2",
+					"script": "",
+					"dataset": {
+						"referenceName": "moviesDB2",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				}
+			],
+			"sinks": [
+				{
+					"name": "Sink1",
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviewrangle.csv'],\n\tpartitionBy('hash', 1)) ~> Sink1"
+				}
+			],
+			"script": "section Section1;\r\nshared MoviesD2 = let\r\n  AdfDoc = Web.Contents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/moviesDB.csv?sv=2018-03-28&sig=lo65SNZ8ov%2B5HMpY4aNZmjPbI4R1jmT9zoqY1%2BAIEJk%3D&spr=https&se=2019-11-07T18%3A44%3A10Z&srt=sco&ss=bf&sp=rwl\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName))\r\nin\r\n  TrimmedHeaders;\r\nshared moviesDB2 = let\r\n  AdfDoc = Web.Contents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/moviesDB2.csv?sv=2018-03-28&sig=lo65SNZ8ov%2B5HMpY4aNZmjPbI4R1jmT9zoqY1%2BAIEJk%3D&spr=https&se=2019-11-07T18%3A44%3A10Z&srt=sco&ss=bf&sp=rwl\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName))\r\nin\r\n  TrimmedHeaders;\r\nshared UserQuery = let\r\n  Source = MoviesD2,\r\n  #\"Grouped rows\" = Table.Group(Source, {\"year\"}, {{\"Count\", each Table.RowCount(_), type number}})\r\nin\r\n  #\"Grouped rows\";\r\n"
+		}
+	}
+}

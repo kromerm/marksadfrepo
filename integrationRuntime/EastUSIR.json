@@ -1,0 +1,16 @@
+{
+	"name": "EastUSIR",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "East US",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 80,
+					"timeToLive": 60
+				}
+			}
+		}
+	}
+}

@@ -5,10 +5,68 @@
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "ProjDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "employeeID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TotalHours",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "TotalAmount",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "facttimestamp",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "surrogatekey",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Region",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmpFunction",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Role",
+				"type": "nvarchar"
+			},
+			{
+				"name": "processtime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
 		"typeProperties": {
-			"tableName": "dbo.FactTable"
+			"schema": "dbo",
+			"table": "FactTable2"
 		}
 	}
 }

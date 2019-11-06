@@ -1,0 +1,32 @@
+{
+	"name": "WranglingDataFlow1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "MoviesD2",
+					"script": "",
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				}
+			],
+			"sinks": [
+				{
+					"name": "folderout",
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"script": ""
+				}
+			],
+			"script": "section Section1; shared #\"MoviesD2\" = let AdfDoc = Web.Contents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/moviesDB.csv?sv=2018-03-28&sig=YN%2FuIvyyNLOtZ9N0kUf3%2FuD%2F2EQZYuPFz4EjVng7Rn8%3D&spr=https&se=2019-10-24T04%3A40%3A32Z&srt=sco&ss=bf&sp=rwl\"), Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.None]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]), TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName)) in TrimmedHeaders;\r\nshared UserQuery = let\r\n  Source = MoviesD2,\r\n  #\"Replaced value\" = Table.ReplaceValue(Source, \"Faulty\", \"Good\", Replacer.ReplaceText, {\"title\"})\r\nin\r\n  #\"Replaced value\";"
+		}
+	}
+}

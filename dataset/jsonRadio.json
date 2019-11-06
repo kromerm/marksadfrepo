@@ -1,0 +1,75 @@
+{
+	"name": "jsonRadio",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "small_radio_json.json",
+				"folderPath": "SampleData/json",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"ts": {
+					"type": "integer"
+				},
+				"userId": {
+					"type": "string"
+				},
+				"sessionId": {
+					"type": "integer"
+				},
+				"page": {
+					"type": "string"
+				},
+				"auth": {
+					"type": "string"
+				},
+				"method": {
+					"type": "string"
+				},
+				"status": {
+					"type": "integer"
+				},
+				"level": {
+					"type": "string"
+				},
+				"itemInSession": {
+					"type": "integer"
+				},
+				"location": {
+					"type": "string"
+				},
+				"lastName": {
+					"type": "string"
+				},
+				"firstName": {
+					"type": "string"
+				},
+				"registration": {
+					"type": "integer"
+				},
+				"gender": {
+					"type": "string"
+				},
+				"artist": {
+					"type": "string"
+				},
+				"song": {
+					"type": "string"
+				},
+				"length": {
+					"type": "number"
+				}
+			}
+		}
+	}
+}

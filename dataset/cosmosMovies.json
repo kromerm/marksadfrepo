@@ -1,0 +1,14 @@
+{
+	"name": "cosmosMovies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDb3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"typeProperties": {
+			"collectionName": "moviesdemo"
+		}
+	}
+}

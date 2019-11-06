@@ -1,0 +1,56 @@
+{
+	"name": "pipeline11",
+	"properties": {
+		"activities": [
+			{
+				"name": "processLonas",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "RankMovies",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "processLonas",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "myvar",
+					"value": {
+						"value": "@activity('processLonas').output",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"myvar": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

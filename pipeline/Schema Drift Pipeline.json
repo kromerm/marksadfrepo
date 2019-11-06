@@ -16,8 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "schemaDrift2",
+						"referenceName": "drift2",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}

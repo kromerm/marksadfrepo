@@ -1,0 +1,136 @@
+{
+	"name": "FactSales_DW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dwaw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ProductKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OrderDateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DueDateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ShipDateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PromotionKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CurrencyKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesTerritoryKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesOrderNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesOrderLineNumber",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "RevisionNumber",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "OrderQuantity",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "UnitPrice",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "ExtendedAmount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "UnitPriceDiscountPct",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "DiscountAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ProductStandardCost",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "TotalProductCost",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "SalesAmount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "TaxAmt",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Freight",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "CarrierTrackingNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CustomerPONumber",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FactInternetSales"
+		}
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"name": "mytable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "aaa",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "mytime",
+				"type": "datetime2",
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "mytable1"
+		}
+	}
+}

@@ -5,17 +5,66 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "trip_fare_1.csv",
-				"container": "demo"
+				"folderPath": "SampleData",
+				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
-			"firstRowAsHeader": true
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "medallion",
+				"type": "String"
+			},
+			{
+				"name": " hack_license",
+				"type": "String"
+			},
+			{
+				"name": " vendor_id",
+				"type": "String"
+			},
+			{
+				"name": " pickup_datetime",
+				"type": "String"
+			},
+			{
+				"name": " payment_type",
+				"type": "String"
+			},
+			{
+				"name": " fare_amount",
+				"type": "String"
+			},
+			{
+				"name": " surcharge",
+				"type": "String"
+			},
+			{
+				"name": " mta_tax",
+				"type": "String"
+			},
+			{
+				"name": " tip_amount",
+				"type": "String"
+			},
+			{
+				"name": " tolls_amount",
+				"type": "String"
+			},
+			{
+				"name": " total_amount",
+				"type": "String"
+			}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

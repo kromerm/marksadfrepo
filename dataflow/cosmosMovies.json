@@ -1,0 +1,35 @@
+{
+	"name": "cosmosMovies",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cosmosMovies",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "cosmosMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovies as (year as integer, genres as string[], rating as integer, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> source1\nsource1 derive(movies = @(title=movies.title,\n\t\tgenres=movies.genres,\n\t\tyear=movies.year,\n\t\trating=movies.rating)) ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000) ~> sink1"
+		}
+	}
+}

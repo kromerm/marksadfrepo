@@ -1,0 +1,37 @@
+{
+	"name": "CosmosDbSqlApiCollection5",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDb3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"cast": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"year": {
+					"type": "string"
+				},
+				"genres": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"title": {
+					"type": "string"
+				}
+			}
+		},
+		"typeProperties": {
+			"collectionName": "movies2"
+		}
+	}
+}

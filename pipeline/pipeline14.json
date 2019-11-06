@@ -1,0 +1,91 @@
+{
+	"name": "pipeline14",
+	"properties": {
+		"activities": [
+			{
+				"name": "RadioDataFlow",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "warmCluster",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "myDataFlowRadio",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "smallcluster",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			},
+			{
+				"name": "myDataFlowRadio",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "RadioDataFlow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "myDataFlowRadio",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "smallcluster",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			},
+			{
+				"name": "warmCluster",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "warmCluster",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "smallcluster",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}

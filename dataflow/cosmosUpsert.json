@@ -1,0 +1,57 @@
+{
+	"name": "cosmosUpsert",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "moviesCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "cosmosMovies",
+						"type": "DatasetReference"
+					},
+					"name": "lookupCosmos"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "cosmosMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "Aggregate1"
+				},
+				{
+					"name": "orig"
+				},
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "MakeHierarchy"
+				},
+				{
+					"name": "Select1"
+				},
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nsource(output(\n\t\tmovies as (year as integer, genres as string[], rating as integer, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> lookupCosmos\nJoin1, lookupCosmos lookup(movie == id,\n\tbroadcast: 'none')~> Lookup1\nmoviesCSV aggregate(groupBy(titlegrp = title),\n\ttitle = first(title)) ~> Aggregate1\nmoviesCSV select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> orig\nAggregate1, orig join(Aggregate1@title == orig@title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nLookup1 derive(movies = @(year=toString(year),\n\t\tgenres=split(genres,'|'),\n\t\trating=toString(toInteger(Rating) * 10),\n\t\tmovieid=movie,\n\t\ttitle=orig@title)) ~> MakeHierarchy\nMakeHierarchy select(mapColumn(\n\t\tmovies,\n\t\tid\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 alterRow(upsertIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tformat: 'document',\n\tpartitionKey: ['/movies/title'],\n\tthroughput: 2000) ~> sink1"
+		}
+	}
+}

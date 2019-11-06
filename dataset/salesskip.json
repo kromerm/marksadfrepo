@@ -2,17 +2,17 @@
 	"name": "salesskip",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "MoviesADLS",
+			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
+				"type": "AzureBlobStorageLocation",
 				"fileName": "salesskip.csv",
 				"folderPath": "SampleData",
-				"fileSystem": "mycontainer"
+				"container": "mycontainer"
 			},
 			"columnDelimiter": "",
 			"escapeChar": "\\",

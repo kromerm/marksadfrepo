@@ -1,0 +1,48 @@
+{
+	"name": "Lookup",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "LoadFacts2",
+						"type": "DatasetReference"
+					},
+					"name": "FactTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimEmp2",
+						"type": "DatasetReference"
+					},
+					"name": "DimEmp"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "Ismatch"
+				},
+				{
+					"name": "CheckMatch"
+				},
+				{
+					"name": "PickFirst"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tProjDate as string,\n\t\temployeeID as integer,\n\t\tTotalHours as long,\n\t\tTotalAmount as long,\n\t\tfacttimestamp as timestamp,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> FactTable\nsource(output(\n\t\tEmpID as integer,\n\t\tsurrogatekey as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tEmpFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as date,\n\t\tEndDate as date,\n\t\tiscurrent as integer,\n\t\tprocesstime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> DimEmp\nFactTable, DimEmp lookup(employeeID == EmpID,\n\tbroadcast: 'right')~> Lookup1\nCheckMatch split(match,\n\tdisjoint: false) ~> Ismatch@(IsMatch, NoMatch)\nLookup1 derive(match = isMatch()) ~> CheckMatch\nIsmatch@IsMatch aggregate(groupBy(employeeID),\n\tProjDate = last(ProjDate),\n\t\tTotalHours = first(TotalHours),\n\t\tTotalAmount = first(TotalAmount)) ~> PickFirst\nPickFirst sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+		}
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"name": "cosmos_dimprod",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDbDW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"typeProperties": {
+			"collectionName": "dimprod"
+		}
+	}
+}
