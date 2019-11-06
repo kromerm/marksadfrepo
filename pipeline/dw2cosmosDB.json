@@ -18,6 +18,10 @@
 					"dataflow": {
 						"referenceName": "DW2CosmosDB",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "myDataFlowCluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
