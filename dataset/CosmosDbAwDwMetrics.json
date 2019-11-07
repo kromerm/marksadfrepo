@@ -8,7 +8,7 @@
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
 		"typeProperties": {
-			"collectionName": "awdw_metrics"
+			"collectionName": "awdwmetrics"
 		}
 	}
 }
