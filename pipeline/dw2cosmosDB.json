@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DW2CosmosDB",
+						"referenceName": "cosmosAWAnalytics",
 						"type": "DataFlowReference"
 					}
 				}
