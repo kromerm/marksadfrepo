@@ -22,7 +22,7 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "Union1"
+					"name": "UnionByName"
 				},
 				{
 					"name": "Select1"
@@ -35,9 +35,12 @@
 				},
 				{
 					"name": "DerivedColumn2"
+				},
+				{
+					"name": "UnionByPos"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source2\nSelect1, Select2 union(byName: true)~> Union1\nDerivedColumn1 select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nDerivedColumn2 select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tdateOfETL\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nsource1 derive(title = upper(title)) ~> DerivedColumn1\nsource2 derive(title = lower(title)) ~> DerivedColumn2"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source2\nSelect1, Select2 union(byName: true)~> UnionByName\nDerivedColumn1 select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nDerivedColumn2 select(mapColumn(\n\t\tmovie,\n\t\ttitle2 = title,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato},\n\t\tdateOfETL\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nsource1 derive(title = upper(title)) ~> DerivedColumn1\nsource2 derive(title = lower(title)) ~> DerivedColumn2\nSelect2, Select1 union(byName: false)~> UnionByPos"
 		}
 	}
 }
