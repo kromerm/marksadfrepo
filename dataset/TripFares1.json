@@ -13,8 +13,9 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "taxi_fares.csv",
-				"fileSystem": "sample-data"
+				"fileName": "trip_fare_1.csv",
+				"folderPath": "SampleData",
+				"fileSystem": "mycontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
