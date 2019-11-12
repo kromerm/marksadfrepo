@@ -1,0 +1,47 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "taxi_trip_data_input1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Select1"
+				},
+				{
+					"name": "DuplicateBranch"
+				},
+				{
+					"name": "TypeCast"
+				},
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Select2"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmedallion as string,\n\t\thack_license as string,\n\t\tvendor_id as string,\n\t\trate_code as short,\n\t\tstore_and_fwd_flag as boolean,\n\t\tpickup_datetime as timestamp,\n\t\tdropoff_datetime as timestamp,\n\t\tpassenger_count as short,\n\t\ttrip_time_in_secs as short,\n\t\ttrip_distance as double,\n\t\tpickup_longitude as double,\n\t\tpickup_latitude as double,\n\t\tdropoff_longitude as double,\n\t\tdropoff_latitude as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 select(mapColumn(\n\t\tmedallion,\n\t\trate_code,\n\t\tpickup_datetime,\n\t\tdropoff_datetime,\n\t\tpassenger_count\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nsource1 select(mapColumn(\n\t\tmedallion,\n\t\thack_license,\n\t\tvendor_id,\n\t\trate_code,\n\t\tstore_and_fwd_flag,\n\t\tpickup_datetime,\n\t\tdropoff_datetime,\n\t\tpassenger_count,\n\t\ttrip_time_in_secs,\n\t\ttrip_distance,\n\t\tpickup_longitude,\n\t\tpickup_latitude,\n\t\tdropoff_longitude,\n\t\tdropoff_latitude\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> DuplicateBranch\nDuplicateBranch derive(vendor_id = ERROR_FUNCTION('')) ~> TypeCast\nTypeCast, Select1 join(DuplicateBranch@medallion == Select1@medallion,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1 derive({} = ERROR_FUNCTION(''),\n\t\teach(match(), ERROR_FUNCTION('') = ERROR_FUNCTION(''))) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\tmedallion = DuplicateBranch@medallion,\n\t\thack_license,\n\t\tvendor_id = DuplicateBranch@vendor_id,\n\t\trate_code = DuplicateBranch@rate_code,\n\t\tstore_and_fwd_flag,\n\t\tpickup_datetime = DuplicateBranch@pickup_datetime,\n\t\tdropoff_datetime = DuplicateBranch@dropoff_datetime,\n\t\tpassenger_count = DuplicateBranch@passenger_count,\n\t\ttrip_time_in_secs,\n\t\ttrip_distance,\n\t\tpickup_longitude,\n\t\tpickup_latitude,\n\t\tdropoff_longitude,\n\t\tdropoff_latitude,\n\t\t{},\n\t\tmedallion = Select1@medallion,\n\t\trate_code = Select1@rate_code,\n\t\tpickup_datetime = Select1@pickup_datetime,\n\t\tdropoff_datetime = Select1@dropoff_datetime,\n\t\tpassenger_count = Select1@passenger_count\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tmedallion,\n\t\trate_code,\n\t\tpickup_datetime,\n\t\tdropoff_datetime,\n\t\tpassenger_count\n\t)) ~> sink1"
+		}
+	}
+}
