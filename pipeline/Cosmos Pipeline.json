@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Create Collection",
+				"name": "Create Collections",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
