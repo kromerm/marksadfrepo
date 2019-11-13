@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Comsos Dataflow",
+				"name": "Comsos Dataflows",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
