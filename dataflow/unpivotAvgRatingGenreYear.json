@@ -1,5 +1,5 @@
 {
-	"name": "unpivot",
+	"name": "unpivotAvgRatingGenreYear",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -27,12 +27,9 @@
 				},
 				{
 					"name": "Aggregate1"
-				},
-				{
-					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn1 unpivot(output(\n\t\tavgrating as string,\n\t\tgenres as string\n\t),\n\tungroupBy(year),\n\tlateral: true,\n\tignoreNullPivots: true) ~> Unpivot1\nsource1 aggregate(groupBy(year),\n\tavgrating = avg(Rating),\n\t\tgenres = first(split(genres,'|')[1])) ~> Aggregate1\nAggregate1 derive(avgrating = toString(avgrating),\n\t\tgenres = toString(genres)) ~> DerivedColumn1\nUnpivot1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nAggregate1 unpivot(output(\n\t\tavg_genre as string,\n\t\tavgrating as double\n\t),\n\tungroupBy(year),\n\tlateral: false,\n\tignoreNullPivots: true) ~> Unpivot1\nsource1 aggregate(groupBy(year),\n\tavg_comedy = avgIf(split(lower(genres),'|')[1]=='comedy',Rating),\n\t\tavg_drama = avgIf(split(lower(genres),'|')[1]=='drama',Rating),\n\t\tavg_action = avgIf(split(lower(genres),'|')[1]=='action',Rating)) ~> Aggregate1\nUnpivot1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 		}
 	}
 }
