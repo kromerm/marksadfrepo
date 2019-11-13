@@ -1,0 +1,38 @@
+{
+	"name": "unpivot",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Unpivot1"
+				},
+				{
+					"name": "Aggregate1"
+				},
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn1 unpivot(output(\n\t\tavgrating as string,\n\t\tgenres as string\n\t),\n\tungroupBy(year),\n\tlateral: true,\n\tignoreNullPivots: true) ~> Unpivot1\nsource1 aggregate(groupBy(year),\n\tavgrating = avg(Rating),\n\t\tgenres = first(split(genres,'|')[1])) ~> Aggregate1\nAggregate1 derive(avgrating = toString(avgrating),\n\t\tgenres = toString(genres)) ~> DerivedColumn1\nUnpivot1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+		}
+	}
+}

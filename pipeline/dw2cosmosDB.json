@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow4",
+				"name": "Comsos Dataflows",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DW2CosmosDB",
+						"referenceName": "cosmosAWAnalytics",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {

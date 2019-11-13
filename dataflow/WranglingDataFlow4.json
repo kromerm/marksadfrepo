@@ -1,0 +1,43 @@
+{
+	"name": "WranglingDataFlow4",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "TripData1",
+					"script": "",
+					"dataset": {
+						"referenceName": "TripData1",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				},
+				{
+					"name": "TripFares1",
+					"script": "",
+					"dataset": {
+						"referenceName": "TripFares1",
+						"type": "DatasetReference"
+					},
+					"typeProperties": {
+						"readMode": null
+					}
+				}
+			],
+			"sinks": [
+				{
+					"name": "Sink1",
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['trips.csv'],\n\tpartitionBy('hash', 1)) ~> Sink1"
+				}
+			],
+			"script": "section Section1;\r\nshared TripData1 = let\r\n  AdfDoc = Web.Contents(\"https://makadlsg2.dfs.core.windows.net/mycontainer/SampleData/trip_data_1.csv?sv=2018-03-28&sig=vsfU1uax2wS92hCcqvydeGDSaPSOAhrBgY8rMyxF6OY%3D&spr=https&se=2019-11-13T22%3A02%3A36Z&srt=sco&ss=bf&sp=rwl\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName))\r\nin\r\n  TrimmedHeaders;\r\nshared TripFares1 = let\r\n  AdfDoc = Web.Contents(\"https://makadlsg2.dfs.core.windows.net/mycontainer/SampleData/trip_fare_1.csv?sv=2018-03-28&sig=vsfU1uax2wS92hCcqvydeGDSaPSOAhrBgY8rMyxF6OY%3D&spr=https&se=2019-11-13T22%3A02%3A36Z&srt=sco&ss=bf&sp=rwl\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]),\r\n  TrimmedHeaders = Table.TransformColumnNames(PromotedHeaders, (columnName as text) as text => Text.Trim(columnName))\r\nin\r\n  TrimmedHeaders;\r\nshared UserQuery = let\r\n  Source = TripData1,\r\n  #\"Duplicated column\" = Table.DuplicateColumn(Source, \"pickup_datetime\", \"pickup_datetime - Copy\"),\r\n  #\"Renamed columns\" = Table.RenameColumns(#\"Duplicated column\", {{\"pickup_datetime - Copy\", \"pickup_time\"}}),\r\n  #\"Extracted text after delimiter\" = Table.TransformColumns(#\"Renamed columns\", {{\"pickup_time\", each Text.AfterDelimiter(_, \" \", 0), type text}})\r\nin\r\n  #\"Extracted text after delimiter\";\r\n"
+		}
+	}
+}

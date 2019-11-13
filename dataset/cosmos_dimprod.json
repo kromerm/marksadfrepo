@@ -2,7 +2,7 @@
 	"name": "cosmos_dimprod",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "CosmosDW",
+			"referenceName": "CosmosDb1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

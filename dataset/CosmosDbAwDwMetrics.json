@@ -1,5 +1,5 @@
 {
-	"name": "cosmos_factsales",
+	"name": "CosmosDbAwDwMetrics",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "CosmosDb1",
@@ -8,7 +8,7 @@
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
 		"typeProperties": {
-			"collectionName": "factsales"
+			"collectionName": "awdwmetrics"
 		}
 	}
 }

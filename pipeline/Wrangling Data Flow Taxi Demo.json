@@ -1,10 +1,12 @@
 {
-	"name": "Cosmos Pipeline",
+	"name": "Wrangling Data Flow Taxi Demo",
 	"properties": {
+		"description": "Joining and Aggregating New York City Taxi Data using Wrangling Data Flows",
 		"activities": [
 			{
-				"name": "Create Collections",
-				"type": "ExecuteDataFlow",
+				"name": "Taxi Demo",
+				"description": "Joining and Aggregating New York City Taxi Data",
+				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -16,14 +18,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "moviesCsvToJSON-Cosmos",
+						"referenceName": "TaxiDemo",
 						"type": "DataFlowReference"
+					},
+					"compute": {
+						"computeType": "General",
+						"coreCount": 8
 					}
 				}
 			},
 			{
-				"name": "Delete Rows",
-				"type": "ExecuteDataFlow",
+				"name": "WranglingDataFlow4",
+				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -35,31 +41,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "cosmosDelete",
-						"type": "DataFlowReference"
-					}
-				}
-			},
-			{
-				"name": "Upsert Rows",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "cosmosUpdate",
+						"referenceName": "WranglingDataFlow4",
 						"type": "DataFlowReference"
 					}
 				}
 			}
 		],
+		"folder": {
+			"name": "Wrangling Data Flow Demos"
+		},
 		"annotations": []
 	}
 }
