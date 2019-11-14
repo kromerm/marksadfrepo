@@ -15,43 +15,6 @@
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": [
-			{
-				"name": "MovieIdDupe",
-				"type": "INT32"
-			},
-			{
-				"name": "ActionDupe",
-				"type": "UTF8"
-			},
-			{
-				"name": "MovieId",
-				"type": "INT32"
-			},
-			{
-				"name": "Title",
-				"type": "UTF8"
-			},
-			{
-				"name": "Genre",
-				"type": "UTF8"
-			},
-			{
-				"name": "Year",
-				"type": "INT32"
-			},
-			{
-				"name": "Rating",
-				"type": "INT32"
-			},
-			{
-				"name": "RottenTom",
-				"type": "INT32"
-			},
-			{
-				"name": "Action",
-				"type": "UTF8"
-			}
-		]
+		"schema": []
 	}
 }
