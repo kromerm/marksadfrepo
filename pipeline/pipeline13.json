@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "notebook",
+						"referenceName": "movieparts",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
