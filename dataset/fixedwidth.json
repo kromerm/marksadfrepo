@@ -14,7 +14,8 @@
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "",
+			"rowDelimiter": "",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},
