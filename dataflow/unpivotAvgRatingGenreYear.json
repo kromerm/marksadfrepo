@@ -1,0 +1,38 @@
+{
+	"name": "unpivotAvgRatingGenreYear",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Unpivot1"
+				},
+				{
+					"name": "Aggregate1"
+				},
+				{
+					"name": "Sort1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nAggregate1 unpivot(output(\n\t\tavg_genre as string,\n\t\tavgrating as double\n\t),\n\tungroupBy(year),\n\tlateral: false,\n\tignoreNullPivots: true) ~> Unpivot1\nsource1 aggregate(groupBy(year),\n\tavg_comedy = round(avgIf(split(lower(genres),'|')[1]=='comedy',Rating),1,2),\n\t\tavg_drama = round(avgIf(split(lower(genres),'|')[1]=='drama',Rating),1,2),\n\t\tavg_action = round(avgIf(split(lower(genres),'|')[1]=='action',Rating),1,2)) ~> Aggregate1\nUnpivot1 sort(desc(year, true)) ~> Sort1\nSort1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+		}
+	}
+}

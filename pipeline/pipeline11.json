@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "movieparts",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -15,192 +15,11 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource"
-					},
-					"sink": {
-						"type": "AzureSqlSink"
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "ProductID",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "ProductID",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "Name",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Name",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductNumber",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ProductNumber",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Color",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Color",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "StandardCost",
-									"type": "Decimal"
-								},
-								"sink": {
-									"name": "StandardCost",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "ListPrice",
-									"type": "Decimal"
-								},
-								"sink": {
-									"name": "ListPrice",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "Size",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Size",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Weight",
-									"type": "Decimal"
-								},
-								"sink": {
-									"name": "Weight",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductCategoryID",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "ProductCategoryID",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductModelID",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "ProductModelID",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "SellStartDate",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "SellStartDate",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "SellEndDate",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "SellEndDate",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "DiscontinuedDate",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "DiscontinuedDate",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "ThumbnailPhotoFileName",
-									"type": "String"
-								},
-								"sink": {
-									"name": "ThumbnailPhotoFileName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "rowguid",
-									"type": "Guid"
-								},
-								"sink": {
-									"name": "rowguid",
-									"type": "Guid"
-								}
-							},
-							{
-								"source": {
-									"name": "ModifiedDate",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "ModifiedDate",
-									"type": "DateTime"
-								}
-							},
-							null
-						]
+					"dataflow": {
+						"referenceName": "movieparts",
+						"type": "DataFlowReference"
 					}
-				},
-				"inputs": [
-					{
-						"referenceName": "SQLProducts_new",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "SQLProducts_new",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			}
 		],
 		"variables": {
