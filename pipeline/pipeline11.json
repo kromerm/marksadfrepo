@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "movieparts",
+						"referenceName": "MovieDemo1",
 						"type": "DataFlowReference"
 					}
 				}
