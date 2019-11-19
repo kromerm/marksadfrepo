@@ -49,10 +49,10 @@
 					"name": "SurrogateKey1"
 				},
 				{
-					"name": "Lookup1"
+					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 filter(false()) ~> Filter1\nFilter1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nzeroRowsCheck@default, SurrogateKey1 lookup(rowcount + 1 == rownum,\n\tbroadcast: 'none')~> Lookup1\nzeroRowsCheck@zeroRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1)) ~> sink1\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1)) ~> sink2"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 filter(false()) ~> Filter1\nFilter1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nzeroRowsCheck@default derive(rownum = 1) ~> DerivedColumn1\nzeroRowsCheck@zeroRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1)) ~> sink1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
 		}
 	}
 }
