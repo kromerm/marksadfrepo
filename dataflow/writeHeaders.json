@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "folderout",
+						"referenceName": "folderout_noheaders",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -49,10 +49,16 @@
 					"name": "SurrogateKey1"
 				},
 				{
-					"name": "DerivedColumn1"
+					"name": "Filter2"
+				},
+				{
+					"name": "Union1"
+				},
+				{
+					"name": "Filter3"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 filter(false()) ~> Filter1\nFilter1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nzeroRowsCheck@default derive(rownum = 1) ~> DerivedColumn1\nzeroRowsCheck@zeroRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1)) ~> sink1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 filter(false()) ~> Filter1\nFilter1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownum == 1) ~> Filter2\nzeroRowsCheck@zeroRows, Filter2 union(byName: true)~> Union1\nUnion1 filter(rownum == 1) ~> Filter3\nFilter3 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tmapColumn(\n\t\teach(match(name != 'rowcount' && name != 'rownum'))\n\t),\n\tpartitionBy('hash', 1)) ~> sink1\nzeroRowsCheck@default sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
 		}
 	}
 }
