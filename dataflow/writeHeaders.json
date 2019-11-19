@@ -37,9 +37,6 @@
 			],
 			"transformations": [
 				{
-					"name": "Filter1"
-				},
-				{
 					"name": "rowCount"
 				},
 				{
@@ -53,9 +50,15 @@
 				},
 				{
 					"name": "Union1"
+				},
+				{
+					"name": "Union2"
+				},
+				{
+					"name": "origdata"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 filter(false()) ~> Filter1\nFilter1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownum == 1) ~> Filter2\nzeroRowsCheck@zeroRows, Filter2 union(byName: true)~> Union1\nUnion1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tmapColumn(\n\t\teach(match(name != 'rowcount' && name != 'rownum'))\n\t),\n\tpartitionBy('hash', 1)) ~> sink1\nzeroRowsCheck@default sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownum == 1) ~> Filter2\nzeroRowsCheck@zeroRows, Filter2 union(byName: true)~> Union1\nzeroRowsCheck@default, origdata union(byName: true)~> Union2\nsource1 select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> origdata\nUnion1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tmapColumn(\n\t\teach(match(name != 'rowcount' && name != 'rownum'))\n\t),\n\tpartitionBy('hash', 1)) ~> sink1\nUnion2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tmapColumn(\n\t\teach(match(name != 'rowcount'))\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
 		}
 	}
 }
