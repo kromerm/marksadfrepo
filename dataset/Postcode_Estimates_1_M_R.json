@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Postcode_Estimates_1_M_R.csv",
 				"folderPath": "SampleData/USQL",
 				"container": "mycontainer"
 			},
