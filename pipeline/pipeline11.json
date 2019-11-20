@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow3",
+						"referenceName": "dataflowZip",
 						"type": "DataFlowReference"
 					}
 				}
