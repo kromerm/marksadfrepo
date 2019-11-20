@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "moviesCompressed",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
