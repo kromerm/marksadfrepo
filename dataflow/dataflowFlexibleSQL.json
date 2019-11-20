@@ -1,0 +1,20 @@
+{
+	"name": "dataflowFlexibleSQL",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Postcode_Estimates_1_M_R",
+						"type": "DatasetReference"
+					},
+					"name": "wildcard"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> wildcard"
+		}
+	}
+}
