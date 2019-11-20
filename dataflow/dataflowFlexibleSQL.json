@@ -9,12 +9,27 @@
 						"referenceName": "Postcode_Estimates",
 						"type": "DatasetReference"
 					},
-					"name": "wildcard"
+					"name": "TweetsWildcard"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimCustomerDimProduct",
+						"type": "DatasetReference"
+					},
+					"name": "AWTables"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SQLTweets",
+						"type": "DatasetReference"
+					},
+					"name": "singleSQLTable"
+				}
+			],
 			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filename',\n\twildcardPaths:['SampleData/USQL/*.csv']) ~> wildcard"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filename',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> AWTables\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable"
 		}
 	}
 }

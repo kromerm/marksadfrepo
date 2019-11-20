@@ -1,5 +1,5 @@
 {
-	"name": "Postcode_Estimates",
+	"name": "DimCustomerDimProduct",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -12,9 +12,8 @@
 				"type": "AzureBlobStorageLocation",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "|",
 			"escapeChar": "\\",
-			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
 		"schema": []
