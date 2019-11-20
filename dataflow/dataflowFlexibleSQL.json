@@ -14,7 +14,7 @@
 			],
 			"sinks": [],
 			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> wildcard"
+			"script": "\n\nsource(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filename',\n\twildcardPaths:['SampleData/USQL/*.csv']) ~> wildcard"
 		}
 	}
 }
