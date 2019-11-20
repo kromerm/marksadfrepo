@@ -16,7 +16,7 @@
 						"referenceName": "DimCustomerDimProduct",
 						"type": "DatasetReference"
 					},
-					"name": "AWTables"
+					"name": "AWTableFiles"
 				}
 			],
 			"sinks": [
@@ -28,8 +28,12 @@
 					"name": "singleSQLTable"
 				}
 			],
-			"transformations": [],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenamea',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenameb',\n\twildcardPaths:['SampleData/AW/{DimProduct.csv,DimCustomer.csv}']) ~> AWTables\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable"
+			"transformations": [
+				{
+					"name": "splitOnFile"
+				}
+			],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenamea',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenameb',\n\twildcardPaths:['SampleData/AW/{DimProduct.csv,DimCustomer.csv}']) ~> AWTableFiles\nAWTableFiles split(instr(filenameb ,'DimCustomer.csv') > 0,\n\tdisjoint: false) ~> splitOnFile@(Customers, Products)\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable"
 		}
 	}
 }
