@@ -1,5 +1,5 @@
 {
-	"name": "Postcode_Estimates_1_M_R",
+	"name": "Postcode_Estimates",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",

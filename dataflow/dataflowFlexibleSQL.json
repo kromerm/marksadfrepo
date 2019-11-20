@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Postcode_Estimates_1_M_R",
+						"referenceName": "Postcode_Estimates",
 						"type": "DatasetReference"
 					},
 					"name": "wildcard"
