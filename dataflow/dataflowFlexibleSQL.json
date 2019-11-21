@@ -13,10 +13,10 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "DimCustomerDimProduct",
+						"referenceName": "TaxiFiles",
 						"type": "DatasetReference"
 					},
-					"name": "AWTableFiles"
+					"name": "TaxiFiles"
 				}
 			],
 			"sinks": [
@@ -30,10 +30,10 @@
 			],
 			"transformations": [
 				{
-					"name": "Select1"
+					"name": "ConditionalSplit1"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenamea',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenameb',\n\twildcardPaths:['SampleData/AW/{DimProduct.csv,DimCustomer.csv}']) ~> AWTableFiles\nAWTableFiles select(mapColumn(\n\t\tfilenameb\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenamea',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenameb',\n\twildcardPaths:['SampleData/{trip_fare_1.csv,trip_data_1.csv,}']) ~> TaxiFiles\nTaxiFiles split(false(),\n\tinstr(filenameb , 'data') > 0,\n\tdisjoint: false) ~> ConditionalSplit1@(dummy, trip, fare)\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable"
 		}
 	}
 }

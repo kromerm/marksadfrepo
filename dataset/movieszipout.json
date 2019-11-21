@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "part-00000-tid-3773758831430708181-152b617c-7ce6-4499-9126-821dfeb879a1-1900-1-c000.csv.gz",
+				"fileName": "movieszip.gzip",
 				"folderPath": "output/moviefile",
 				"container": "mycontainer"
 			},
