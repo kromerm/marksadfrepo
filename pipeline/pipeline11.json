@@ -16,16 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflowFlexibleSQL",
-						"type": "DataFlowReference",
-						"parameters": {
-							"filename": "'moviesDB.csv'"
-						},
-						"datasetParameters": {
-							"sinkParams": {
-								"mytablename": "MoviesWithRatings"
-							}
-						}
+						"referenceName": "Loans",
+						"type": "DataFlowReference"
 					}
 				}
 			}
