@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "movieparts",
+				"name": "flexibleDataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
