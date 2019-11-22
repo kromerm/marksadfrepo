@@ -1,0 +1,42 @@
+{
+	"name": "Parquet4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MoviesADLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "part-00000-tid-2881408168480848687-d867f73b-2876-4cd7-b66c-bc7d4fe6abc2-5594-425.c000.snappy.parquet",
+				"folderPath": "output/parts/movies/movie=111228",
+				"fileSystem": "mycontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "title",
+				"type": "UTF8"
+			},
+			{
+				"name": "genres",
+				"type": "UTF8"
+			},
+			{
+				"name": "year",
+				"type": "UTF8"
+			},
+			{
+				"name": "Rating",
+				"type": "UTF8"
+			},
+			{
+				"name": "RottonTomato",
+				"type": "UTF8"
+			}
+		]
+	}
+}
