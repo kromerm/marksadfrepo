@@ -5,32 +5,6 @@
 			{
 				"name": "movieparts",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Copy data1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflowZip",
-						"type": "DataFlowReference"
-					}
-				}
-			},
-			{
-				"name": "Copy data1",
-				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -41,41 +15,19 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+					"dataflow": {
+						"referenceName": "dataflowFlexibleSQL",
+						"type": "DataFlowReference",
+						"parameters": {
+							"filename": "'moviesDB.csv'"
 						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
+						"datasetParameters": {
+							"sinkParams": {
+								"mytablename": "MoviesWithRatings"
+							}
 						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "MoviesD2",
-						"type": "DatasetReference"
 					}
-				],
-				"outputs": [
-					{
-						"referenceName": "movieszipout",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			}
 		],
 		"variables": {
