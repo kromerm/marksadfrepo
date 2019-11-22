@@ -1,5 +1,5 @@
 {
-	"name": "Postcode_Estimates",
+	"name": "tweets",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",

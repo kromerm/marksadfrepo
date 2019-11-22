@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Postcode_Estimates",
+						"referenceName": "tweets",
 						"type": "DatasetReference"
 					},
 					"name": "singleSource"
