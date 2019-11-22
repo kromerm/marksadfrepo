@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "output/parts",
+				"folderPath": "output/parts/taxi",
 				"fileSystem": "mycontainer"
 			},
 			"compressionCodec": "snappy"
