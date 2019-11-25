@@ -16,8 +16,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow4",
-						"type": "DataFlowReference"
+						"referenceName": "dataflowFlexibleSQL",
+						"type": "DataFlowReference",
+						"parameters": {
+							"filename": "'moviesDB.csv'"
+						},
+						"datasetParameters": {
+							"sinkParams": {
+								"mytablename": "MoviesWithRatings"
+							}
+						}
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
