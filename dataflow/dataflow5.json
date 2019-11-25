@@ -1,0 +1,28 @@
+{
+	"name": "dataflow5",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Parquet6",
+						"type": "DatasetReference"
+					},
+					"name": "movies"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "Filter1"
+				},
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				}
+			],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'myfilename',\n\tpartitionRootPath: 'movies',\n\tformat: 'parquet',\n\twildcardPaths:['output/parts/movies/*/*.parquet']) ~> movies\nMapDrifted1 filter(title == 'Toy Story' || title == 'Mark Story') ~> Filter1\nmovies derive(movie = toString(byName('movie')),\n\t\ttitle = toString(byName('title')),\n\t\tgenres = toString(byName('genres')),\n\t\tRating = toString(byName('Rating')),\n\t\tRottonTomato = toString(byName('RottonTomato')),\n\t\tyear = toInteger(byName('year')),\n\t\tmyfilename = toString(byName('myfilename'))) ~> MapDrifted1"
+		}
+	}
+}
