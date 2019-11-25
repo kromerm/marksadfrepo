@@ -49,8 +49,15 @@
 						}
 					},
 					"sink": {
-						"type": "CosmosDbSqlApiSink",
-						"writeBehavior": "insert"
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -58,62 +65,86 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['SQLNSRRecursive']"
+									"path": "$['latest']"
 								},
 								"sink": {
-									"path": "$['SQLNSRRecursive']"
+									"name": "latest"
 								}
 							},
 							{
 								"source": {
-									"path": "$['SQLNSRCreateTable']"
+									"path": "$['employees']['5487']['id']"
 								},
 								"sink": {
-									"path": "$['SQLNSRCreateTable']"
+									"name": "id"
 								}
 							},
 							{
 								"source": {
-									"path": "$['SQLNSRCopyMode']"
+									"path": "$['employees']['5487']['action']"
 								},
 								"sink": {
-									"path": "$['SQLNSRCopyMode']"
+									"name": "action"
 								}
 							},
 							{
 								"source": {
-									"path": "$['SQLNSRFileFilter']"
+									"path": "$['employees']['5487']['lastChanged']"
 								},
 								"sink": {
-									"path": "$['SQLNSRFileFilter']"
+									"name": "lastChanged"
 								}
 							},
 							{
 								"source": {
-									"path": "['Folder']"
+									"path": "$['employees']['5491']['id']"
 								},
 								"sink": {
-									"path": "$['SQLNSRArray'][0]['Folder']"
+									"name": "id"
 								}
 							},
 							{
 								"source": {
-									"path": "['table']"
+									"path": "$['employees']['5491']['action']"
 								},
 								"sink": {
-									"path": "$['SQLNSRArray'][0]['table']"
+									"name": "action"
 								}
 							},
 							{
 								"source": {
-									"path": "$['UpsertEnable']"
+									"path": "$['employees']['5491']['lastChanged']"
 								},
 								"sink": {
-									"path": "$['UpsertEnable']"
+									"name": "lastChanged"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5525']['id']"
+								},
+								"sink": {
+									"name": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5525']['action']"
+								},
+								"sink": {
+									"name": "action"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5525']['lastChanged']"
+								},
+								"sink": {
+									"name": "lastChanged"
 								}
 							}
 						],
-						"collectionReference": "$['SQLNSRArray']"
+						"collectionReference": ""
 					}
 				},
 				"inputs": [
@@ -124,7 +155,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "cosmoscoke",
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					}
 				]
