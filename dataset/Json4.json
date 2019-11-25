@@ -10,42 +10,63 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "coke.json",
-				"folderPath": "SampleData",
+				"fileName": "myjson2.json",
+				"folderPath": "SampleData/json",
 				"container": "mycontainer"
 			}
 		},
 		"schema": {
 			"type": "object",
 			"properties": {
-				"SQLNSRRecursive": {
+				"latest": {
 					"type": "string"
 				},
-				"SQLNSRCreateTable": {
-					"type": "string"
-				},
-				"SQLNSRCopyMode": {
-					"type": "string"
-				},
-				"SQLNSRFileFilter": {
-					"type": "string"
-				},
-				"SQLNSRArray": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"properties": {
-							"Folder": {
-								"type": "string"
-							},
-							"table": {
-								"type": "string"
+				"employees": {
+					"type": "object",
+					"properties": {
+						"5487": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								},
+								"action": {
+									"type": "string"
+								},
+								"lastChanged": {
+									"type": "string"
+								}
+							}
+						},
+						"5491": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								},
+								"action": {
+									"type": "string"
+								},
+								"lastChanged": {
+									"type": "string"
+								}
+							}
+						},
+						"5525": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								},
+								"action": {
+									"type": "string"
+								},
+								"lastChanged": {
+									"type": "string"
+								}
 							}
 						}
 					}
-				},
-				"UpsertEnable": {
-					"type": "string"
 				}
 			}
 		}
