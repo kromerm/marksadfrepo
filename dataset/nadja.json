@@ -1,20 +1,19 @@
 {
-	"name": "ParquetStage",
+	"name": "nadja",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "Parquet",
+		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/DWstaging",
+				"fileName": "STDADM_T431_STSTOCK_2019-01.json",
+				"folderPath": "SampleData/json",
 				"container": "mycontainer"
-			},
-			"compressionCodec": "snappy"
-		},
-		"schema": []
+			}
+		}
 	}
 }
