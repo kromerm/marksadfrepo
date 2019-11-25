@@ -5,7 +5,14 @@
 			{
 				"name": "movieparts2",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -20,6 +27,107 @@
 						"type": "DataFlowReference"
 					}
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBehavior": "insert"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['SQLNSRRecursive']"
+								},
+								"sink": {
+									"path": "$['SQLNSRRecursive']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SQLNSRCreateTable']"
+								},
+								"sink": {
+									"path": "$['SQLNSRCreateTable']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SQLNSRCopyMode']"
+								},
+								"sink": {
+									"path": "$['SQLNSRCopyMode']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SQLNSRFileFilter']"
+								},
+								"sink": {
+									"path": "$['SQLNSRFileFilter']"
+								}
+							},
+							{
+								"source": {
+									"path": "['Folder']"
+								},
+								"sink": {
+									"path": "$['SQLNSRArray'][0]['Folder']"
+								}
+							},
+							{
+								"source": {
+									"path": "['table']"
+								},
+								"sink": {
+									"path": "$['SQLNSRArray'][0]['table']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['UpsertEnable']"
+								},
+								"sink": {
+									"path": "$['UpsertEnable']"
+								}
+							}
+						],
+						"collectionReference": "$['SQLNSRArray']"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json4",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "cosmoscoke",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
