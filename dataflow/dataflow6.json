@@ -5,27 +5,12 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "MoviesD2",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
-				},
-				{
-					"dataset": {
-						"referenceName": "MoviesD2",
-						"type": "DatasetReference"
-					},
-					"name": "source2"
 				}
 			],
 			"sinks": [],
-			"transformations": [
-				{
-					"name": "Join1"
-				}
-			],
-			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource1, source2 join(source1@movie == source2@movie || source1@title == source2@title,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> Join1"
+			"transformations": [],
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
 		}
 	}
 }
