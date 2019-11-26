@@ -1,5 +1,5 @@
 {
-	"name": "SQLPerf",
+	"name": "SQLPerf1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
