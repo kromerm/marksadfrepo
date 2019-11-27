@@ -3,32 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Dataflow",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "SQLPerf",
-						"type": "DataFlowReference"
-					},
-					"staging": {
-						"linkedService": {
-							"referenceName": "AzureBlobStorage1",
-							"type": "LinkedServiceReference"
-						},
-						"folderPath": "mycontainer"
-					}
-				}
-			},
-			{
 				"name": "Get Metadata1",
 				"type": "GetMetadata",
 				"dependsOn": [],
@@ -58,8 +32,8 @@
 				}
 			},
 			{
-				"name": "If Condition1",
-				"type": "IfCondition",
+				"name": "dataflow2",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
 						"activity": "Get Metadata1",
@@ -68,17 +42,30 @@
 						]
 					}
 				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"expression": {
-						"value": "@activity('Get Metadata1').output.childItems)",
-						"type": "Expression"
+					"dataflow": {
+						"referenceName": "dataflow2",
+						"type": "DataFlowReference",
+						"parameters": {
+							"mycount": {
+								"value": "'@{length(@activity('Get Metadata1').output.childItems)}'",
+								"type": "Expression"
+							}
+						}
 					}
 				}
 			}
 		],
 		"parameters": {
-			"countfiles": {
+			"mycount": {
 				"type": "int"
 			}
 		},
