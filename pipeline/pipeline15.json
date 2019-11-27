@@ -36,7 +36,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata1",
+						"activity": "Set variable1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -56,22 +56,37 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"mycount": {
-								"value": "'@{length(@activity('Get Metadata1').output.childItems)}'",
+								"value": "'@{length(variables('countoffiles'))}'",
 								"type": "Expression"
 							}
 						}
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "countoffiles",
+					"value": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					}
+				}
 			}
 		],
-		"parameters": {
-			"mycount": {
-				"type": "int"
-			}
-		},
 		"variables": {
 			"countoffiles": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
