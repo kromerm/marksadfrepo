@@ -1,5 +1,5 @@
 {
-	"name": "pipeline15",
+	"name": "filecount",
 	"properties": {
 		"activities": [
 			{
