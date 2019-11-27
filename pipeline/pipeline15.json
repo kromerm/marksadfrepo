@@ -5,14 +5,7 @@
 			{
 				"name": "Dataflow",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -65,8 +58,8 @@
 				}
 			},
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "If Condition1",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "Get Metadata1",
@@ -75,9 +68,20 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('Get Metadata1').output.childItems)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"countfiles": {
+				"type": "int"
+			}
+		},
 		"variables": {
 			"countoffiles": {
 				"type": "String"
