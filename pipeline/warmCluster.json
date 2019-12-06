@@ -27,7 +27,7 @@
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
-						"referenceName": "smallcluster",
+						"referenceName": "myDataFlowCluster",
 						"type": "IntegrationRuntimeReference"
 					}
 				}
@@ -57,7 +57,7 @@
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
-						"referenceName": "smallcluster",
+						"referenceName": "myDataFlowCluster",
 						"type": "IntegrationRuntimeReference"
 					}
 				}
@@ -80,7 +80,7 @@
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
-						"referenceName": "smallcluster",
+						"referenceName": "myDataFlowCluster",
 						"type": "IntegrationRuntimeReference"
 					}
 				}
