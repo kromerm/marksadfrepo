@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "cosmosAWAnalytics",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"myparam": "123"
+						}
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
