@@ -18,31 +18,39 @@
 		},
 		"schema": [
 			{
-				"name": "Prop_0",
+				"name": "MovieIdDupe",
+				"type": "INT32"
+			},
+			{
+				"name": "ActionDupe",
 				"type": "UTF8"
 			},
 			{
-				"name": "Prop_1",
+				"name": "MovieId",
+				"type": "INT32"
+			},
+			{
+				"name": "Title",
 				"type": "UTF8"
 			},
 			{
-				"name": "Prop_2",
+				"name": "Genre",
 				"type": "UTF8"
 			},
 			{
-				"name": "Prop_3",
-				"type": "UTF8"
+				"name": "Year",
+				"type": "INT32"
 			},
 			{
-				"name": "Prop_4",
-				"type": "UTF8"
+				"name": "Rating",
+				"type": "INT32"
 			},
 			{
-				"name": "Prop_5",
-				"type": "UTF8"
+				"name": "RottenTom",
+				"type": "INT32"
 			},
 			{
-				"name": "Prop_6",
+				"name": "Action",
 				"type": "UTF8"
 			}
 		]
