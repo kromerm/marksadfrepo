@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Notebook",
+				"name": "ExecDataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "movieparts",
+						"referenceName": "DistinctRows",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
