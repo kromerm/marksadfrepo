@@ -11,46 +11,38 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "moviesoutnew.parquet",
-				"folderPath": "movies/output",
+				"folderPath": "movies",
 				"fileSystem": "mycontainer"
 			},
 			"compressionCodec": "snappy"
 		},
 		"schema": [
 			{
-				"name": "MovieIdDupe",
-				"type": "INT32"
-			},
-			{
-				"name": "ActionDupe",
+				"name": "Prop_0",
 				"type": "UTF8"
 			},
 			{
-				"name": "MovieId",
-				"type": "INT32"
-			},
-			{
-				"name": "Title",
+				"name": "Prop_1",
 				"type": "UTF8"
 			},
 			{
-				"name": "Genre",
+				"name": "Prop_2",
 				"type": "UTF8"
 			},
 			{
-				"name": "Year",
-				"type": "INT32"
+				"name": "Prop_3",
+				"type": "UTF8"
 			},
 			{
-				"name": "Rating",
-				"type": "INT32"
+				"name": "Prop_4",
+				"type": "UTF8"
 			},
 			{
-				"name": "RottenTom",
-				"type": "INT32"
+				"name": "Prop_5",
+				"type": "UTF8"
 			},
 			{
-				"name": "Action",
+				"name": "Prop_6",
 				"type": "UTF8"
 			}
 		]
