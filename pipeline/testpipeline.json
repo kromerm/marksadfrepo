@@ -1,5 +1,5 @@
 {
-	"name": "DistinctRows",
+	"name": "testpipeline",
 	"properties": {
 		"activities": [
 			{
@@ -20,7 +20,7 @@
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
-						"referenceName": "dataflowcluster",
+						"referenceName": "myDataFlowCluster",
 						"type": "IntegrationRuntimeReference"
 					}
 				}

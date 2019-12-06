@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Notebook",
+				"name": "ExecDataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,16 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflowFlexibleSQL",
-						"type": "DataFlowReference",
-						"parameters": {
-							"filename": "'moviesDB.csv'"
-						},
-						"datasetParameters": {
-							"sinkParams": {
-								"mytablename": "MoviesWithRatings"
-							}
-						}
+						"referenceName": "DistinctRows",
+						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
