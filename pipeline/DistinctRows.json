@@ -18,6 +18,10 @@
 					"dataflow": {
 						"referenceName": "DistinctRows",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "dataflowcluster",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
