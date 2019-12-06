@@ -20,7 +20,7 @@
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
-						"referenceName": "mylargecluster",
+						"referenceName": "myDataFlowCluster",
 						"type": "IntegrationRuntimeReference"
 					}
 				}
