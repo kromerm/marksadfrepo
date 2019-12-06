@@ -1,19 +1,23 @@
 {
-	"name": "ParquetStage",
+	"name": "MoviesD2Header",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "Parquet",
+		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/DWstaging",
+				"fileName": "moviesDB.csv",
+				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
-			"compressionCodec": "snappy"
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
 		},
 		"schema": []
 	}

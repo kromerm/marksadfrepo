@@ -1,0 +1,67 @@
+{
+	"name": "tripfareSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "medallion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hack_license",
+				"type": "nvarchar"
+			},
+			{
+				"name": "vendor_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pickup_datetime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "payment_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "fare_amount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "surcharge",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "mta_tax",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "tip_amount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "tolls_amount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "total_amount",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TripFare"
+		}
+	}
+}

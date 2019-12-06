@@ -1,0 +1,32 @@
+{
+	"name": "dataflow4",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json4",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tlatest as string,\n\t\temployees as ({5487} as (id as string, action as string, lastChanged as string), {5491} as (id as string, action as string, lastChanged as string), {5525} as (id as string, action as string, lastChanged as string))\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tsingleDocument: true) ~> source1\nsource1 derive(employee1 = employees.{5487}.id) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myjson.csv'],\n\tmapColumn(\n\t\tlatest,\n\t\temployees\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

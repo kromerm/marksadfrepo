@@ -1,0 +1,71 @@
+{
+	"name": "dataflowFlexibleSQL",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "tweets",
+						"type": "DatasetReference"
+					},
+					"name": "TweetsWildcard"
+				},
+				{
+					"dataset": {
+						"referenceName": "TaxiFiles",
+						"type": "DatasetReference"
+					},
+					"name": "TaxiFiles"
+				},
+				{
+					"dataset": {
+						"referenceName": "genericsources",
+						"type": "DatasetReference"
+					},
+					"name": "sourceParams"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SQLTweets",
+						"type": "DatasetReference"
+					},
+					"name": "singleSQLTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "tripdataSQL",
+						"type": "DatasetReference"
+					},
+					"name": "loadTripDataSQL"
+				},
+				{
+					"dataset": {
+						"referenceName": "tripfareSQL",
+						"type": "DatasetReference"
+					},
+					"name": "loadTripDataFare"
+				},
+				{
+					"dataset": {
+						"referenceName": "dbTargetParams",
+						"type": "DatasetReference"
+					},
+					"name": "sinkParams"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				}
+			],
+			"script": "\nparameters{\n\tfilename as string ('moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenamea',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenameb',\n\twildcardPaths:['SampleData/{trip_fare_1.csv,trip_data_1.csv,}']) ~> TaxiFiles\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('SampleData/movies/'+$filename)]) ~> sourceParams\nMapDrifted1 split(instr(filenameb , 'data') > 0,\n\tdisjoint: false) ~> ConditionalSplit1@(trip, fare)\nTaxiFiles derive(medallion = toString(byName('medallion')),\n\t\t{ hack_license} = toString(byName(' hack_license')),\n\t\t{ vendor_id} = toString(byName(' vendor_id')),\n\t\t{ pickup_datetime} = toString(byName(' pickup_datetime')),\n\t\t{ payment_type} = toString(byName(' payment_type')),\n\t\t{ fare_amount} = toString(byName(' fare_amount')),\n\t\t{ surcharge} = toString(byName(' surcharge')),\n\t\t{ mta_tax} = toString(byName(' mta_tax')),\n\t\t{ tip_amount} = toString(byName(' tip_amount')),\n\t\t{ tolls_amount} = toString(byName(' tolls_amount')),\n\t\t{ total_amount} = toString(byName(' total_amount'))) ~> MapDrifted1\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable\nConditionalSplit1@trip sink(input(\n\t\tmedallion as string,\n\t\thack_license as string,\n\t\tvendor_id as string,\n\t\trate_code as string,\n\t\tstore_and_fwd_flag as string,\n\t\tpickup_datetime as string,\n\t\tdropoff_datetime as string,\n\t\tpassenger_count as integer,\n\t\ttrip_time_in_secs as long,\n\t\ttrip_distance as double,\n\t\tpickup_longitude as double,\n\t\tpickup_latitude as double,\n\t\tdropoff_longitude as double,\n\t\tdropoff_latitude as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\thack_license = { hack_license},\n\t\teach(match(name!='filenameb'))\n\t)) ~> loadTripDataSQL\nConditionalSplit1@fare sink(input(\n\t\tmedallion as string,\n\t\thack_license as string,\n\t\tvendor_id as string,\n\t\tpickup_datetime as string,\n\t\tpayment_type as string,\n\t\tfare_amount as double,\n\t\tsurcharge as double,\n\t\tmta_tax as double,\n\t\ttip_amount as double,\n\t\ttolls_amount as double,\n\t\ttotal_amount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tmedallion,\n\t\thack_license = { hack_license},\n\t\tvendor_id = { vendor_id},\n\t\tpickup_datetime = { pickup_datetime},\n\t\tpayment_type = { payment_type},\n\t\tfare_amount = { fare_amount}\n\t)) ~> loadTripDataFare\nsourceParams sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table') ~> sinkParams"
+		}
+	}
+}

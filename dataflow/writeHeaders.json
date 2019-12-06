@@ -1,0 +1,67 @@
+{
+	"name": "writeHeaders",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "MoviesD2Header",
+						"type": "DatasetReference"
+					},
+					"name": "sourceJustHeaders"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout_noheaders",
+						"type": "DatasetReference"
+					},
+					"name": "sinkJustHeader"
+				},
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sinkFullData"
+				}
+			],
+			"transformations": [
+				{
+					"name": "rowCount"
+				},
+				{
+					"name": "zeroRowsCheck"
+				},
+				{
+					"name": "SurrogateKey1"
+				},
+				{
+					"name": "justHeaderRow"
+				},
+				{
+					"name": "Union1"
+				},
+				{
+					"name": "Union2"
+				},
+				{
+					"name": "origdata"
+				},
+				{
+					"name": "removeNull"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nsource1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownum == 1) ~> justHeaderRow\nzeroRowsCheck@zeroRows, justHeaderRow union(byName: true)~> Union1\nzeroRowsCheck@default, origdata union(byName: true)~> Union2\nsource1 select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> origdata\nUnion2 filter(isNull(rowcount)) ~> removeNull\nUnion1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tmapColumn(\n\t\teach(match(name != 'rowcount' && name != 'rownum'))\n\t),\n\tpartitionBy('hash', 1)) ~> sinkJustHeader\nremoveNull sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movieheaders.csv'],\n\tmapColumn(\n\t\teach(match(name != 'rowcount'))\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sinkFullData"
+		}
+	}
+}

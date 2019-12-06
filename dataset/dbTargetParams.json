@@ -7,9 +7,11 @@
 		},
 		"parameters": {
 			"mytablename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "MoviesWithRatings"
 			}
 		},
+		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {

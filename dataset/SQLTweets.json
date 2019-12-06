@@ -1,5 +1,5 @@
 {
-	"name": "loansDB",
+	"name": "SQLTweets",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "loans"
+			"table": "tweets"
 		}
 	}
 }

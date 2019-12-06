@@ -1,17 +1,16 @@
 {
-	"name": "ParquetStage",
+	"name": "Parquet6",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "MoviesADLS",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/DWstaging",
-				"container": "mycontainer"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "mycontainer"
 			},
 			"compressionCodec": "snappy"
 		},

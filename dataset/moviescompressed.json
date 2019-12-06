@@ -1,21 +1,25 @@
 {
-	"name": "USDOutput1",
+	"name": "moviescompressed",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/taxipaymentout",
+				"folderPath": "output/moviefile",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": "\t",
-			"firstRowAsHeader": false
+			"columnDelimiter": ",",
+			"compressionCodec": "gzip",
+			"compressionLevel": "Fastest",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

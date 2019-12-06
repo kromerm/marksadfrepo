@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "movieparts",
+				"name": "executedataflow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "movieparts",
+						"referenceName": "SQLPerf1",
 						"type": "DataFlowReference"
 					}
 				}

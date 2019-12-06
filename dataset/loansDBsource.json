@@ -1,321 +1,344 @@
 {
-	"name": "Loans",
+	"name": "loansDBsource",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
-		"typeProperties": {
-			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": "loan.csv",
-				"folderPath": "SampleData",
-				"container": "mycontainer"
-			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
-		},
+		"type": "AzureSqlTable",
 		"schema": [
 			{
 				"name": "id",
-				"type": "String"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "member_id",
-				"type": "String"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "loan_amnt",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "funded_amnt",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "funded_amnt_inv",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "term",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "int_rate",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "installment",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "grade",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "sub_grade",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "emp_title",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "emp_length",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "home_ownership",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "annual_inc",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "verification_status",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "issue_d",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "loan_status",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "pymnt_plan",
-				"type": "String"
+				"type": "bit"
 			},
 			{
 				"name": "url",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "desc",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "purpose",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "title",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "zip_code",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "addr_state",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "dti",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "delinq_2yrs",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "earliest_cr_line",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "inq_last_6mths",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "mths_since_last_delinq",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "mths_since_last_record",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "open_acc",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "pub_rec",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "revol_bal",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "revol_util",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "total_acc",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "initial_list_status",
-				"type": "String"
+				"type": "bit"
 			},
 			{
 				"name": "out_prncp",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "out_prncp_inv",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "total_pymnt",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "total_pymnt_inv",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "total_rec_prncp",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "total_rec_int",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "total_rec_late_fee",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "recoveries",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "collection_recovery_fee",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "last_pymnt_d",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "last_pymnt_amnt",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "next_pymnt_d",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "last_credit_pull_d",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "collections_12_mths_ex_med",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "mths_since_last_major_derog",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "policy_code",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "application_type",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "annual_inc_joint",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "dti_joint",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "verification_status_joint",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "acc_now_delinq",
-				"type": "String"
+				"type": "float",
+				"precision": 15
 			},
 			{
 				"name": "tot_coll_amt",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "tot_cur_bal",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "open_acc_6m",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "open_il_6m",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "open_il_12m",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "open_il_24m",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "mths_since_rcnt_il",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "total_bal_il",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "il_util",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "open_rv_12m",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "open_rv_24m",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "max_bal_bc",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "all_util",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "total_rev_hi_lim",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "inq_fi",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "total_cu_tl",
-				"type": "String"
+				"type": "nvarchar"
 			},
 			{
 				"name": "inq_last_12m",
-				"type": "String"
+				"type": "nvarchar"
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "loans"
+		}
 	}
 }

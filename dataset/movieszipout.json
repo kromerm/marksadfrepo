@@ -1,5 +1,5 @@
 {
-	"name": "fixedwidth",
+	"name": "movieszipout",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -10,19 +10,17 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "fixed.txt",
-				"folderPath": "SampleData",
+				"fileName": "movieszip.gzip",
+				"folderPath": "output/moviefile",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": "",
-			"rowDelimiter": "",
+			"columnDelimiter": ",",
+			"compressionCodec": "gzip",
+			"compressionLevel": "Fastest",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

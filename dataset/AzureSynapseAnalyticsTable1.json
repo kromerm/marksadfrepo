@@ -1,16 +1,16 @@
 {
-	"name": "loansDB",
+	"name": "AzureSynapseAnalyticsTable1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
+			"referenceName": "AzureSqlDW1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "AzureSqlTable",
+		"type": "AzureSqlDWTable",
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "loans"
+			"table": "loansDW"
 		}
 	}
 }

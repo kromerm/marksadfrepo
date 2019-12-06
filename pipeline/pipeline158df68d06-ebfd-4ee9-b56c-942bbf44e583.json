@@ -1,0 +1,140 @@
+{
+	"name": "pipeline158df68d06-ebfd-4ee9-b56c-942bbf44e583",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['latest']"
+								},
+								"sink": {
+									"name": "latest"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5487']['id']"
+								},
+								"sink": {
+									"name": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5487']['action']"
+								},
+								"sink": {
+									"name": "action"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5487']['lastChanged']"
+								},
+								"sink": {
+									"name": "lastChanged"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5491']['id']"
+								},
+								"sink": {
+									"name": "id2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5491']['action']"
+								},
+								"sink": {
+									"name": "action2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5491']['lastChanged']"
+								},
+								"sink": {
+									"name": "lastChanged2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5525']['id']"
+								},
+								"sink": {
+									"name": "id3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5525']['action']"
+								},
+								"sink": {
+									"name": "action3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employees']['5525']['lastChanged']"
+								},
+								"sink": {
+									"name": "lastChanged3"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json4",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
