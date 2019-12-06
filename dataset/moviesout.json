@@ -5,13 +5,13 @@
 			"referenceName": "MoviesADLS",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "moviesout.csv",
 				"folderPath": "movies/output",
-				"container": "mycontainer"
+				"fileSystem": "mycontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
