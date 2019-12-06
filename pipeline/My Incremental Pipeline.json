@@ -165,7 +165,10 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "deleteRows",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"movieName": "'Toy Story'"
+						}
 					}
 				}
 			},
@@ -221,8 +224,35 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "A_G",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					}
+				]
 			},
 			{
 				"name": "SendEmail",
@@ -242,7 +272,11 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://www.yahoo.com",
+					"method": "POST"
+				}
 			}
 		],
 		"folder": {
