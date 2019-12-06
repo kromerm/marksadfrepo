@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DistinctRows",
+						"referenceName": "fuzzyLookup",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
