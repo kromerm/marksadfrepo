@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "sqlperf4",
+						"referenceName": "SQLPerf2",
 						"type": "DataFlowReference"
 					},
 					"staging": {
