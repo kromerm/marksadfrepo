@@ -16,8 +16,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "fuzzyLookup",
+						"referenceName": "SQLPerf2",
 						"type": "DataFlowReference"
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "mycontainer/staging"
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
