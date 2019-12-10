@@ -1,0 +1,42 @@
+{
+	"name": "Json5",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "redacted_sample.json",
+				"folderPath": "SampleData/json",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"InvoiceId": {
+					"type": "string"
+				},
+				"PayorOrgId": {
+					"type": "string"
+				},
+				"Status": {
+					"type": "string"
+				},
+				"StatusNote": {
+					"type": "string"
+				},
+				"StatusDate": {
+					"type": "string"
+				},
+				"PayorOrgEBillingId": {
+					"type": "integer"
+				}
+			}
+		}
+	}
+}
