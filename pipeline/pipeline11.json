@@ -22,11 +22,81 @@
 							"recursive": true
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": "*.csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['InvoiceId']"
+								},
+								"sink": {
+									"name": "InvoiceId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PayorOrgId']"
+								},
+								"sink": {
+									"name": "PayorOrgId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Status']"
+								},
+								"sink": {
+									"name": "Status"
+								}
+							},
+							{
+								"source": {
+									"path": "$['StatusNote']"
+								},
+								"sink": {
+									"name": "StatusNote"
+								}
+							},
+							{
+								"source": {
+									"path": "$['StatusDate']"
+								},
+								"sink": {
+									"name": "StatusDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PayorOrgEBillingId']"
+								},
+								"sink": {
+									"name": "PayorOrgEBillingId"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "Json5",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					}
 				]
