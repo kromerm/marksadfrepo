@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "DistinctRows",
+				"name": "DataMasking",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,19 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SQLPerf2",
+						"referenceName": "dataflow7",
 						"type": "DataFlowReference"
 					},
-					"staging": {
-						"linkedService": {
-							"referenceName": "AzureBlobStorage1",
-							"type": "LinkedServiceReference"
-						},
-						"folderPath": "mycontainer/staging"
-					},
-					"integrationRuntime": {
-						"referenceName": "myDataFlowCluster",
-						"type": "IntegrationRuntimeReference"
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			}

@@ -29,7 +29,7 @@
 					"name": "shapeShifter"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive({my bad __ Co$$!!!umn} = 1) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\teach(match(true()),\n\t\t\tregexReplace($$,`[^a-zA-Z0-9]`,'') = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> shapeShifter\nshapeShifter sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive({my bad __ Co$$!!!umn} = 1) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\teach(match(true()),\n\t\t\tregexReplace($$,`[^a-zA-Z0-9]`,'') = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> shapeShifter\nshapeShifter sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
 		}
 	}
 }
