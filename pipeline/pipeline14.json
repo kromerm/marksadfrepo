@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "DataMasking",
+				"name": "WriteHeaders",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow7",
+						"referenceName": "writeHeaders",
 						"type": "DataFlowReference"
 					},
 					"compute": {
