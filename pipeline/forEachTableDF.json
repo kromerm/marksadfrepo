@@ -1,10 +1,10 @@
 {
-	"name": "pipeline11",
+	"name": "forEachTableDF",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "Lookup1",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -16,90 +16,74 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "JsonSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
-						}
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT table_name FROM information_schema.tables WHERE table_type = 'base table' and table_name like 'Dim%';",
+						"queryTimeout": "02:00:00"
 					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": "*.csv"
-						}
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['InvoiceId']"
-								},
-								"sink": {
-									"name": "InvoiceId"
-								}
-							},
-							{
-								"source": {
-									"path": "$['PayorOrgId']"
-								},
-								"sink": {
-									"name": "PayorOrgId"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Status']"
-								},
-								"sink": {
-									"name": "Status"
-								}
-							},
-							{
-								"source": {
-									"path": "$['StatusNote']"
-								},
-								"sink": {
-									"name": "StatusNote"
-								}
-							},
-							{
-								"source": {
-									"path": "$['StatusDate']"
-								},
-								"sink": {
-									"name": "StatusDate"
-								}
-							},
-							{
-								"source": {
-									"path": "$['PayorOrgEBillingId']"
-								},
-								"sink": {
-									"name": "PayorOrgEBillingId"
-								}
-							}
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Json5",
-						"type": "DatasetReference"
-					}
 				],
-				"outputs": [
-					{
-						"referenceName": "folderout",
-						"type": "DatasetReference"
-					}
-				]
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "dataflow7",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "dataflow7",
+									"type": "DataFlowReference",
+									"datasetParameters": {
+										"source1": {
+											"tablename": {
+												"value": "@item().table_name",
+												"type": "Expression"
+											}
+										},
+										"sink1": {
+											"mytablename": {
+												"value": "@concat(item().table_name,'_new')",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
