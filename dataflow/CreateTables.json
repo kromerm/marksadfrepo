@@ -1,5 +1,5 @@
 {
-	"name": "dataflow7",
+	"name": "CreateTables",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

@@ -46,7 +46,7 @@
 					},
 					"activities": [
 						{
-							"name": "dataflow7",
+							"name": "CreateTables",
 							"type": "ExecuteDataFlow",
 							"dependsOn": [],
 							"policy": {
@@ -59,7 +59,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataflow": {
-									"referenceName": "dataflow7",
+									"referenceName": "CreateTables",
 									"type": "DataFlowReference",
 									"datasetParameters": {
 										"source1": {
