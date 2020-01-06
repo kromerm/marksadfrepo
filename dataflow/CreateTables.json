@@ -26,7 +26,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource1 derive(each(match(type == 'string'), $$ = trim($$))) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpartitionBy('hash', 1)) ~> sink1"
+			"script": "\nparameters{\n\ttablename as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: '',\n\tformat: 'query') ~> source1\nsource1 derive(each(match(type == 'string'), $$ = trim($$)),\n\t\teach(match(position == 2 || position == 3), $$ = toInteger($$) + 1.2),\n\t\teach(match(regexMatch(name,'Customer[0-9]')), $$+'_customer' = $$)) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
