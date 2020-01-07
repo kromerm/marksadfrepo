@@ -27,9 +27,15 @@
 				},
 				{
 					"name": "Aggregate1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Filter1"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(MovieID = toInteger(byName('movie')),\n\t\tMovieTitle = byName('title'),\n\t\tMovieYearReleased = toInteger(byName('year')),\n\t\tMovieRating = toInteger(byName('Rating')),\n\t\tMoviePrimaryGenre = byName('genres')) ~> BuildModel\nBuildModel aggregate(groupBy(MovieYearReleased),\n\tAverageRating = avg(MovieRating)) ~> Aggregate1\nAggregate1 sink(allowSchemaDrift: false,\n\tvalidateSchema: false) ~> sink1"
+			"script": "\nparameters{\n\tyearfilter as integer (1989),\n\tgenrefilter as string ('Comedy')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(MovieID = toInteger(byName('movie')),\n\t\tMovieTitle = byName('title'),\n\t\tMovieYearReleased = toInteger(byName('year')),\n\t\tMovieRating = toInteger(byName('Rating')),\n\t\tMovieGenres = split(toString(byName('genres')),'|')) ~> BuildModel\nFilter1 aggregate(groupBy(MovieYearReleased,\n\t\tMoviePrimaryGenre),\n\tAverageRating = round(avg(MovieRating),2)) ~> Aggregate1\nBuildModel derive(MoviePrimaryGenre = MovieGenres[1]) ~> DerivedColumn1\nDerivedColumn1 filter(MovieYearReleased == $yearfilter && MoviePrimaryGenre == $genrefilter) ~> Filter1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\teach(patternMatch(`Movie`))\n\t)) ~> sink1"
 		}
 	}
 }

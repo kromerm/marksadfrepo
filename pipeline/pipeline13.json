@@ -16,8 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DistinctRows",
-						"type": "DataFlowReference"
+						"referenceName": "canonicalmodel",
+						"type": "DataFlowReference",
+						"parameters": {
+							"yearfilter": "1989",
+							"genrefilter": "'comedy'"
+						}
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
