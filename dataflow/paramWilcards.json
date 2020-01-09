@@ -1,6 +1,9 @@
 {
 	"name": "paramWilcards",
 	"properties": {
+		"folder": {
+			"name": "Params"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
@@ -21,6 +24,7 @@
 					"name": "sink1"
 				}
 			],
+			"transformations": [],
 			"script": "\nparameters{\n\tmywildpath as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('DateFiles/'+$mywildpath)]) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 		}
 	}

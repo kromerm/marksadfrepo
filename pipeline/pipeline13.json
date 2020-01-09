@@ -16,12 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "canonicalmodel",
-						"type": "DataFlowReference",
-						"parameters": {
-							"yearfilter": "2000",
-							"genrefilter": "'drama'"
-						}
+						"referenceName": "dynamicColumns",
+						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",

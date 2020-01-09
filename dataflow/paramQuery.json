@@ -1,6 +1,9 @@
 {
 	"name": "paramQuery",
 	"properties": {
+		"folder": {
+			"name": "Params"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
@@ -21,7 +24,8 @@
 					"name": "sink1"
 				}
 			],
-			"script": "\nparameters{\n\tprodid as string\n}\nsource(output(\n\t\t\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: (concat('select * from saleslt.product  where productid = ',$prodid)),\n\tformat: 'query') ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tfilePattern:($prodid + '.csv'),\n\tpartitionBy('hash', 1)) ~> sink1"
+			"transformations": [],
+			"script": "\nparameters{\n\tprodid as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: (concat('select * from saleslt.product  where productid = ',$prodid)),\n\tformat: 'query') ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tfilePattern:($prodid + '.csv'),\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
