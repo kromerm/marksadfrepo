@@ -1,0 +1,185 @@
+{
+	"name": "famis",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "FAMIS_SEISMIC_Vehicle_20191129181159_refresh.csv",
+				"folderPath": "customerdata",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "diff",
+				"type": "String"
+			},
+			{
+				"name": "VehicleID",
+				"type": "String"
+			},
+			{
+				"name": "AbbreviatedName",
+				"type": "String"
+			},
+			{
+				"name": "AccountNumber",
+				"type": "String"
+			},
+			{
+				"name": "ActiveIndicator",
+				"type": "String"
+			},
+			{
+				"name": "BaseCurrencyID",
+				"type": "String"
+			},
+			{
+				"name": "BaseIsoCurrencyCode",
+				"type": "String"
+			},
+			{
+				"name": "ClientID",
+				"type": "String"
+			},
+			{
+				"name": "FiscalMonthName",
+				"type": "String"
+			},
+			{
+				"name": "FiscalMonthNumber",
+				"type": "String"
+			},
+			{
+				"name": "FundNumber",
+				"type": "String"
+			},
+			{
+				"name": "FundType",
+				"type": "String"
+			},
+			{
+				"name": "FundTypeCode",
+				"type": "String"
+			},
+			{
+				"name": "FundTypeRetirementPlanning",
+				"type": "String"
+			},
+			{
+				"name": "FundTypeRetirementPlanningCode",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Objective",
+				"type": "String"
+			},
+			{
+				"name": "PublishableName",
+				"type": "String"
+			},
+			{
+				"name": "RimesCode",
+				"type": "String"
+			},
+			{
+				"name": "SeriesYear",
+				"type": "String"
+			},
+			{
+				"name": "BookOfRecordKey",
+				"type": "String"
+			},
+			{
+				"name": "ShortName",
+				"type": "String"
+			},
+			{
+				"name": "StateOfDomicile",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "TaxID",
+				"type": "String"
+			},
+			{
+				"name": "Trademark",
+				"type": "String"
+			},
+			{
+				"name": "VehicleTypeID",
+				"type": "String"
+			},
+			{
+				"name": "VehicleTypeName",
+				"type": "String"
+			},
+			{
+				"name": "InvestmentStrategyID",
+				"type": "String"
+			},
+			{
+				"name": "MstarFundFamilyCode",
+				"type": "String"
+			},
+			{
+				"name": "FundStationFundNbr",
+				"type": "String"
+			},
+			{
+				"name": "AltName",
+				"type": "String"
+			},
+			{
+				"name": "DisclosureCode",
+				"type": "String"
+			},
+			{
+				"name": "MstarFundFamilyID",
+				"type": "String"
+			},
+			{
+				"name": "MstarCategoryID",
+				"type": "String"
+			},
+			{
+				"name": "MstarCategoryName",
+				"type": "String"
+			},
+			{
+				"name": "MstarCatUsAssetClassID",
+				"type": "String"
+			},
+			{
+				"name": "MstarCatUsAssetClassName",
+				"type": "String"
+			},
+			{
+				"name": "RESERVED9",
+				"type": "String"
+			},
+			{
+				"name": "RESERVED10",
+				"type": "String"
+			}
+		]
+	}
+}

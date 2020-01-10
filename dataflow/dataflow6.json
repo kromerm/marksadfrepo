@@ -1,0 +1,20 @@
+{
+	"name": "dataflow6",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "famis",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tdiff as string,\n\t\tVehicleID as string,\n\t\tAbbreviatedName as string,\n\t\tAccountNumber as string,\n\t\tActiveIndicator as string,\n\t\tBaseCurrencyID as string,\n\t\tBaseIsoCurrencyCode as string,\n\t\tClientID as string,\n\t\tFiscalMonthName as string,\n\t\tFiscalMonthNumber as string,\n\t\tFundNumber as string,\n\t\tFundType as string,\n\t\tFundTypeCode as string,\n\t\tFundTypeRetirementPlanning as string,\n\t\tFundTypeRetirementPlanningCode as string,\n\t\tName as string,\n\t\tObjective as string,\n\t\tPublishableName as string,\n\t\tRimesCode as string,\n\t\tSeriesYear as string,\n\t\tBookOfRecordKey as string,\n\t\tShortName as string,\n\t\tStateOfDomicile as string,\n\t\tStatus as string,\n\t\tTaxID as string,\n\t\tTrademark as string,\n\t\tVehicleTypeID as string,\n\t\tVehicleTypeName as string,\n\t\tInvestmentStrategyID as string,\n\t\tMstarFundFamilyCode as string,\n\t\tFundStationFundNbr as string,\n\t\tAltName as string,\n\t\tDisclosureCode as string,\n\t\tMstarFundFamilyID as string,\n\t\tMstarCategoryID as string,\n\t\tMstarCategoryName as string,\n\t\tMstarCatUsAssetClassID as string,\n\t\tMstarCatUsAssetClassName as string,\n\t\tRESERVED9 as string,\n\t\tRESERVED10 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+		}
+	}
+}
