@@ -16,8 +16,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dynamicColumns",
-						"type": "DataFlowReference"
+						"referenceName": "MovieDemo1",
+						"type": "DataFlowReference",
+						"parameters": {
+							"fn": {
+								"value": "'@{variables('fn')}'",
+								"type": "Expression"
+							}
+						}
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
@@ -26,6 +32,12 @@
 				}
 			}
 		],
+		"variables": {
+			"fn": {
+				"type": "String",
+				"defaultValue": "myfile.txt"
+			}
+		},
 		"annotations": []
 	}
 }
