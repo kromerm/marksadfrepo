@@ -1,0 +1,275 @@
+{
+	"name": "candidates",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Candidates0.json",
+				"folderPath": "SampleData/json",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"candidates": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"address": {
+								"type": "string"
+							},
+							"address2": {
+								"type": "string"
+							},
+							"application": {
+								"type": "object",
+								"properties": {
+									"consentStatus": {
+										"type": "string"
+									},
+									"coverletter": {
+										"type": "object",
+										"properties": {
+											"content": {
+												"type": "string"
+											},
+											"format": {
+												"type": "string"
+											}
+										}
+									},
+									"customField": {
+										"type": "array"
+									},
+									"eId": {
+										"type": "string"
+									},
+									"gender": {
+										"type": "string"
+									},
+									"hasArtifacts": {
+										"type": "boolean"
+									},
+									"job": {
+										"type": "object",
+										"properties": {
+											"company": {
+												"type": "string"
+											},
+											"customField": {
+												"type": "array"
+											},
+											"eId": {
+												"type": "string"
+											},
+											"hiringManagers": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"firstName": {
+															"type": "string"
+														},
+														"lastName": {
+															"type": "string"
+														},
+														"userId": {
+															"type": "string"
+														},
+														"userName": {
+															"type": "string"
+														}
+													}
+												}
+											},
+											"jobType": {
+												"type": "string"
+											},
+											"postingType": {
+												"type": "string"
+											},
+											"primaryHiringManager": {
+												"type": "object",
+												"properties": {
+													"firstName": {
+														"type": "string"
+													},
+													"lastName": {
+														"type": "string"
+													},
+													"userId": {
+														"type": "string"
+													},
+													"userName": {
+														"type": "string"
+													}
+												}
+											},
+											"primaryRecruiter": {
+												"type": "object",
+												"properties": {
+													"firstName": {
+														"type": "string"
+													},
+													"lastName": {
+														"type": "string"
+													},
+													"userId": {
+														"type": "string"
+													},
+													"userName": {
+														"type": "string"
+													}
+												}
+											},
+											"recruiters": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"firstName": {
+															"type": "string"
+														},
+														"lastName": {
+															"type": "string"
+														},
+														"userId": {
+															"type": "string"
+														},
+														"userName": {
+															"type": "string"
+														}
+													}
+												}
+											},
+											"requisitionId": {
+												"type": "string"
+											},
+											"subsidiaryId": {
+												"type": "string"
+											},
+											"title": {
+												"type": "string"
+											}
+										}
+									},
+									"jobviteChannel": {
+										"type": "string"
+									},
+									"lastUpdatedDate": {
+										"type": "integer"
+									},
+									"personalDataProcessingStatus": {
+										"type": "string"
+									},
+									"race": {
+										"type": "string"
+									},
+									"resume": {
+										"type": "object",
+										"properties": {
+											"content": {
+												"type": "string"
+											},
+											"format": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											}
+										}
+									},
+									"sentDate": {
+										"type": "integer"
+									},
+									"source": {
+										"type": "string"
+									},
+									"sourceType": {
+										"type": "string"
+									},
+									"veteranStatus": {
+										"type": "string"
+									},
+									"workflowState": {
+										"type": "string"
+									},
+									"workflowStateEId": {
+										"type": "string"
+									}
+								}
+							},
+							"city": {
+								"type": "string"
+							},
+							"companyName": {
+								"type": "string"
+							},
+							"country": {
+								"type": "string"
+							},
+							"eId": {
+								"type": "string"
+							},
+							"email": {
+								"type": "string"
+							},
+							"firstName": {
+								"type": "string"
+							},
+							"homePhone": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"location": {
+								"type": "string"
+							},
+							"mobile": {
+								"type": "string"
+							},
+							"postalCode": {
+								"type": "string"
+							},
+							"state": {
+								"type": "string"
+							},
+							"title": {
+								"type": "string"
+							},
+							"workPhone": {
+								"type": "string"
+							},
+							"workStatus": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"total": {
+					"type": "integer"
+				},
+				"status": {
+					"type": "object",
+					"properties": {
+						"code": {
+							"type": "integer"
+						},
+						"messages": {
+							"type": "array"
+						}
+					}
+				}
+			}
+		}
+	}
+}
