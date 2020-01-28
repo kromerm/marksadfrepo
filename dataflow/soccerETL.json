@@ -12,16 +12,14 @@
 						"referenceName": "soccer_events_dt",
 						"type": "DatasetReference"
 					},
-					"name": "specifySchemaExtracts",
-					"script": "source(output(\n\t\tid_odsp as string,\n\t\tid_event as string,\n\t\tsort_order as short,\n\t\ttime as short,\n\t\ttext as string,\n\t\tevent_type as integer,\n\t\tevent_type2 as integer,\n\t\tside as short,\n\t\tevent_team as string,\n\t\topponent as string,\n\t\tplayer as string,\n\t\tplayer2 as string,\n\t\tplayer_in as string,\n\t\tplayer_out as string,\n\t\tshot_place as string,\n\t\tshot_outcome as string,\n\t\tis_goal as boolean,\n\t\tlocation as string,\n\t\tbodypart as string,\n\t\tassist_method as short,\n\t\tsituation as string,\n\t\tfast_break as boolean\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> specifySchemaExtracts"
+					"name": "specifySchemaExtracts"
 				},
 				{
 					"dataset": {
 						"referenceName": "locationMap_dt",
 						"type": "DatasetReference"
 					},
-					"name": "locationMap",
-					"script": "source(output(\n\t\tType as string,\n\t\tName as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> locationMap"
+					"name": "locationMap"
 				}
 			],
 			"sinks": [
@@ -30,28 +28,24 @@
 						"referenceName": "soccerDB",
 						"type": "DatasetReference"
 					},
-					"name": "SQLDBSink",
-					"script": "timeBins sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tbatchSize:2000,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tpartitionBy('roundRobin', 40)) ~> SQLDBSink"
+					"name": "SQLDBSink"
 				}
 			],
 			"transformations": [
 				{
-					"name": "dictionaryMapping",
-					"script": "specifySchemaExtracts derive(eventTypeMap = case(\r\n    event_type == 0,'Announcement',\r\n    event_type == 1,'Attempt',\r\n    event_type == 2,'Corner',\r\n    event_type == 3,'Foul',\r\n    event_type == 4,'Yellow Card',\r\n    event_type == 5,'Second yellow card',\r\n    event_type == 6,'Red card',\r\n    event_type == 7,'Substitution',\r\n    event_type == 8,'Free kick won',\r\n    event_type == 9,'Offside',\r\n    event_type == 10,'Hand ball',\r\n    event_type == 11,'Penalty conceded',\r\n    event_type == 98, 'NA'\r\n),\n\t\tdummy = 1) ~> dictionaryMapping"
+					"name": "dictionaryMapping"
 				},
 				{
-					"name": "joinStringDataViaLookup",
-					"script": "dictionaryMapping, locationMap join(location == Type,\n\tjoinType:'left',\n\tbroadcast: 'none')~> joinStringDataViaLookup"
+					"name": "joinStringDataViaLookup"
 				},
 				{
-					"name": "columnSelectorRenaming",
-					"script": "joinStringDataViaLookup select(mapColumn(\n\t\tid_odsp,\n\t\tid_event,\n\t\tsort_order,\n\t\ttext,\n\t\tevent_type,\n\t\tevent_type2,\n\t\tside,\n\t\tevent_team,\n\t\topponent,\n\t\tplayer,\n\t\tplayer2,\n\t\tplayer_in,\n\t\tplayer_out,\n\t\tshot_place,\n\t\tshot_outcome,\n\t\tis_goal,\n\t\tlocation,\n\t\tbodypart,\n\t\tassist_method,\n\t\tsituation,\n\t\tfast_break,\n\t\teventTypeMap,\n\t\tType,\n\t\tName,\n\t\tdummy,\n\t\ttime\n\t),\n\tpartitionBy('hash', 200,\n\t\tid_event\n\t))~> columnSelectorRenaming"
+					"name": "columnSelectorRenaming"
 				},
 				{
-					"name": "timeBins",
-					"script": "columnSelectorRenaming window(over(time),\n\tdesc(sort_order, true),\n\tTimeBins = nTile(10)) ~> timeBins"
+					"name": "timeBins"
 				}
-			]
+			],
+			"script": "source(output(\n\t\tid_odsp as string,\n\t\tid_event as string,\n\t\tsort_order as short,\n\t\ttime as short,\n\t\ttext as string,\n\t\tevent_type as integer,\n\t\tevent_type2 as integer,\n\t\tside as short,\n\t\tevent_team as string,\n\t\topponent as string,\n\t\tplayer as string,\n\t\tplayer2 as string,\n\t\tplayer_in as string,\n\t\tplayer_out as string,\n\t\tshot_place as string,\n\t\tshot_outcome as string,\n\t\tis_goal as boolean,\n\t\tlocation as string,\n\t\tbodypart as string,\n\t\tassist_method as short,\n\t\tsituation as string,\n\t\tfast_break as boolean\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> specifySchemaExtracts\nsource(output(\n\t\tType as string,\n\t\tName as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false) ~> locationMap\nspecifySchemaExtracts derive(eventTypeMap = case(\r\n    event_type == 0,'Announcement',\r\n    event_type == 1,'Attempt',\r\n    event_type == 2,'Corner',\r\n    event_type == 3,'Foul',\r\n    event_type == 4,'Yellow Card',\r\n    event_type == 5,'Second yellow card',\r\n    event_type == 6,'Red card',\r\n    event_type == 7,'Substitution',\r\n    event_type == 8,'Free kick won',\r\n    event_type == 9,'Offside',\r\n    event_type == 10,'Hand ball',\r\n    event_type == 11,'Penalty conceded',\r\n    event_type == 98, 'NA'\r\n),\n\t\tdummy = 1) ~> dictionaryMapping\ndictionaryMapping, locationMap join(location == Type,\n\tjoinType:'left',\n\tbroadcast: 'none')~> joinStringDataViaLookup\njoinStringDataViaLookup select(mapColumn(\n\t\tid_odsp,\n\t\tid_event,\n\t\tsort_order,\n\t\ttext,\n\t\tevent_type,\n\t\tevent_type2,\n\t\tside,\n\t\tevent_team,\n\t\topponent,\n\t\tplayer,\n\t\tplayer2,\n\t\tplayer_in,\n\t\tplayer_out,\n\t\tshot_place,\n\t\tshot_outcome,\n\t\tis_goal,\n\t\tlocation,\n\t\tbodypart,\n\t\tassist_method,\n\t\tsituation,\n\t\tfast_break,\n\t\teventTypeMap,\n\t\tType,\n\t\tName,\n\t\tdummy,\n\t\ttime\n\t),\n\tpartitionBy('hash', 200,\n\t\tid_event\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> columnSelectorRenaming\ncolumnSelectorRenaming window(over(time),\n\tdesc(sort_order, true),\n\tTimeBins = nTile(10)) ~> timeBins\ntimeBins sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table',\n\tbatchSize: 2000,\n\tpartitionBy('roundRobin', 40)) ~> SQLDBSink"
 		}
 	}
 }
