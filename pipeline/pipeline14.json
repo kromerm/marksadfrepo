@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "writeHeaders",
+						"referenceName": "MovieDemo1",
 						"type": "DataFlowReference"
 					},
 					"compute": {
