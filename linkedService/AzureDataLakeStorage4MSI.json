@@ -1,0 +1,10 @@
+{
+	"name": "AzureDataLakeStorage4MSI",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://makadlsg2b.dfs.core.windows.net"
+		}
+	}
+}
