@@ -1,0 +1,22 @@
+{
+	"name": "adls_msi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage4MSI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "output",
+				"fileSystem": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
