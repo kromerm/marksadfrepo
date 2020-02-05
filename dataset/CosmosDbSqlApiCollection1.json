@@ -2,13 +2,13 @@
 	"name": "CosmosDbSqlApiCollection1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "CosmosDb2",
+			"referenceName": "CosmosDb3",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
 		"typeProperties": {
-			"collectionName": "Items"
+			"collectionName": "movie"
 		}
 	}
 }
