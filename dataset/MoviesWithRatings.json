@@ -9,11 +9,6 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "movie",
-				"type": "int",
-				"precision": 10
-			},
-			{
 				"name": "title",
 				"type": "nvarchar"
 			},
