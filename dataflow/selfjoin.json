@@ -1,5 +1,5 @@
 {
-	"name": "dataflow10",
+	"name": "selfjoin",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
