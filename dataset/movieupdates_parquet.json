@@ -2,15 +2,16 @@
 	"name": "movieupdates_parquet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "MoviesADLS",
+			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileName": "movieupdates.parquet",
-				"folderPath": "movies",
+				"type": "AzureBlobStorageLocation",
+				"fileName": "userdata1.parquet",
+				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
 			"compressionCodec": "snappy"
