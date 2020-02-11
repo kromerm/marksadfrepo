@@ -1,0 +1,20 @@
+{
+	"name": "dataflow10",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'select movie,title,genres from moviestage for XML path',\n\tformat: 'query') ~> source1"
+		}
+	}
+}
