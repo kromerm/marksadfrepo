@@ -13,9 +13,9 @@
 				"folderPath": "output",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "",
 			"escapeChar": "\\",
-			"quoteChar": "\""
+			"quoteChar": ""
 		},
 		"schema": []
 	}
