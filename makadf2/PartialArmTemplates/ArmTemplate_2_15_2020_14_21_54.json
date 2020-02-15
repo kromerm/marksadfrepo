@@ -1,0 +1,35 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "makadf2"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/blobParamLS2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "AzureBlobStorage",
+				"annotations": [],
+				"typeProperties": {
+					"connectionString": "DefaultEndpointsProtocol=https;AccountName=@{linkedService().AcctName};EndpointSuffix=core.windows.net;",
+					"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIk1BS0FERjJfZDcyNDc0ZDEtZWQyNC00MWVlLWIxYjYtZmZhMGMxNDg2YTIzIg0KfQ=="
+				},
+				"parameters": {
+					"AcctName": {
+						"type": "String"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
