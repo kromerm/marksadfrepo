@@ -17,7 +17,15 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dynaJoin",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"joinfield": "'movieID'"
+						},
+						"datasetParameters": {
+							"dynaSource": {
+								"tablename": "moviesDB"
+							}
+						}
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",

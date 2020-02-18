@@ -15,13 +15,19 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "DerivedColumn1"
+					"name": "CreateValues"
 				},
 				{
-					"name": "DerivedColumn2"
+					"name": "FileName"
+				},
+				{
+					"name": "SplitName"
+				},
+				{
+					"name": "Enumeration"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn2 derive(filename = left(filter(split(fname,'_'), endsWith(#item, '.csv'))[1],length(fname)-4),\n\t\tmydate = toDate(badnames,'yyyy-MM-dd')) ~> DerivedColumn1\nsource1 derive(fname = '/myfiles/2020/updates/filename.csv',\n\t\tfullname = 'Kromer, Mark A.',\n\t\tregioncode = 1) ~> DerivedColumn2"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(fname = '/myfiles/2020/updates/filename.csv',\n\t\tfullname = 'Kromer, Mark A.',\n\t\tregioncode = 1) ~> CreateValues\nCreateValues derive(finalfilename = split(filter(split(fname,'/'), endsWith(#item,'.csv'))[1],'.')[1]) ~> FileName\nFileName derive(firstname = left(split(fullname,',')[2],length(split(fullname,',')[2])-3),\n\t\tlastname = split(fullname,',')[1],\n\t\tmiddleinit = substring(split(fullname,',')[2],length(split(fullname,',')[2])-1,1)) ~> SplitName\nSplitName derive(regionname = case (\r\n    \r\n    regioncode == 1, 'Northeast',\r\n    regioncode == 2, 'Central',\r\n    regioncode == 3, 'Mountain',\r\n    regioncode == 4, 'West'\r\n       \r\n    \r\n    )) ~> Enumeration"
 		}
 	}
 }
