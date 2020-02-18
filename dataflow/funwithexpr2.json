@@ -1,5 +1,5 @@
 {
-	"name": "dataflow10",
+	"name": "funwithexpr2",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -21,7 +21,7 @@
 					"name": "DerivedColumn2"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn2 derive(filename = left(filter(split(fname,'_'), endsWith(#item, '.csv'))[1],length(fname)-4),\n\t\tmydate = toDate(mydate1,'yyyy-MM-dd')) ~> DerivedColumn1\nsource1 derive(fname = '/scoredfiles/2020/ingop/in_202002_braunapprove.csv',\n\t\tmydate1 = toString(currentDate())) ~> DerivedColumn2"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn2 derive(filename = left(filter(split(fname,'_'), endsWith(#item, '.csv'))[1],length(fname)-4),\n\t\tmydate = toDate(badnames,'yyyy-MM-dd')) ~> DerivedColumn1\nsource1 derive(fname = '/myfiles/2020/updates/filename.csv',\n\t\tfullname = 'Kromer, Mark A.',\n\t\tregioncode = 1) ~> DerivedColumn2"
 		}
 	}
 }
