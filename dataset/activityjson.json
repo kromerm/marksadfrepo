@@ -1,0 +1,71 @@
+{
+	"name": "activityjson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "activityout.json",
+				"folderPath": "SampleData/json",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"dataflow": {
+					"type": "object",
+					"properties": {
+						"referenceName": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"parameters": {
+							"type": "object",
+							"properties": {
+								"rowswritten": {
+									"type": "string"
+								}
+							}
+						},
+						"datasetParameters": {
+							"type": "object",
+							"properties": {
+								"source1": {
+									"type": "object"
+								},
+								"sink1": {
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"staging": {
+					"type": "object"
+				},
+				"compute": {
+					"type": "object",
+					"properties": {
+						"coreCount": {
+							"type": "integer"
+						},
+						"computeType": {
+							"type": "string"
+						}
+					}
+				},
+				"dataFlowDebugSessionId": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
