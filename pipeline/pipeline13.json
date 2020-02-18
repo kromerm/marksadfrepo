@@ -16,16 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dynaJoin",
-						"type": "DataFlowReference",
-						"parameters": {
-							"joinfield": "'movieID'"
-						},
-						"datasetParameters": {
-							"dynaSource": {
-								"tablename": "moviesDB"
-							}
-						}
+						"referenceName": "MovieDemo1",
+						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
 						"referenceName": "myDataFlowCluster",
