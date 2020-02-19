@@ -52,6 +52,10 @@
 							"rowswritten": {
 								"value": "@activity('ExecDataFlow').output.runStatus.metrics.sink1.rowsWritten",
 								"type": "Expression"
+							},
+							"processingtime": {
+								"value": "@activity('ExecDataFlow').output.runStatus.metrics.sink1.sinkProcessingTime",
+								"type": "Expression"
 							}
 						}
 					},
