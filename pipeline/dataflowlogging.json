@@ -62,7 +62,7 @@
 				}
 			},
 			{
-				"name": "MovieDemo1_logging",
+				"name": "ExecDataFlow2",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
