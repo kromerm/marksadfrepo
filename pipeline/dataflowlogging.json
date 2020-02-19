@@ -19,9 +19,9 @@
 						"referenceName": "MovieDemo1",
 						"type": "DataFlowReference"
 					},
-					"integrationRuntime": {
-						"referenceName": "myDataFlowCluster",
-						"type": "IntegrationRuntimeReference"
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			},
@@ -31,6 +31,12 @@
 				"dependsOn": [
 					{
 						"activity": "ExecDataFlow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "GetRowCount",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -55,6 +61,10 @@
 							},
 							"processingtime": {
 								"value": "@activity('ExecDataFlow').output.runStatus.metrics.sink1.sinkProcessingTime",
+								"type": "Expression"
+							},
+							"rowcount": {
+								"value": "@activity('GetRowCount').output.firstRow.myrowcount",
 								"type": "Expression"
 							}
 						}
@@ -85,6 +95,37 @@
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
+					}
+				}
+			},
+			{
+				"name": "GetRowCount",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "ExecDataFlow2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select count(*) as myrowcount from dbo.movies",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
 					}
 				}
 			}
