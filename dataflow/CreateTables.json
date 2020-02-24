@@ -6,27 +6,25 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "dbSourceParams",
+						"referenceName": "moviesADLS",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "dbTargetParams",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "DerivedColumn1"
+				},
+				{
+					"name": "AlterRow1"
+				},
+				{
+					"name": "DerivedColumn2"
 				}
 			],
-			"script": "\nparameters{\n\ttablename as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: '',\n\tformat: 'query') ~> source1\nsource1 derive(each(match(type == 'string'), $$ = trim($$)),\n\t\teach(match(position == 2 || position == 3), $$ = toInteger($$) + 1.2),\n\t\teach(match(regexMatch(name,'Customer[0-9]')), $$+'_customer' = $$)) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpartitionBy('hash', 1)) ~> sink1"
+			"script": "parameters{\n\ttablename as string\n}\nsource(output(\n\t\tColumn_1 as integer,\n\t\tColumn_2 as timestamp,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn2 derive(each(match(type=='string'), $$ = trim($$)),\n\t\teach(match(position==2||position==3), $$ = toInteger($$) + 1.2),\n\t\teach(match(regexMatch(name,'Customer[0-9]')), $$+'_customer' = $$)) ~> DerivedColumn1\nDerivedColumn1 alterRow() ~> AlterRow1\nsource1 derive(Column_1 = toInteger(Column_1),\n\t\tColumn_1 = toInteger(Column_1),\n\t\tColumn_1 = toInteger(Column_1),\n\t\tColumn_1 = toInteger(Column_1)) ~> DerivedColumn2"
 		}
 	}
 }

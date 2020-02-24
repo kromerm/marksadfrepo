@@ -16,36 +16,29 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
+			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
-				"name": "108583",
 				"type": "String"
 			},
 			{
-				"name": "Fawlty Towers",
 				"type": "String"
 			},
 			{
-				"name": "Comedy",
 				"type": "String"
 			},
 			{
-				"name": "1980",
 				"type": "String"
 			},
 			{
-				"name": "1",
 				"type": "String"
 			},
 			{
-				"name": "54",
 				"type": "String"
 			},
 			{
-				"name": "U",
 				"type": "String"
 			}
 		]
