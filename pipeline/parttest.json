@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "fileperf",
+						"referenceName": "SQLPerf",
 						"type": "DataFlowReference"
 					},
 					"compute": {
