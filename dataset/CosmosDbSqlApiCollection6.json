@@ -1,0 +1,86 @@
+{
+	"name": "CosmosDbSqlApiCollection6",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDb4Northwind",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"orderID": {
+					"type": "integer"
+				},
+				"customerID": {
+					"type": "string"
+				},
+				"employeeID": {
+					"type": "integer"
+				},
+				"orderDate": {
+					"type": "string"
+				},
+				"requiredDate": {
+					"type": "string"
+				},
+				"shippedDate": {
+					"type": "string"
+				},
+				"shipVia": {
+					"type": "integer"
+				},
+				"freight": {
+					"type": "number"
+				},
+				"shipName": {
+					"type": "string"
+				},
+				"shipAddress": {
+					"type": "object",
+					"properties": {
+						"street": {
+							"type": "string"
+						},
+						"city": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"postalCode": {
+							"type": "null"
+						},
+						"country": {
+							"type": "string"
+						}
+					}
+				},
+				"details": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"productID": {
+								"type": "integer"
+							},
+							"unitPrice": {
+								"type": "integer"
+							},
+							"quantity": {
+								"type": "integer"
+							},
+							"discount": {
+								"type": "integer"
+							}
+						}
+					}
+				}
+			}
+		},
+		"typeProperties": {
+			"collectionName": "orders"
+		}
+	}
+}
