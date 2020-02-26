@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output/json",
+				"fileName": "movies.json",
+				"folderPath": "SampleData/json",
 				"container": "mycontainer"
 			}
 		}
