@@ -1,6 +1,7 @@
 {
-	"name": "flexible SQL",
+	"name": "Load Multiple Tables",
 	"properties": {
+		"description": "Use a flexible SQL loading data flow to load many tables in a single activity",
 		"activities": [
 			{
 				"name": "flexible SQL",
