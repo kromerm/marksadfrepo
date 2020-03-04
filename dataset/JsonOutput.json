@@ -1,5 +1,5 @@
 {
-	"name": "Json3",
+	"name": "JsonOutput",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "TaskRun_Config_Sample.json",
-				"folderPath": "SampleData/json",
+				"folderPath": "output/json",
 				"container": "mycontainer"
 			}
 		}

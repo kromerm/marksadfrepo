@@ -14,29 +14,6 @@
 				"folderPath": "SampleData/json",
 				"container": "mycontainer"
 			}
-		},
-		"schema": {
-			"type": "object",
-			"properties": {
-				"InvoiceId": {
-					"type": "string"
-				},
-				"PayorOrgId": {
-					"type": "string"
-				},
-				"Status": {
-					"type": "string"
-				},
-				"StatusNote": {
-					"type": "string"
-				},
-				"StatusDate": {
-					"type": "string"
-				},
-				"PayorOrgEBillingId": {
-					"type": "integer"
-				}
-			}
 		}
 	}
 }
