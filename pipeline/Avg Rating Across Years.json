@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "Avg Rating Across Years",
 	"properties": {
 		"activities": [
 			{
@@ -50,6 +50,36 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Get AvgRating by Year",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "selfjoin",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
 			}
 		],
 		"annotations": []
