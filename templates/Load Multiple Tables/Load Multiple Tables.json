@@ -1,0 +1,422 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"AzureBlobStorage1": {
+			"type": "string"
+		},
+		"AzureSqlDatabase1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Load Multiple Tables')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Use a flexible SQL loading data flow to load many tables in a single activity",
+				"activities": [
+					{
+						"name": "flexible SQL",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflowFlexibleSQL",
+								"type": "DataFlowReference",
+								"parameters": {
+									"filename": "'moviesDB.csv'"
+								},
+								"datasetParameters": {
+									"sinkParams": {
+										"mytablename": "MoviesWithRatings"
+									}
+								}
+							},
+							"compute": {
+								"coreCount": 32,
+								"computeType": "MemoryOptimized"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflowFlexibleSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflowFlexibleSQL')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "tweets",
+								"type": "DatasetReference"
+							},
+							"name": "TweetsWildcard"
+						},
+						{
+							"dataset": {
+								"referenceName": "TaxiFiles",
+								"type": "DatasetReference"
+							},
+							"name": "TaxiFiles"
+						},
+						{
+							"dataset": {
+								"referenceName": "genericsources",
+								"type": "DatasetReference"
+							},
+							"name": "sourceParams"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SQLTweets",
+								"type": "DatasetReference"
+							},
+							"name": "singleSQLTable"
+						},
+						{
+							"dataset": {
+								"referenceName": "tripdataSQL",
+								"type": "DatasetReference"
+							},
+							"name": "loadTripDataSQL"
+						},
+						{
+							"dataset": {
+								"referenceName": "tripfareSQL",
+								"type": "DatasetReference"
+							},
+							"name": "loadTripDataFare"
+						},
+						{
+							"dataset": {
+								"referenceName": "dbTargetParams",
+								"type": "DatasetReference"
+							},
+							"name": "sinkParams"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ConditionalSplit1"
+						},
+						{
+							"name": "MapDrifted1",
+							"description": "Creates an explicit mapping for each drifted column"
+						}
+					],
+					"script": "parameters{\n\tfilename as string ('moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenamea',\n\twildcardPaths:['SampleData/USQL/*Tweets.csv']) ~> TweetsWildcard\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'filenameb',\n\twildcardPaths:['SampleData/{trip_fare_1.csv,trip_data_1.csv,}']) ~> TaxiFiles\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[('SampleData/movies/'+$filename)]) ~> sourceParams\nMapDrifted1 split(instr(filenameb , 'data') > 0,\n\tdisjoint: false) ~> ConditionalSplit1@(trip, fare)\nTaxiFiles derive(medallion = toString(byName('medallion')),\n\t\t{ hack_license} = toString(byName(' hack_license')),\n\t\t{ vendor_id} = toString(byName(' vendor_id')),\n\t\t{ pickup_datetime} = toString(byName(' pickup_datetime')),\n\t\t{ payment_type} = toString(byName(' payment_type')),\n\t\t{ fare_amount} = toString(byName(' fare_amount')),\n\t\t{ surcharge} = toString(byName(' surcharge')),\n\t\t{ mta_tax} = toString(byName(' mta_tax')),\n\t\t{ tip_amount} = toString(byName(' tip_amount')),\n\t\t{ tolls_amount} = toString(byName(' tolls_amount')),\n\t\t{ total_amount} = toString(byName(' total_amount'))) ~> MapDrifted1\nTweetsWildcard sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table') ~> singleSQLTable\nConditionalSplit1@trip sink(input(\n\t\tmedallion as string,\n\t\thack_license as string,\n\t\tvendor_id as string,\n\t\trate_code as string,\n\t\tstore_and_fwd_flag as string,\n\t\tpickup_datetime as string,\n\t\tdropoff_datetime as string,\n\t\tpassenger_count as integer,\n\t\ttrip_time_in_secs as long,\n\t\ttrip_distance as double,\n\t\tpickup_longitude as double,\n\t\tpickup_latitude as double,\n\t\tdropoff_longitude as double,\n\t\tdropoff_latitude as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\thack_license = { hack_license},\n\t\teach(match(name!='filenameb'))\n\t)) ~> loadTripDataSQL\nConditionalSplit1@fare sink(input(\n\t\tmedallion as string,\n\t\thack_license as string,\n\t\tvendor_id as string,\n\t\tpickup_datetime as string,\n\t\tpayment_type as string,\n\t\tfare_amount as double,\n\t\tsurcharge as double,\n\t\tmta_tax as double,\n\t\ttip_amount as double,\n\t\ttolls_amount as double,\n\t\ttotal_amount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tmedallion,\n\t\thack_license = { hack_license},\n\t\tvendor_id = { vendor_id},\n\t\tpickup_datetime = { pickup_datetime},\n\t\tpayment_type = { payment_type},\n\t\tfare_amount = { fare_amount}\n\t)) ~> loadTripDataFare\nsourceParams sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table') ~> sinkParams"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/tweets')]",
+				"[concat(variables('factoryId'), '/datasets/TaxiFiles')]",
+				"[concat(variables('factoryId'), '/datasets/genericsources')]",
+				"[concat(variables('factoryId'), '/datasets/SQLTweets')]",
+				"[concat(variables('factoryId'), '/datasets/tripdataSQL')]",
+				"[concat(variables('factoryId'), '/datasets/tripfareSQL')]",
+				"[concat(variables('factoryId'), '/datasets/dbTargetParams')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tweets')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TaxiFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/genericsources')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLTweets')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tweets"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tripdataSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "medallion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "hack_license",
+						"type": "nvarchar"
+					},
+					{
+						"name": "vendor_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rate_code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "store_and_fwd_flag",
+						"type": "nvarchar"
+					},
+					{
+						"name": "pickup_datetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "dropoff_datetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "passenger_count",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "trip_time_in_secs",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "trip_distance",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "pickup_longitude",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "pickup_latitude",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "dropoff_longitude",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "dropoff_latitude",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "TripData"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tripfareSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "medallion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "hack_license",
+						"type": "nvarchar"
+					},
+					{
+						"name": "vendor_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "pickup_datetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "payment_type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "fare_amount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "surcharge",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "mta_tax",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "tip_amount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "tolls_amount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "total_amount",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "TripFare"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dbTargetParams')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"mytablename": {
+						"type": "string",
+						"defaultValue": "MoviesWithRatings"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"tableName": {
+						"value": "@dataset().mytablename",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
