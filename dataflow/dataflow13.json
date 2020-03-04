@@ -34,9 +34,12 @@
 				},
 				{
 					"name": "Join1"
+				},
+				{
+					"name": "Flatten1"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tsingleDocument: true) ~> source2\nsource1 derive(movietitle = movies[1].title) ~> DerivedColumn1\nDerivedColumn1, source2 join(movietitle == title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\t{202014_82637_Array} as (id as short, product as string)[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tsingleDocument: true) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tsingleDocument: true) ~> source2\nFlatten1 derive(movietitle = movies[1].title) ~> DerivedColumn1\nDerivedColumn1, source2 join(movietitle == title,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join1\nsource1 foldDown(unroll({202014_82637_Array}),\n\tmapColumn(\n\t\t{202014_82637_Array}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
