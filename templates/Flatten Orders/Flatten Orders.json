@@ -1,0 +1,206 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"CosmosDb4Northwind": {
+			"type": "string"
+		},
+		"AzureSqlDatabase1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ordersPipe')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "flattenOrders",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "flattenOrders",
+								"type": "DataFlowReference"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/flattenOrders')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/flattenOrders')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "CosmosDbSqlApiOrders",
+								"type": "DatasetReference"
+							},
+							"name": "cosmosDbSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sqlorders",
+								"type": "DatasetReference"
+							},
+							"name": "AzureSQLDBSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FlattenArray"
+						},
+						{
+							"name": "CalculateTotal"
+						}
+					],
+					"script": "source(output(\n\t\torderID as string,\n\t\tcustomerID as string,\n\t\temployeeID as string,\n\t\torderDate as string,\n\t\trequiredDate as string,\n\t\tshippedDate as string,\n\t\tshipVia as string,\n\t\tfreight as double,\n\t\tshipName as string,\n\t\tshipAddress as (street as string, city as string, region as string, postalCode as string, country as string),\n\t\tdetails as (productID as string, unitPrice as string, quantity as string, discount as string)[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tthroughput: 5000) ~> cosmosDbSource\ncosmosDbSource foldDown(unroll(details),\n\tmapColumn(\n\t\torderID,\n\t\tcustomerID,\n\t\temployeeID,\n\t\torderDate,\n\t\trequiredDate,\n\t\tshippedDate,\n\t\tshipVia,\n\t\tfreight,\n\t\tshipName,\n\t\tshipAddress,\n\t\tdetails\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> FlattenArray\nFlattenArray derive(details = @(productID=details.productID,\n\t\tunitPrice=details.unitPrice,\n\t\tquantity=details.quantity,\n\t\tdiscount=details.discount,\n\t\ttotalAmount=toString(round(toInteger(details.quantity)*toInteger(details.unitPrice),2),'###.##'))) ~> CalculateTotal\nCalculateTotal sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table',\n\tmapColumn(\n\t\torderDate,\n\t\trequiredDate,\n\t\tshippedDate,\n\t\tshipVia,\n\t\tfreight,\n\t\tshipName,\n\t\tcity = shipAddress.city,\n\t\tpostalCode = shipAddress.postalCode,\n\t\ttotalAmount = details.totalAmount\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> AzureSQLDBSink"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiOrders')]",
+				"[concat(variables('factoryId'), '/datasets/sqlorders')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDbSqlApiOrders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('CosmosDb4Northwind')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"orderID": {
+							"type": "integer"
+						},
+						"customerID": {
+							"type": "string"
+						},
+						"employeeID": {
+							"type": "integer"
+						},
+						"orderDate": {
+							"type": "string"
+						},
+						"requiredDate": {
+							"type": "string"
+						},
+						"shippedDate": {
+							"type": "string"
+						},
+						"shipVia": {
+							"type": "integer"
+						},
+						"freight": {
+							"type": "number"
+						},
+						"shipName": {
+							"type": "string"
+						},
+						"shipAddress": {
+							"type": "object",
+							"properties": {
+								"street": {
+									"type": "string"
+								},
+								"city": {
+									"type": "string"
+								},
+								"region": {
+									"type": "string"
+								},
+								"postalCode": {
+									"type": "null"
+								},
+								"country": {
+									"type": "string"
+								}
+							}
+						},
+						"details": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"productID": {
+										"type": "integer"
+									},
+									"unitPrice": {
+										"type": "integer"
+									},
+									"quantity": {
+										"type": "integer"
+									},
+									"discount": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					}
+				},
+				"typeProperties": {
+					"collectionName": "orders"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sqlorders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "cosmosdborders"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
