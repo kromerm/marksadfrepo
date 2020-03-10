@@ -1,5 +1,5 @@
 {
-	"name": "CosmosDbSqlApiCollection6",
+	"name": "CosmosDbSqlApiOrders",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "CosmosDb4Northwind",
