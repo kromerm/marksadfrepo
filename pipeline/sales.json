@@ -5,6 +5,7 @@
 			{
 				"name": "AppendFiles",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,17 +13,19 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "AppendFiles",
 						"type": "DataFlowReference"
 					},
 					"compute": {
-						"computeType": "General",
-						"coreCount": 8
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			}
-		]
+		],
+		"annotations": []
 	}
 }
