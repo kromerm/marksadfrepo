@@ -5,16 +5,19 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "moviesDB.csv",
+				"fileName": "movieupdates.csv",
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
-			"firstRowAsHeader": true
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
 		},
 		"schema": [
 			{
