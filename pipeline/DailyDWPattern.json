@@ -186,12 +186,45 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select count(*) from dbo.loans",
+						"sqlReaderQuery": "select count(*) as rowcount1 from dbo.loans",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
 						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "badrows",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SQLPerf",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": {
+							"value": "@if(\n   greater(\n      activity('Lookup1').output.firstRow.rowcount1,400000),128,\n         if(\n            greater(\n               activity('Lookup1').output.firstRow.rowcount1,100000),64,8))",
+							"type": "Expression"
+						},
+						"computeType": "General"
 					}
 				}
 			}
