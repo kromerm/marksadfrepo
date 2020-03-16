@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "movieupdates.csv",
+				"fileName": "loan.csv",
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
