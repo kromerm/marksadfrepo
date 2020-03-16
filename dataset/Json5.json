@@ -14,6 +14,34 @@
 				"folderPath": "SampleData/json",
 				"container": "mycontainer"
 			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Animal": {
+					"type": "string"
+				},
+				"Colour": {
+					"type": "string"
+				},
+				"Age": {
+					"type": "integer"
+				},
+				"Visits": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"Reason": {
+								"type": "string"
+							},
+							"Date": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
