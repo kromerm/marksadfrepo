@@ -1,9 +1,9 @@
 {
-	"name": "MovieDemoPipeline1",
+	"name": "summaryStats",
 	"properties": {
 		"activities": [
 			{
-				"name": "ExecuteMovieDemoDataFlow",
+				"name": "ExecuteSummaryStats",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
