@@ -15,11 +15,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "MovieDemo1",
+						"referenceName": "summaryStats",
 						"type": "DataFlowReference"
 					},
-					"staging": {
-						"folderPath": "mycontainer/staging"
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			}
