@@ -30,13 +30,13 @@
 			],
 			"transformations": [
 				{
-					"name": "lookupPK"
+					"name": "setPK"
 				},
 				{
-					"name": "Join"
+					"name": "Lookup1"
 				}
 			],
-			"script": "parameters{\n\tjoinfield as string\n}\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> dynaSource\ndynaSource derive(joinfield = toInteger(byName($joinfield))) ~> lookupPK\nMoviesSource, lookupPK join(movie == joinfield,\n\tjoinType:'inner',\n\tbroadcast: 'none')~> Join\nJoin sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
+			"script": "parameters{\n\tjoinfield as string\n}\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> dynaSource\ndynaSource derive(joinfield = toInteger(byName($joinfield))) ~> setPK\nMoviesSource, setPK lookup(movie == joinfield,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'none')~> Lookup1\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
 		}
 	}
 }
