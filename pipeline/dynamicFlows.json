@@ -1,9 +1,9 @@
 {
-	"name": "dynaDelete",
+	"name": "dynamicFlows",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow3",
+				"name": "dataflow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,23 +16,24 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "deleteRows",
+						"referenceName": "dynamicLookup",
 						"type": "DataFlowReference",
 						"parameters": {
-							"movieName": {
-								"value": "'@{pipeline().parameters.deletethismovie}'",
-								"type": "Expression"
+							"joinfield": "'movie'"
+						},
+						"datasetParameters": {
+							"dynaSource": {
+								"tablename": "moviestage"
 							}
 						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			}
 		],
-		"parameters": {
-			"deletethismovie": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }

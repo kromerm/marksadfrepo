@@ -19,7 +19,15 @@
 					"name": "dynaSource"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Lookup1"
@@ -28,7 +36,7 @@
 					"name": "setDynaCol"
 				}
 			],
-			"script": "parameters{\n\tjoinfield as string\n}\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> dynaSource\nMoviesSource, setDynaCol lookup(MoviesSource@movie == joincol,\n\tmultiple: false,\n\tpickup: 'first',\n\tasc(joincol, false),\n\tbroadcast: 'none')~> Lookup1\ndynaSource derive(joincol = toInteger(toString(byName($joinfield)))) ~> setDynaCol"
+			"script": "parameters{\n\tjoinfield as string\n}\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MoviesSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> dynaSource\nMoviesSource, setDynaCol lookup(MoviesSource@movie == joincol,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'none')~> Lookup1\ndynaSource derive(joincol = toInteger(toString(byName($joinfield)))) ~> setDynaCol\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
