@@ -15,7 +15,6 @@
 				"container": "mycontainer"
 			},
 			"columnDelimiter": "",
-			"rowDelimiter": "",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},
