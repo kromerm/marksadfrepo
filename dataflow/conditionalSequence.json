@@ -15,19 +15,16 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "Sort1"
-				},
-				{
-					"name": "DerivedColumn1"
-				},
-				{
-					"name": "Sort2"
+					"name": "CreateDummyValue"
 				},
 				{
 					"name": "Window1"
+				},
+				{
+					"name": "Sort1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\tRottenTomato as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sort(asc(movie, true)) ~> Sort1\nSort1 derive(dummy = 1,\n\t\teach(match(), ERROR_FUNCTION('') = ERROR_FUNCTION(''))) ~> DerivedColumn1\nWindow1 sort(asc(movie, true)) ~> Sort2\nDerivedColumn1 window(over(dummy),\n\tasc(movie, true),\n\tid = sum(iif(Rating == 1, 1, 0))) ~> Window1"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\tRottenTomato as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(dummy = 1) ~> CreateDummyValue\nCreateDummyValue window(over(dummy),\n\tasc(movie, true),\n\tid = sum(iif(Rating == 1, 1, 0))) ~> Window1\nWindow1 sort(asc(movie, true)) ~> Sort1"
 		}
 	}
 }
