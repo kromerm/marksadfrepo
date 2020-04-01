@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "delimiter.txt",
 				"folderPath": "output/mydataflow123partfiles",
 				"container": "mycontainer"
 			},

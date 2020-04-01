@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "folderout",
+						"referenceName": "delimiterout",
 						"type": "DatasetReference"
 					},
 					"name": "outputdelim"
