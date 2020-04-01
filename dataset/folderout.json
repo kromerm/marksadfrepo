@@ -13,10 +13,10 @@
 				"folderPath": "output/mydataflow123partfiles",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": "",
+			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
-			"quoteChar": ""
+			"quoteChar": "\""
 		},
 		"schema": []
 	}
