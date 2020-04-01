@@ -18,28 +18,16 @@
 					"name": "Sort1"
 				},
 				{
-					"name": "Window1"
-				},
-				{
 					"name": "DerivedColumn1"
 				},
 				{
-					"name": "ConditionalSplit1"
-				},
-				{
-					"name": "SurrogateKey1"
-				},
-				{
-					"name": "Union1"
-				},
-				{
-					"name": "DerivedColumn2"
-				},
-				{
 					"name": "Sort2"
+				},
+				{
+					"name": "Window1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\tRottenTomato as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sort(asc(movie, true)) ~> Sort1\nSort2 window(over(dummy),\n\tasc(movie, true),\n\tid = iif(lag(Rating,0) != 1, lag(id,1),lag(id,0))\r\n) ~> Window1\nSort1 derive(dummy = 1,\n\t\tid = 1) ~> DerivedColumn1\nDerivedColumn1 split(Rating == 1,\n\tdisjoint: false) ~> ConditionalSplit1@(c1, c2)\nConditionalSplit1@c1 keyGenerate(output(id2 as long),\n\tstartAt: 1L) ~> SurrogateKey1\nDerivedColumn2, ConditionalSplit1@c2 union(byName: true)~> Union1\nSurrogateKey1 derive(id = id2) ~> DerivedColumn2\nUnion1 sort(asc(movie, true)) ~> Sort2"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\tRottenTomato as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sort(asc(movie, true)) ~> Sort1\nSort1 derive(dummy = 1,\n\t\teach(match(), ERROR_FUNCTION('') = ERROR_FUNCTION(''))) ~> DerivedColumn1\nWindow1 sort(asc(movie, true)) ~> Sort2\nDerivedColumn1 window(over(dummy),\n\tasc(movie, true),\n\tid = sum(iif(Rating == 1, 1, 0))) ~> Window1"
 		}
 	}
 }
