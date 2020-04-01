@@ -1,5 +1,5 @@
 {
-	"name": "folderout",
+	"name": "DelimitedText15",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
@@ -10,13 +10,13 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "delimiter.txt",
 				"folderPath": "output/mydataflow123partfiles",
 				"container": "mycontainer"
 			},
-			"columnDelimiter": "",
+			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": false,
-			"quoteChar": ""
+			"quoteChar": "\""
 		},
 		"schema": []
 	}
