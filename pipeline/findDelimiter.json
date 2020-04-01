@@ -27,7 +27,7 @@
 						}
 					},
 					"dataset": {
-						"referenceName": "DelimitedText15",
+						"referenceName": "delimiterout",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
