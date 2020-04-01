@@ -20,6 +20,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
+							"wildcardFileName": "delimiter.txt",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -30,7 +31,7 @@
 						"referenceName": "delimiterout",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			},
 			{
@@ -59,7 +60,7 @@
 						"datasetParameters": {
 							"source1": {
 								"delim": {
-									"value": "@activity('Lookup1').output",
+									"value": "@substring(activity('Lookup1').output.firstRow.Prop_0,11,1)",
 									"type": "Expression"
 								}
 							}

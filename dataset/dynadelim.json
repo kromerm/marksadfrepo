@@ -15,7 +15,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "SampleData.csv",
+				"fileName": "moviesDB.csv",
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},

@@ -36,7 +36,7 @@
 					"name": "NumberEachRow"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source\nJustHeader derive(delimiter = regexExtract({_col0_},'([!$`~%^,|\\t])',1)\r\n) ~> DerivedColumn1\nNumberEachRow filter(rownum == 1) ~> JustHeader\nsource derive({_col0_} = toString(byName('_col0_'))) ~> NameSingleCol\nNameSingleCol keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> NumberEachRow\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['delimiter.txt'],\n\tmapColumn(\n\t\tdelimiter\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> outputdelim"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source\nJustHeader derive(delimiter = 'Delimiter:,'+toString(regexExtract({_col0_},'([!$`~%^,|\\t])',1))\r\n) ~> DerivedColumn1\nNumberEachRow filter(rownum == 1) ~> JustHeader\nsource derive({_col0_} = toString(byName('_col0_'))) ~> NameSingleCol\nNameSingleCol keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> NumberEachRow\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['delimiter.txt'],\n\tmapColumn(\n\t\tdelimiter\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> outputdelim"
 		}
 	}
 }
