@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "moviesDB.csv",
-				"folderPath": "SampleData",
+				"fileName": "myfile123.csv",
+				"folderPath": "output/mydataflow123partfiles",
 				"container": "mycontainer"
 			},
 			"columnDelimiter": "",
