@@ -23,11 +23,10 @@
 			],
 			"transformations": [
 				{
-					"name": "Model",
-					"description": "Creates an explicit mapping for each drifted column"
+					"name": "DerivedColumn1"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toString(byName('movie')),\n\t\ttitle = toString(byName('title')),\n\t\tgenres = toString(byName('genres')),\n\t\tyear = toString(byName('year')),\n\t\tRating = toString(byName('Rating')),\n\t\tRottenTomato = toString(byName('RottenTomato'))) ~> Model\nModel sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myfile123.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\tRottenTomato as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(filename = iif (Rating == 1,'file1.csv','file2.csv')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn:'filename',\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
