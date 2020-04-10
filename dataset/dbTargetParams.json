@@ -8,7 +8,7 @@
 		"parameters": {
 			"mytablename": {
 				"type": "string",
-				"defaultValue": "MoviesWithRatings"
+				"defaultValue": "DemoTable"
 			}
 		},
 		"annotations": [],

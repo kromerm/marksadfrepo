@@ -7,9 +7,11 @@
 		},
 		"parameters": {
 			"tablename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "DemoTable"
 			}
 		},
+		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
