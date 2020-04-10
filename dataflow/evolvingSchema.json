@@ -1,5 +1,5 @@
 {
-	"name": "dataflow21",
+	"name": "evolvingSchema",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
