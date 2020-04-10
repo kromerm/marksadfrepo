@@ -1,0 +1,35 @@
+{
+	"name": "evolvingSchema_copy1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dbSourceParams",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dbTargetParams",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource1 derive(each(match(name == 'AverageRating'), 'avgratingnice' = toString(round(toInteger($$))))) ~> DerivedColumn1\nDerivedColumn1 alterRow(upsertIf(true())) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:[('PrimaryGenre'),('year'),('AverageRating')],\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}
