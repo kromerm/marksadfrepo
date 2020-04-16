@@ -1,0 +1,173 @@
+{
+	"name": "names1001",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "90 Records.csv",
+				"folderPath": "SampleData/HR",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Emp ID",
+				"type": "String"
+			},
+			{
+				"name": "Name Prefix",
+				"type": "String"
+			},
+			{
+				"name": "First Name",
+				"type": "String"
+			},
+			{
+				"name": "Middle Initial",
+				"type": "String"
+			},
+			{
+				"name": "Last Name",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "E Mail",
+				"type": "String"
+			},
+			{
+				"name": "Father's Name",
+				"type": "String"
+			},
+			{
+				"name": "Mother's Name",
+				"type": "String"
+			},
+			{
+				"name": "Mother's Maiden Name",
+				"type": "String"
+			},
+			{
+				"name": "Date of Birth",
+				"type": "String"
+			},
+			{
+				"name": "Time of Birth",
+				"type": "String"
+			},
+			{
+				"name": "Age in Yrs.",
+				"type": "String"
+			},
+			{
+				"name": "Weight in Kgs.",
+				"type": "String"
+			},
+			{
+				"name": "Date of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Quarter of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Half of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Year of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Month of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Month Name of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Short Month",
+				"type": "String"
+			},
+			{
+				"name": "Day of Joining",
+				"type": "String"
+			},
+			{
+				"name": "DOW of Joining",
+				"type": "String"
+			},
+			{
+				"name": "Short DOW",
+				"type": "String"
+			},
+			{
+				"name": "Age in Company (Years)",
+				"type": "String"
+			},
+			{
+				"name": "Salary",
+				"type": "String"
+			},
+			{
+				"name": "Last % Hike",
+				"type": "String"
+			},
+			{
+				"name": "SSN",
+				"type": "String"
+			},
+			{
+				"name": "Phone No. ",
+				"type": "String"
+			},
+			{
+				"name": "Place Name",
+				"type": "String"
+			},
+			{
+				"name": "County",
+				"type": "String"
+			},
+			{
+				"name": "City",
+				"type": "String"
+			},
+			{
+				"name": "State",
+				"type": "String"
+			},
+			{
+				"name": "Zip",
+				"type": "String"
+			},
+			{
+				"name": "Region",
+				"type": "String"
+			},
+			{
+				"name": "User Name",
+				"type": "String"
+			},
+			{
+				"name": "Password",
+				"type": "String"
+			}
+		]
+	}
+}

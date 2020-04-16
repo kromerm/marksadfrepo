@@ -9,16 +9,14 @@
 						"referenceName": "MoviesSQLDB",
 						"type": "DatasetReference"
 					},
-					"name": "source1",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source1"
+					"name": "source1"
 				},
 				{
 					"dataset": {
 						"referenceName": "moviestage2",
 						"type": "DatasetReference"
 					},
-					"name": "source2",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> source2"
+					"name": "source2"
 				}
 			],
 			"sinks": [
@@ -27,16 +25,15 @@
 						"referenceName": "moviestage2",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "Exists1 sink(input(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> sink1"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
 				{
-					"name": "Exists1",
-					"script": "source1, source2 exists(toString(source1@movie) == source2@movie\n\t&& source1@title == source2@title\n\t&& source1@Rating == source2@Rating,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1"
+					"name": "Exists1"
 				}
-			]
+			],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source2\nsource1, source2 exists(toString(source1@movie) == source2@movie\n\t&& source1@title == source2@title\n\t&& source1@Rating == source2@Rating,\n\tnegate:true,\n\tbroadcast: 'none')~> Exists1\nExists1 sink(input(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: false) ~> sink1"
 		}
 	}
 }

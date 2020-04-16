@@ -9,8 +9,7 @@
 						"referenceName": "MoviesSQLDB",
 						"type": "DatasetReference"
 					},
-					"name": "source1",
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table') ~> source1"
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -19,20 +18,18 @@
 						"referenceName": "MoviesSQLDB",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "AlterRow1 sink(input(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\tstaged: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['movie']) ~> sink1"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1",
-					"script": "source1 derive(Rating = 5) ~> DerivedColumn1"
+					"name": "DerivedColumn1"
 				},
 				{
-					"name": "AlterRow1",
-					"script": "DerivedColumn1 alterRow(updateIf(year==-1980)) ~> AlterRow1"
+					"name": "AlterRow1"
 				}
-			]
+			],
+			"script": "source(allowSchemaDrift: false,\n\tvalidateSchema: true,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nsource1 derive(Rating = 5) ~> DerivedColumn1\nDerivedColumn1 alterRow(updateIf(year==-1980)) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['movie'],\n\tformat: 'table',\n\tstaged: false) ~> sink1"
 		}
 	}
 }
