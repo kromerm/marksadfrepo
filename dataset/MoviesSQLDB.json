@@ -5,42 +5,11 @@
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [
-			{
-				"name": "movie",
-				"type": "nvarchar"
-			},
-			{
-				"name": "title",
-				"type": "nvarchar"
-			},
-			{
-				"name": "genres",
-				"type": "nvarchar"
-			},
-			{
-				"name": "year",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "Rating",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "Rotton Tomato",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "dateOfETL",
-				"type": "date"
-			}
-		],
+		"schema": [],
 		"typeProperties": {
-			"tableName": "[dbo].[moviestage]"
+			"tableName": "[dbo].[movietest]"
 		}
 	}
 }
