@@ -1,12 +1,12 @@
 {
-	"name": "dataflow21",
+	"name": "DQ02",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesD2",
+						"referenceName": "genericfolder",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -15,10 +15,16 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "DerivedColumn1"
+					"name": "DQTitleMastering"
+				},
+				{
+					"name": "DQMetadata"
+				},
+				{
+					"name": "ValidIfCols"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive() ~> DerivedColumn1"
+			"script": "parameters{\n\tfilename as string ('SampleData/moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[($filename)]) ~> source1\nsource1 derive(mydupefinder = toString(levenshtein(byName('title'),'Fawlty Towers')) + ' ' + byName('title')) ~> DQTitleMastering\nDQTitleMastering derive(mycols = columnNames()) ~> DQMetadata\nDQMetadata split(ERROR_FUNCTION(''),\n\tdisjoint: false) ~> ValidIfCols@(Success, Fail)"
 		}
 	}
 }
