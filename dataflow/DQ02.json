@@ -13,18 +13,8 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [
-				{
-					"name": "DQTitleMastering"
-				},
-				{
-					"name": "DQMetadata"
-				},
-				{
-					"name": "ValidIfCols"
-				}
-			],
-			"script": "parameters{\n\tfilename as string ('SampleData/moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[($filename)]) ~> source1\nsource1 derive(mydupefinder = toString(levenshtein(byName('title'),'Fawlty Towers')) + ' ' + byName('title')) ~> DQTitleMastering\nDQTitleMastering derive(mycols = columnNames()) ~> DQMetadata\nDQMetadata split(ERROR_FUNCTION(''),\n\tdisjoint: false) ~> ValidIfCols@(Success, Fail)"
+			"transformations": [],
+			"script": "parameters{\n\tfilename as string ('SampleData/moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[($filename)]) ~> source1"
 		}
 	}
 }
