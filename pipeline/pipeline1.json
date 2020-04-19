@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "sinkDemo",
+						"referenceName": "SQLPerf",
 						"type": "DataFlowReference"
 					},
 					"compute": {
