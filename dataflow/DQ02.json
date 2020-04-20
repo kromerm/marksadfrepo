@@ -13,8 +13,30 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "parameters{\n\tfilename as string ('SampleData/moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[($filename)]) ~> source1"
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				},
+				{
+					"name": "SurrogateKey1"
+				},
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "DerivedColumn3"
+				},
+				{
+					"name": "Filter1"
+				},
+				{
+					"name": "Flatten1"
+				}
+			],
+			"script": "parameters{\n\tfilename as string ('SampleData/moviesDB.csv')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:[($filename)]) ~> source1\nsource1 derive(mydupetitle = toString(levenshtein('Fawlty Towers',byName('title'))) + ' ' +byName('title')) ~> DerivedColumn1\nSurrogateKey1 derive(zipcode = iif(sk % 2 == 1,'12345-1234','98765')) ~> DerivedColumn2\nDerivedColumn1 keyGenerate(output(sk as long),\n\tstartAt: 1L) ~> SurrogateKey1\nDerivedColumn2 split(regexMatch(zipcode,`^\\d{5}-\\d{4}$`),\n\tdisjoint: false) ~> ConditionalSplit1@(valid, invalid)\nConditionalSplit1@valid derive(cols = columnNames()) ~> DerivedColumn3\nDerivedColumn3 filter(sk==1) ~> Filter1\nFilter1 foldDown(unroll(cols),\n\tmapColumn(\n\t\tcols\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1"
 		}
 	}
 }
