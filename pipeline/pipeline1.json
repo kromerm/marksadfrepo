@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "largeJoins_copy1",
+						"referenceName": "largeJoins",
 						"type": "DataFlowReference"
 					},
 					"compute": {
