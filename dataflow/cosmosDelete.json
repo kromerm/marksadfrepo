@@ -26,7 +26,7 @@
 					"name": "DeletePolicy"
 				}
 			],
-			"script": "source(output(\n\t\tmovies as (year as integer, genres as string[], rating as integer, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos alterRow(deleteIf(titlekey=='Social Network, The')) ~> DeletePolicy\nDeletePolicy sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000) ~> sink1"
+			"script": "source(output(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'document',\n\tsystemColumns: true,\n\tthroughput: 2000) ~> moviesCosmos\nmoviesCosmos alterRow(deleteIf(titlekey=='Social Network, The'),\n\tupsertIf(true())) ~> DeletePolicy\nDeletePolicy sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000,\n\tmapColumn(\n\t\tmovies,\n\t\ttitlekey,\n\t\tid\n\t)) ~> sink1"
 		}
 	}
 }

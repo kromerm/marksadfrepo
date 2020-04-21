@@ -1,0 +1,28 @@
+{
+	"name": "largeJoins_copy1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "loansDB",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"script": "source(output(\n\t\tid as integer,\n\t\tmember_id as integer,\n\t\tloan_amnt as double,\n\t\tfunded_amnt as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'select a.id, b.member_id, c.loan_amnt, d.funded_amnt\\n\\nfrom loans a\\n\\nINNER JOIN loansdemo b ON b.id = a.id\\n\\nINNER JOIN loanspartition c on c.id = a.id\\n\\nINNER JOIN loansnopartition d on d.id = a.id',\n\tformat: 'query',\n\tpartitionColumn: 'id',\n\tpartitionBy('external', 20)) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}
