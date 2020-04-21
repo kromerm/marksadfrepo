@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SQLPerf",
+						"referenceName": "largeJoins",
 						"type": "DataFlowReference"
 					},
 					"compute": {
