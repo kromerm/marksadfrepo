@@ -16,8 +16,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "largeJoins_copy1",
-						"type": "DataFlowReference"
+						"referenceName": "sinkDemo",
+						"type": "DataFlowReference",
+						"parameters": {
+							"cols": "'a,b,c'"
+						}
 					},
 					"compute": {
 						"coreCount": 8,
