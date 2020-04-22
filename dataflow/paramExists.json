@@ -1,0 +1,37 @@
+{
+	"name": "paramExists",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "moviesDriftSource1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "moviesDriftSource1",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "Exists1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				}
+			],
+			"script": "parameters{\n\tparam1 as string ('movie'),\n\tparam2 as string ('title'),\n\tparam3 as string ('year')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nDerivedColumn1, DerivedColumn2 exists(DerivedColumn1@field1 == DerivedColumn2@field1\n\t&& DerivedColumn1@field2 == DerivedColumn2@field2\n\t&& DerivedColumn1@field3 == DerivedColumn2@field3,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nsource1 derive(field1 = toString(byName($param1)),\n\t\tfield2 = toString(byName($param2)),\n\t\tfield3 = toString(byName($param3))) ~> DerivedColumn1\nsource2 derive(field1 = toString(byName($param1)),\n\t\tfield2 = toString(byName($param2)),\n\t\tfield3 = toString(byName($param3))) ~> DerivedColumn2"
+		}
+	}
+}

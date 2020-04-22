@@ -16,11 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "sinkDemo",
-						"type": "DataFlowReference",
-						"parameters": {
-							"cols": "'a,b,c'"
-						}
+						"referenceName": "Loans",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
