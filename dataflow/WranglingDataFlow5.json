@@ -20,7 +20,7 @@
 						"referenceName": "folderout",
 						"type": "DatasetReference"
 					},
-					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['wrangle.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> Sink1"
+					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sink1"
 				}
 			],
 			"script": "section Section1;\r\nshared MoviesD2 = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/moviesDB.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = MoviesD2,\r\n  #\"Replaced value\" = Table.ReplaceValue(Source, \"Fawlty Towers\", \"\", Replacer.ReplaceText, {\"title\"})\r\nin\r\n  #\"Replaced value\";\r\n"
