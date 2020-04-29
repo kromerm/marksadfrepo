@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow22",
+						"referenceName": "denormOrders",
 						"type": "DataFlowReference"
 					},
 					"compute": {
