@@ -5,7 +5,14 @@
 			{
 				"name": "MyDataFlow",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -24,6 +31,126 @@
 						"computeType": "General"
 					}
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"wildcardFileName": "myjson.json",
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBehavior": "insert",
+						"disableMetricsCollection": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['OrderDate']"
+								},
+								"sink": {
+									"path": "OrderDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OrderQty']"
+								},
+								"sink": {
+									"path": "OrderQty"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SalesOrderID']"
+								},
+								"sink": {
+									"path": "SalesOrderID"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SalesOrderNumber']"
+								},
+								"sink": {
+									"path": "SalesOrderNumber"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShipMethod']"
+								},
+								"sink": {
+									"path": "ShipMethod"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Status']"
+								},
+								"sink": {
+									"path": "Status"
+								}
+							},
+							{
+								"source": {
+									"path": "$['TotalDue']"
+								},
+								"sink": {
+									"path": "TotalDue"
+								}
+							},
+							{
+								"source": {
+									"path": "$['UnitPrice']"
+								},
+								"sink": {
+									"path": "UnitPrice"
+								}
+							},
+							{
+								"source": {
+									"path": "$['details']"
+								},
+								"sink": {
+									"path": "details"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "JsonFolder",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosDbSqlApiOrders",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
