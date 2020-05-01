@@ -1,0 +1,33 @@
+{
+	"name": "SQL Orders to CosmosDB",
+	"properties": {
+		"description": "Take 3NF SQL Azure DB schema for Orders and migrate to a denormalized schema in a new CosmosDB container",
+		"activities": [
+			{
+				"name": "denormOrders2",
+				"description": "Uses Data Flow R2H features",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "denormOrders2",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
