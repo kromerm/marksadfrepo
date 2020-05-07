@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "warmCluster",
+						"referenceName": "dataflow17",
 						"type": "DataFlowReference"
 					},
 					"compute": {
