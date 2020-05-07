@@ -9,13 +9,17 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "name",
-				"type": "nvarchar"
-			},
-			{
 				"name": "id",
 				"type": "int",
 				"precision": 10
+			},
+			{
+				"name": "genres",
+				"type": "nvarchar"
+			},
+			{
+				"name": "name",
+				"type": "nvarchar"
 			}
 		],
 		"typeProperties": {

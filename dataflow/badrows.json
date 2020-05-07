@@ -26,7 +26,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tname as string,\n\t\tid as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tname = title,\n\t\tid = movie\n\t)) ~> WriteToDatabase"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie)) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tname = title,\n\t\tid = movie\n\t)) ~> WriteToDatabase"
 		}
 	}
 }

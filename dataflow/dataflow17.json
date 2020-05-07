@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "folderout",
+						"referenceName": "junktable",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -23,10 +23,10 @@
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1"
+					"name": "AlterRow1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(mycol = ERROR_FUNCTION('')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myfile.txt'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 alterRow(upsertIf(true())) ~> AlterRow1\nAlterRow1 sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['id'],\n\tskipKeyWrites:true,\n\tformat: 'table',\n\tmapColumn(\n\t\tid = movie,\n\t\tgenres,\n\t\tname = title\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
