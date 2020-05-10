@@ -1,0 +1,223 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"Dynamics365": {
+			"type": "string"
+		},
+		"ingressStaging": {
+			"type": "string"
+		},
+		"AdobeIntegration": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/IngressD365ToACS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyContactToStaging",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DynamicsSource",
+								"query": {
+									"value": "<fetch><entity name=\"contact\"><all-attributes/><filter type=\"and\"><condition attribute=\"modifiedon\" operator=\"ge\" value=\"@{startOfDay(pipeline().parameters.lastUpdate)}\" /></filter></entity></fetch>",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "contact",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "contactparquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"subPath": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "WriteToAdobe",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "CopyContactToStaging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "IngressD365ToACS",
+								"type": "DataFlowReference",
+								"datasetParameters": {
+									"ReadFromStaging": {
+										"subPath": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									}
+								}
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"lastUpdate": {
+						"type": "string",
+						"defaultValue": "2020-03-19T00:10:00Z"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/contact')]",
+				"[concat(variables('factoryId'), '/datasets/contactparquet')]",
+				"[concat(variables('factoryId'), '/dataflows/IngressD365ToACS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/contact')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('Dynamics365')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DynamicsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "contact"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/contactparquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('ingressStaging')]",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"subPath": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "parquet.parquet",
+						"folderPath": {
+							"value": "ingress/staging/@{dataset().subPath}",
+							"type": "Expression"
+						},
+						"fileSystem": "adobeingress"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IngressD365ToACS')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "contactparquet",
+								"type": "DatasetReference"
+							},
+							"name": "ReadFromStaging"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "[parameters('AdobeIntegration')]",
+								"type": "LinkedServiceReference"
+							},
+							"name": "WriteToAdobe"
+						}
+					],
+					"transformations": [
+						{
+							"name": "GenerateNewColumns"
+						},
+						{
+							"name": "SelectColumns"
+						},
+						{
+							"name": "MarkUpsert"
+						}
+					],
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tformat: 'parquet') ~> ReadFromStaging\nReadFromStaging derive(location = @(address1=byName('address1_line1'),\n\t\taddress2=byName('address1_line2'),\n\t\taddress3=byName('address1_line3'),\n\t\tcity=byName('address1_city'),\n\t\tcountryCode=byName('address1_country'),\n\t\tstateCode=byName('address1_stateorprovince'),\n\t\tzipCode=byName('address1_postalcode')),\n\t\tbirthDate = byName('birthdate'),\n\t\tcreated = byName('createdon'),\n\t\temail = byName('emailaddress1'),\n\t\tfirstName = byName('firstname'),\n\t\tgender = iif(isNull(byName('gendercode')), 'unknown', iif(toString(byName('gendercode')) == \"1\", 'male', 'female')),\n\t\tlastModified = byName('modifiedon'),\n\t\tlastName = byName('lastname'),\n\t\tphone = byName('telephone1'),\n\t\texternalId = byName('contactid')) ~> GenerateNewColumns\nGenerateNewColumns select(mapColumn(\n\t\tlocation,\n\t\tbirthDate,\n\t\tcreated,\n\t\temail,\n\t\tfirstName,\n\t\tgender,\n\t\tlastModified,\n\t\tlastName,\n\t\tphone,\n\t\texternalId\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColumns\nSelectColumns alterRow(upsertIf(true())) ~> MarkUpsert\nMarkUpsert sink(input(\n\t\texternalId as string\n\t),\n\tformat: 'adobecampaign',\n\tresourceName: 'profile',\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['externalId'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> WriteToAdobe"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/contactparquet')]"
+			]
+		}
+	]
+}
