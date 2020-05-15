@@ -23,10 +23,10 @@
 			],
 			"transformations": [
 				{
-					"name": "Hash Rows"
+					"name": "HashRows"
 				}
 			],
-			"script": "parameters{\n\tcols as string ('movies,title,genres')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(hashrow1 = sha2(256,columns()),\n\t\thashrow2 = sha2(256,byNames(split($cols,',')))) ~> Hash Rows\nHash Rows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "parameters{\n\tcols as string ('movies,title,genres')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(hashrow1 = sha2(256,columns()),\n\t\thashrow2 = sha2(256,byNames(split($cols,',')))) ~> HashRows\nHashRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
