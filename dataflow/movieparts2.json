@@ -26,7 +26,7 @@
 					"name": "Select1"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> movieSource\nmovieSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottonTomato = {Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tpartitionBy('fixed', 3,\n\t\ttoInteger(year)<1960,\n\t\ttoInteger(year)>=1960&&toInteger(year)<1990,\n\t\ttoInteger(year)>=1990\n\t)) ~> movieSink"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> movieSource\nmovieSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottonTomato = {Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tpartitionBy('fixed', 3,\n\t\ttoInteger(year)<1960,\n\t\ttoInteger(year)>=1960&&toInteger(year)<1990,\n\t\ttoInteger(year)>=1990\n\t)) ~> movieSink"
 		}
 	}
 }

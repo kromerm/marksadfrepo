@@ -10,9 +10,6 @@
 					"dataset": {
 						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
-					},
-					"typeProperties": {
-						"readMode": null
 					}
 				},
 				{
@@ -21,9 +18,6 @@
 					"dataset": {
 						"referenceName": "moviesDB2",
 						"type": "DatasetReference"
-					},
-					"typeProperties": {
-						"readMode": null
 					}
 				}
 			],

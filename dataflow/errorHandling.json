@@ -36,7 +36,7 @@
 					"name": "checkForNulls"
 				}
 			],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie),\n\t\tnewtitle = toInteger(title)) ~> typeConversions\ntypeConversions split(isNull(movie) || isNull(newtitle),\n\tdisjoint: false) ~> checkForNulls@(errorRows, goodRows)\ncheckForNulls@errorRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['errorRows.csv'],\n\tpartitionBy('hash', 1)) ~> errorRows\ncheckForNulls@goodRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['goodRows.csv'],\n\tpartitionBy('hash', 1)) ~> goodRows"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie),\n\t\tnewtitle = toInteger(title)) ~> typeConversions\ntypeConversions split(isNull(movie) || isNull(newtitle),\n\tdisjoint: false) ~> checkForNulls@(errorRows, goodRows)\ncheckForNulls@errorRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['errorRows.csv'],\n\tpartitionBy('hash', 1)) ~> errorRows\ncheckForNulls@goodRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['goodRows.csv'],\n\tpartitionBy('hash', 1)) ~> goodRows"
 		}
 	}
 }
