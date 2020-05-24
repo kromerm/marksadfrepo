@@ -23,9 +23,24 @@
 			"transformations": [
 				{
 					"name": "PruneCols"
+				},
+				{
+					"name": "KeepRatingRT"
+				},
+				{
+					"name": "Casting"
+				},
+				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "KeepYear"
+				},
+				{
+					"name": "DerivedColumn1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> PrimarySource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ReferenceData\nPrimarySource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> PruneCols"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> PrimarySource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ReferenceData\nPrimarySource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> PruneCols\nReferenceData select(mapColumn(\n\t\tmovie,\n\t\tRating,\n\t\tRottenTomato\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> KeepRatingRT\nKeepRatingRT derive(each(match(true()), $$ = toInteger($$))) ~> Casting\nPruneCols, Casting lookup(PruneCols@movie == Casting@movie,\n\tmultiple: true,\n\tbroadcast: 'both')~> Lookup1\nReferenceData select(mapColumn(\n\t\tmovie,\n\t\tyear\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> KeepYear\nKeepYear derive() ~> DerivedColumn1"
 		}
 	}
 }
