@@ -32,7 +32,7 @@
 					"name": "CollectAndCount"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nCollectAndCount derive(median = ratingsCollection[toInteger(round(ratingsCount/2)+1)]) ~> CalcMedian\nsource1 sort(asc(Rating, true)) ~> Sort\nSort aggregate(groupBy(year = year),\n\tratingsCollection = collect(Rating),\n\t\tratingsCount = count()) ~> CollectAndCount\nCalcMedian sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nCollectAndCount derive(median = ratingsCollection[toInteger(round(ratingsCount/2)+1)]) ~> CalcMedian\nsource1 sort(asc(Rating, true)) ~> Sort\nSort aggregate(groupBy(year),\n\tratingsCollection = collect(Rating),\n\t\tratingsCount = count()) ~> CollectAndCount\nCalcMedian sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }

@@ -29,7 +29,7 @@
 					"name": "Dedupe"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(title=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(moviegrp = movie),\n\tid = first(movie),\n\t\tmovies = first(movies),\n\t\ttitlekey = first(title)) ~> Dedupe\nDedupe sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000) ~> loadCosmos"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> moviesCSV\nmoviesCSV derive(movies = @(title=title,\n\t\tgenres=split(genres,'|'),\n\t\tyear=year,\n\t\trating=Rating)) ~> MakeHierarchy\nMakeHierarchy aggregate(groupBy(moviegrp = movie),\n\tid = first(movie),\n\t\tmovies = first(movies),\n\t\ttitlekey = first(title)) ~> Dedupe\nDedupe sink(input(\n\t\tmovies as (year as string, genres as string[], rating as string, title as string),\n\t\ttitlekey as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'document',\n\tpartitionKey: ['/titlekey'],\n\tthroughput: 2000) ~> loadCosmos"
 		}
 	}
 }

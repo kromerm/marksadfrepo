@@ -21,7 +21,7 @@
 					"name": "DerivedColumn2"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource2 aggregate(groupBy(year = year),\n\tstring_agg = collect(title)) ~> Aggregate1\nAggregate1 derive(string_agg = toString(string_agg)) ~> DerivedColumn2"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource2 aggregate(groupBy(year),\n\tstring_agg = collect(title)) ~> Aggregate1\nAggregate1 derive(string_agg = toString(string_agg)) ~> DerivedColumn2"
 		}
 	}
 }

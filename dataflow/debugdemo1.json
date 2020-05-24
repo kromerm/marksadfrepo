@@ -35,7 +35,7 @@
 					"name": "Lookup1"
 				}
 			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource1 derive(title = sha2(256,title)) ~> DerivedColumn1\nDerivedColumn1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tmultiple: true,\n\tbroadcast: 'auto')~> Lookup1\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true) ~> sink1\nsource2 sink() ~> sink2"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource1 derive(title = sha2(256,title)) ~> DerivedColumn1\nDerivedColumn1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tmultiple: true,\n\tbroadcast: 'auto')~> Lookup1\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true) ~> sink1\nsource2 sink() ~> sink2"
 		}
 	}
 }
