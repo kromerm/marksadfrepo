@@ -1,11 +1,18 @@
 {
 	"name": "AzureSqlDatabase2",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
+		"annotations": [],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
-			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=maksqldb.database.windows.net;initial catalog=makaw;user id=kromerm",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIk1BS0FERldFU1RfMGU2Yjg5OGQtNjIwZC00MWQxLTk1MjMtNjFjNmNhOWNlYTExIg0KfQ=="
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault3",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "mak"
+			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
