@@ -1,0 +1,23 @@
+{
+	"name": "cdmDataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
+				},
+				{
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'Orders',\n\tformat: 'cdm',\n\tmanifestType: 'model',\n\tfolderPath: 'model',\n\tfileSystem: 'mycontainer') ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2"
+		}
+	}
+}
