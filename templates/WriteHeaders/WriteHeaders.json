@@ -1,0 +1,270 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"AzureBlobStorage1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/WriteHeaders')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Sample pipeline with data flow that demonstrates how to write a file with zero rows as just a header file.",
+				"activities": [
+					{
+						"name": "writeHeaders",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "writeHeaders",
+								"type": "DataFlowReference",
+								"parameters": {
+									"myparam": "1"
+								}
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/writeHeaders')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/writeHeaders')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesD2",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "MoviesD2Header",
+								"type": "DatasetReference"
+							},
+							"name": "sourceJustHeaders"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "folderout_noheaders",
+								"type": "DatasetReference"
+							},
+							"name": "sinkJustHeader"
+						},
+						{
+							"dataset": {
+								"referenceName": "folderout",
+								"type": "DatasetReference"
+							},
+							"name": "sinkFullData"
+						}
+					],
+					"transformations": [
+						{
+							"name": "rowCount"
+						},
+						{
+							"name": "zeroRowsCheck"
+						},
+						{
+							"name": "SurrogateKey1"
+						},
+						{
+							"name": "justHeaderRow"
+						},
+						{
+							"name": "Union1"
+						},
+						{
+							"name": "Union2"
+						},
+						{
+							"name": "origdata"
+						},
+						{
+							"name": "Filter1"
+						},
+						{
+							"name": "removeNulls1"
+						},
+						{
+							"name": "removeNulls2"
+						}
+					],
+					"script": "parameters{\n\tmyparam as integer (1)\n}\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sourceJustHeaders\nFilter1 aggregate(rowcount = count()) ~> rowCount\nrowCount split(rowcount == 0,\n\tdisjoint: false) ~> zeroRowsCheck@(zeroRows, default)\nsourceJustHeaders keyGenerate(output(rownum as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownum == 1) ~> justHeaderRow\nzeroRowsCheck@zeroRows, justHeaderRow union(byName: true)~> Union1\nzeroRowsCheck@default, origdata union(byName: true)~> Union2\nFilter1 select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> origdata\nsource1 filter($myparam == 1) ~> Filter1\nUnion1 filter(rownum == 1) ~> removeNulls1\nUnion2 filter(isNull(rowcount)) ~> removeNulls2\nremoveNulls1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['movienoheaders.csv'],\n\tmapColumn(\n\t\teach(match(name!='rowcount'&&name!='rownum'))\n\t),\n\tpartitionBy('hash', 1)) ~> sinkJustHeader\nremoveNulls2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['moviewithheaders.csv'],\n\tmapColumn(\n\t\teach(match(name!='rowcount'&&name!='rownum'))\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sinkFullData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MoviesD2')]",
+				"[concat(variables('factoryId'), '/datasets/MoviesD2Header')]",
+				"[concat(variables('factoryId'), '/datasets/folderout_noheaders')]",
+				"[concat(variables('factoryId'), '/datasets/folderout')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesD2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "moviesDB.csv",
+						"folderPath": "SampleData",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "movie",
+						"type": "String"
+					},
+					{
+						"name": "title",
+						"type": "String"
+					},
+					{
+						"name": "genres",
+						"type": "String"
+					},
+					{
+						"name": "year",
+						"type": "String"
+					},
+					{
+						"name": "Rating",
+						"type": "String"
+					},
+					{
+						"name": "RottenTomato",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesD2Header')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "moviesDB.csv",
+						"folderPath": "SampleData",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/folderout_noheaders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "output/mydataflow123partfiles",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/folderout')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "output/demoout1",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}
