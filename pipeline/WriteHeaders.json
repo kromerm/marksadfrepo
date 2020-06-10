@@ -1,6 +1,7 @@
 {
-	"name": "pipeline3",
+	"name": "WriteHeaders",
 	"properties": {
+		"description": "Sample pipeline with data flow that demonstrates how to write a file with zero rows as just a header file.",
 		"activities": [
 			{
 				"name": "writeHeaders",
@@ -17,7 +18,10 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "writeHeaders",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"myparam": "1"
+						}
 					},
 					"compute": {
 						"coreCount": 8,
