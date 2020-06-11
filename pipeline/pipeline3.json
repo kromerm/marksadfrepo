@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow21",
+						"referenceName": "CDM_Transactions",
 						"type": "DataFlowReference"
 					},
 					"compute": {

@@ -1,0 +1,137 @@
+{
+	"name": "transactions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Transaction-00001.csv",
+				"folderPath": "SampleData",
+				"fileSystem": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "TransactionId",
+				"type": "String"
+			},
+			{
+				"name": "TransactionInitiatedTimestamp",
+				"type": "String"
+			},
+			{
+				"name": "TransactionCompletedTimestamp",
+				"type": "String"
+			},
+			{
+				"name": "TransactionAmount",
+				"type": "String"
+			},
+			{
+				"name": "Store_StoreIdStoreId",
+				"type": "String"
+			},
+			{
+				"name": "Store_StoreIdStoreName",
+				"type": "String"
+			},
+			{
+				"name": "Store_StoreIdLocationId",
+				"type": "String"
+			},
+			{
+				"name": "Store_StoreIdLastModifiedDate",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdPointOfSaleId",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdPointOfSaleName",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdPointOfSaleDescription",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdStore_StoreIdStoreId",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdStore_StoreIdStoreName",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdStore_StoreIdLocationId",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdStore_StoreIdLastModifiedDate",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdPointOfSaleNote",
+				"type": "String"
+			},
+			{
+				"name": "PointOfSale_PointOfSaleIdLastModifiedDate",
+				"type": "String"
+			},
+			{
+				"name": "Customer_CustomerIdCustomerId",
+				"type": "String"
+			},
+			{
+				"name": "Customer_CustomerIdCustomerEstablishedDate",
+				"type": "String"
+			},
+			{
+				"name": "Customer_CustomerIdLastModifiedDate",
+				"type": "String"
+			},
+			{
+				"name": "LoyaltyProgramId",
+				"type": "String"
+			},
+			{
+				"name": "LoyaltyAccountId",
+				"type": "String"
+			},
+			{
+				"name": "CustomerAccount_CustomerAccountIdCustomerAccountId",
+				"type": "String"
+			},
+			{
+				"name": "CustomerAccount_CustomerAccountIdCustomer_CustomerIdCustomerId",
+				"type": "String"
+			},
+			{
+				"name": "CustomerAccount_CustomerAccountIdCustomer_CustomerIdCustomerEstablishedDate",
+				"type": "String"
+			},
+			{
+				"name": "CustomerAccount_CustomerAccountIdCustomer_CustomerIdLastModifiedDate",
+				"type": "String"
+			},
+			{
+				"name": "CustomerAccount_CustomerAccountIdLastModifiedDate",
+				"type": "String"
+			},
+			{
+				"name": "LastModifiedDate",
+				"type": "String"
+			}
+		]
+	}
+}
