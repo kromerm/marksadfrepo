@@ -1,9 +1,9 @@
 {
-	"name": "pipeline3",
+	"name": "CDM_Pipeline",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow21",
+				"name": "CDM Data Flow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
