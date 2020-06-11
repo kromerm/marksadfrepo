@@ -1,5 +1,5 @@
 {
-	"name": "dataflow20",
+	"name": "CDM2",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
