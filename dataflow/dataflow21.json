@@ -1,0 +1,32 @@
+{
+	"name": "dataflow21",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					},
+					"schemaLinkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sink(input(\n\t\tTransactionId as string,\n\t\tSalesChannelId as string,\n\t\tPurchasingChannelId as string,\n\t\tTransactionInitiatedTimestamp as string,\n\t\tTransactionCompletedTimestamp as string,\n\t\tTransactionAmount as string,\n\t\tTotalRetailPriceAmount as string,\n\t\tTotalAdjustmentAmount as string,\n\t\tCustomerId as string,\n\t\tCustomerAccountId as string,\n\t\tTransactionTypeId as string,\n\t\tMerchantId as string,\n\t\tIsoCurrencyCode as string,\n\t\tLoyaltyProgramId as string,\n\t\tLoyaltyAccountId as string,\n\t\tStoreId as string,\n\t\tPaymentCardId as string,\n\t\tPointOfSaleId as string,\n\t\tTransactionClassificationId as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'Transaction.cdm.json/Transaction',\n\tformat: 'cdm',\n\tmanifestName: 'Transaction.cdm.json',\n\tcorpusPath: 'CDMfolders/corpus',\n\tfolderPath: 'CDMfolders/Transaction',\n\tfileSystem: 'mycontainer',\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: false,\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tmapColumn(\n\t\tTransactionId = movie,\n\t\tSalesChannelId = movie,\n\t\tPurchasingChannelId = movie,\n\t\tTransactionInitiatedTimestamp = movie,\n\t\tTransactionCompletedTimestamp = movie,\n\t\tTransactionAmount = movie,\n\t\tTotalRetailPriceAmount = movie,\n\t\tTotalAdjustmentAmount = movie,\n\t\tCustomerId = movie,\n\t\tCustomerAccountId = movie,\n\t\tTransactionTypeId = movie,\n\t\tMerchantId = movie,\n\t\tIsoCurrencyCode = movie,\n\t\tLoyaltyProgramId = movie,\n\t\tLoyaltyAccountId = movie,\n\t\tStoreId = movie,\n\t\tPaymentCardId = movie,\n\t\tPointOfSaleId = movie,\n\t\tTransactionClassificationId = movie\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}
