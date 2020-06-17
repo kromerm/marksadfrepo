@@ -21,11 +21,34 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "ModelSource"
+				},
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"schemaLinkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"schemaLinkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'Transaction.cdm.json/Transaction',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Transaction.cdm.json',\n\tentityPath: 'Transaction',\n\tcorpusPath: 'CDMfolders/corpus',\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tfolderPath: 'CDMfolders',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> ManifestSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'account',\n\tformat: 'cdm',\n\tmanifestType: 'model',\n\tfolderPath: 'account',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> ModelSource"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'Transaction.cdm.json/Transaction',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Transaction.cdm.json',\n\tentityPath: 'Transaction',\n\tcorpusPath: 'CDMfolders/corpus',\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tfolderPath: 'CDMfolders',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> ManifestSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'account',\n\tformat: 'cdm',\n\tmanifestType: 'model',\n\tfolderPath: 'account',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> ModelSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'DimAttributeMainAccountEntity.cdm.json/DimAttributeMainAccountEntity',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'core',\n\tcorpusPath: 'CDM-master/schemaDocuments/manifests/core/operationsCommon/Entities/Finance/FinancialDimensions',\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tfolderPath: 'CDM-master/schemaDocuments/manifests/core',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> source1\nManifestSource sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'DimAttributeMainAccountEntity.cdm.json/DimAttributeMainAccountEntity',\n\tformat: 'cdm',\n\tmanifestName: 'core',\n\tcorpusPath: 'CDM-master/schemaDocuments/manifests/core/operationsCommon/Entities/Finance/FinancialDimensions',\n\tfolderPath: 'CDM-master/schemaDocuments/core/operationsCommon/Entities/Finance/FinancialDimensions/financialCommon',\n\tfileSystem: 'mycontainer',\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
