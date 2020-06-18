@@ -1,0 +1,20 @@
+{
+	"name": "dataflow22",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'account',\n\tformat: 'cdm',\n\tmanifestType: 'model',\n\tfolderPath: 'account',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> source1"
+		}
+	}
+}
