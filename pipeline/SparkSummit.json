@@ -1,5 +1,5 @@
 {
-	"name": "pipeline3",
+	"name": "SparkSummit",
 	"properties": {
 		"activities": [
 			{
@@ -179,7 +179,7 @@
 				}
 			},
 			{
-				"name": "dataflow2",
+				"name": "Clean Data",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
@@ -209,11 +209,17 @@
 				}
 			},
 			{
-				"name": "Notebook1",
+				"name": "Augment",
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "dataflow2",
+						"activity": "Clean Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Clean Data2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -231,6 +237,26 @@
 					"referenceName": "databrickswest",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Clean Data2",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Clean Data",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"annotations": []
