@@ -166,6 +166,10 @@
 					"dataflow": {
 						"referenceName": "deleteRows",
 						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			},
@@ -192,6 +196,10 @@
 					"dataflow": {
 						"referenceName": "DataMasking",
 						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					}
 				}
 			},
