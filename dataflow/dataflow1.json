@@ -1,0 +1,60 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Excel1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"linkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source2"
+				},
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"schemaLinkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source3"
+				},
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source4"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				},
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"schemaLinkedService": {
+						"referenceName": "AzureDataLakeStorage4",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [],
+			"script": "source(output(\n\t\tSalesID as double,\n\t\tAmounts as double,\n\t\tQuantity as double,\n\t\tCountry as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(output(\n\t\tSalesID as double,\n\t\tAmounts as double,\n\t\tQuantity as double,\n\t\tCountry as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'excel',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData',\n\tfileName: 'currencysales.xlsx',\n\tsheetName: 'currencysales1',\n\tfirstRowAsHeader: true) ~> source2\nsource(output(\n\t\tfinancialActivityId as string,\n\t\tmainAccountCategoryKey as string,\n\t\tmainAccountKey as string,\n\t\tcompanyKey as string,\n\t\ttransactionCurrencyKey as string,\n\t\tfiscalCalendarPeriodKey as string,\n\t\tledgerDimensionDisplayValue as string,\n\t\ttransactionCurrencyCode as string,\n\t\taccountingCurrencyAmount as string,\n\t\taccountingDate as string,\n\t\tledgerId as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'FinancialActivity.cdm.json/FinancialActivity',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: '_allImports.cdm.json',\n\tentityPath: 'manifests/core/applicationCommon',\n\tcorpusPath: 'CDM-master/schemaDocuments/core/applicationCommon/foundationCommon/financialCommon',\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tfolderPath: 'CDM-master/schemaDocuments',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: true) ~> source3\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tentity: 'account',\n\tformat: 'cdm',\n\tmanifestType: 'model',\n\tfolderPath: 'account',\n\tfileSystem: 'mycontainer',\n\tignoreNoFilesFound: false) ~> source4\nsource1 sink(skipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1\nsource3 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tfinancialActivityId as string,\n\t\tmainAccountCategoryKey as string,\n\t\tmainAccountKey as string,\n\t\tcompanyKey as string,\n\t\ttransactionCurrencyKey as string,\n\t\tfiscalCalendarPeriodKey as string,\n\t\tledgerDimensionDisplayValue as string,\n\t\ttransactionCurrencyCode as string,\n\t\taccountingCurrencyAmount as string,\n\t\taccountingDate as string,\n\t\tledgerId as string\n\t),\n\tentity: 'FinancialActivity.cdm.json/FinancialActivity',\n\tformat: 'cdm',\n\tentityPath: 'core/applicationCommon/foundationCommon',\n\tmanifestName: '_allImports.cdm.json',\n\tcorpusPath: 'CDM-master/schemaDocuments/core/applicationCommon/foundationCommon/financialCommon',\n\tfolderPath: 'CDM-master/schemaDocuments/manifests',\n\tfileSystem: 'mycontainer',\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: false,\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'mycontainer',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink2"
+		}
+	}
+}
