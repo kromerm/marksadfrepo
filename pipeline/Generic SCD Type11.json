@@ -1,0 +1,69 @@
+{
+	"name": "Generic SCD Type11",
+	"properties": {
+		"description": "https://techcommunity.microsoft.com/t5/Azure-Data-Factory/Create-Generic-SCD-Pattern-in-ADF-Mapping-Data-Flows/ba-p/918519",
+		"activities": [
+			{
+				"name": "SCD Type1 Generic",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "scdT1Generic1",
+						"type": "DataFlowReference",
+						"parameters": {
+							"dimname": "'dimprods'",
+							"keycol": "'ProductNumber'",
+							"SurrogateKey": "'ProductID'",
+							"tablename": "'DimProducts'"
+						},
+						"datasetParameters": {
+							"NewMembers1": {
+								"filename": "DimProducts.csv"
+							},
+							"ExistingMembers": {
+								"tablename": "DimProducts"
+							},
+							"SetMaxKey": {
+								"tablename": "DimProducts"
+							},
+							"sink1": {
+								"tablename": "DimProducts"
+							},
+							"sink2": {
+								"tablename": "DimProducts"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"parama": {
+				"type": "string"
+			},
+			"paramb": {
+				"type": "string"
+			},
+			"paramc": {
+				"type": "string"
+			},
+			"paramd": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
