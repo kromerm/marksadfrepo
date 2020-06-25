@@ -128,7 +128,7 @@
 				]
 			},
 			{
-				"name": "Web1",
+				"name": "Exit",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
@@ -200,7 +200,10 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow2",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"mycount": "'2'"
+						}
 					},
 					"compute": {
 						"coreCount": 8,
