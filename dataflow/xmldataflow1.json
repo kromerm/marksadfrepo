@@ -1,13 +1,13 @@
 {
-	"name": "dataflow3",
+	"name": "xmldataflow1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "nadja",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
 					},
 					"name": "source1"
 				}
@@ -15,14 +15,14 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ParquetStage",
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
 				}
 			],
 			"transformations": [],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+			"script": "source(output(\n\t\tRoot as ({@xmlns} as string, Customers as (Customer as ({@CustomerID} as string, CompanyName as string, ContactName as string, ContactTitle as string, Fax as string, FullAddress as (Address as string, City as string, Country as string, PostalCode as integer, Region as string), Phone as string)[]), Orders as (Order as (CustomerID as string, EmployeeID as short, OrderDate as string, RequiredDate as string, ShipInfo as ({@ShippedDate} as string, Freight as double, ShipAddress as string, ShipCity as string, ShipCountry as string, ShipName as string, ShipPostalCode as integer, ShipRegion as string, ShipVia as short))[]))\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'xml',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData/XML',\n\tfileName: 'customers.xml',\n\tvalidationMode: 'none',\n\tnamespaces: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 		}
 	}
 }
