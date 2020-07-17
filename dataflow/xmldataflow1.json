@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "folderout",
+						"referenceName": "JsonFolder",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -23,10 +23,19 @@
 			],
 			"transformations": [
 				{
-					"name": "Flatten1"
+					"name": "FlattenCustomers"
+				},
+				{
+					"name": "FlattenOrders"
+				},
+				{
+					"name": "CleanAddress"
+				},
+				{
+					"name": "RemoveFax"
 				}
 			],
-			"script": "source(output(\n\t\t{AW:Root} as ({AW:Customers} as ({AW:Customer} as ({@CustomerID} as string, {AW:CompanyName} as string, {AW:ContactName} as string, {AW:ContactTitle} as string, {AW:Fax} as string, {AW:FullAddress} as ({AW:Address} as string, {AW:City} as string, {AW:Country} as string, {AW:PostalCode} as integer, {AW:Region} as string), {AW:Phone} as string)[]), {AW:Orders} as ({AW:Order} as ({AW:CustomerID} as string, {AW:EmployeeID} as short, {AW:OrderDate} as string, {AW:RequiredDate} as string, {AW:ShipInfo} as ({@ShippedDate} as string, {AW:Freight} as double, {AW:ShipAddress} as string, {AW:ShipCity} as string, {AW:ShipCountry} as string, {AW:ShipName} as string, {AW:ShipPostalCode} as integer, {AW:ShipRegion} as string, {AW:ShipVia} as short))[]))\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'xml',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData/XML',\n\tfileName: 'customers.xml',\n\tvalidationMode: 'none',\n\tnamespaces: true,\n\tnamespacePrefixes: ['http://www.adventure-works.com'->'AW']) ~> source1\nsource1 foldDown(unroll({AW:Root}.{AW:Customers}.{AW:Customer}),\n\tmapColumn(\n\t\t{@CustomerID} = {AW:Root}.{AW:Customers}.{AW:Customer}.{@CustomerID},\n\t\t{AW:CompanyName} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:CompanyName},\n\t\t{AW:ContactName} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:ContactName},\n\t\t{AW:ContactTitle} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:ContactTitle},\n\t\t{AW:Fax} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:Fax},\n\t\t{AW:FullAddress} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:FullAddress},\n\t\t{AW:Phone} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:Phone},\n\t\t{AW:Orders} = {AW:Root}.{AW:Orders}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+			"script": "source(output(\n\t\t{AW:Root} as ({AW:Customers} as ({AW:Customer} as ({@CustomerID} as string, {AW:CompanyName} as string, {AW:ContactName} as string, {AW:ContactTitle} as string, {AW:Fax} as string, {AW:FullAddress} as ({AW:Address} as string, {AW:City} as string, {AW:Country} as string, {AW:PostalCode} as integer, {AW:Region} as string), {AW:Phone} as string)[]), {AW:Orders} as ({AW:Order} as ({AW:CustomerID} as string, {AW:EmployeeID} as short, {AW:OrderDate} as string, {AW:RequiredDate} as string, {AW:ShipInfo} as ({@ShippedDate} as string, {AW:Freight} as double, {AW:ShipAddress} as string, {AW:ShipCity} as string, {AW:ShipCountry} as string, {AW:ShipName} as string, {AW:ShipPostalCode} as integer, {AW:ShipRegion} as string, {AW:ShipVia} as short))[]))\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'xml',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData/XML',\n\tfileName: 'customers.xml',\n\tvalidationMode: 'none',\n\tnamespaces: true,\n\tnamespacePrefixes: ['http://www.adventure-works.com'->'AW']) ~> source1\nsource1 foldDown(unroll({AW:Root}.{AW:Customers}.{AW:Customer}),\n\tmapColumn(\n\t\t{@CustomerID} = {AW:Root}.{AW:Customers}.{AW:Customer}.{@CustomerID},\n\t\t{AW:CompanyName} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:CompanyName},\n\t\t{AW:ContactName} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:ContactName},\n\t\t{AW:ContactTitle} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:ContactTitle},\n\t\t{AW:Fax} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:Fax},\n\t\t{AW:FullAddress} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:FullAddress},\n\t\t{AW:Phone} = {AW:Root}.{AW:Customers}.{AW:Customer}.{AW:Phone},\n\t\t{AW:Orders} = {AW:Root}.{AW:Orders}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> FlattenCustomers\nFlattenCustomers foldDown(unroll({AW:Orders}.{AW:Order}),\n\tmapColumn(\n\t\t{@CustomerID},\n\t\t{AW:CompanyName},\n\t\t{AW:ContactName},\n\t\t{AW:ContactTitle},\n\t\t{AW:Fax},\n\t\t{AW:FullAddress},\n\t\t{AW:Phone},\n\t\t{AW:CustomerID} = {AW:Orders}.{AW:Order}.{AW:CustomerID},\n\t\t{AW:EmployeeID} = {AW:Orders}.{AW:Order}.{AW:EmployeeID},\n\t\t{AW:OrderDate} = {AW:Orders}.{AW:Order}.{AW:OrderDate},\n\t\t{AW:RequiredDate} = {AW:Orders}.{AW:Order}.{AW:RequiredDate},\n\t\t{AW:ShipInfo} = {AW:Orders}.{AW:Order}.{AW:ShipInfo}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> FlattenOrders\nFlattenOrders derive({AW:FullAddress} = @({AW:Address}=replace({AW:FullAddress}.{AW:Address},'Blvd.','Boulevard'),\n\t\t{AW:City}={AW:FullAddress}.{AW:City},\n\t\t{AW:Country}={AW:FullAddress}.{AW:Country},\n\t\t{AW:PostalCode}={AW:FullAddress}.{AW:PostalCode},\n\t\t{AW:Region}={AW:FullAddress}.{AW:Region})) ~> CleanAddress\nCleanAddress select(mapColumn(\n\t\t{@CustomerID},\n\t\t{AW:CompanyName},\n\t\t{AW:ContactName},\n\t\t{AW:ContactTitle},\n\t\t{AW:FullAddress},\n\t\t{AW:Phone},\n\t\t{AW:CustomerID},\n\t\t{AW:EmployeeID},\n\t\t{AW:OrderDate},\n\t\t{AW:RequiredDate},\n\t\t{AW:ShipInfo}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> RemoveFax\nRemoveFax sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['awcustomers.json'],\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }

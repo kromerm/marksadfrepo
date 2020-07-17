@@ -1,9 +1,9 @@
 {
-	"name": "pipeline2",
+	"name": "xmlpipeline",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow20",
+				"name": "xmldataflow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "largeJoins",
+						"referenceName": "xmldataflow1",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
