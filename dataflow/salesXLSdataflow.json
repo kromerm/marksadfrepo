@@ -12,12 +12,23 @@
 					"name": "source"
 				},
 				{
+					"linkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					},
 					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "financialsXLS",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
 				}
 			],
 			"sinks": [],
 			"transformations": [],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+			"script": "source(output(\n\t\tSalesID as double,\n\t\tAmounts as double,\n\t\tQuantity as double,\n\t\tCountry as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source\nsource(output(\n\t\tSegment as string,\n\t\tCountry as string,\n\t\tProduct as string,\n\t\t{Discount Band} as string,\n\t\t{Units Sold} as double,\n\t\t{Manufacturing Price} as double,\n\t\t{Sale Price} as double,\n\t\t{Gross Sales} as double,\n\t\tDiscounts as double,\n\t\t{ Sales} as double,\n\t\tCOGS as double,\n\t\tProfit as double,\n\t\tDate as date,\n\t\t{Month Number} as double,\n\t\t{Month Name} as string,\n\t\tYear as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'excel',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData',\n\tfileName: 'FinancialSample.xlsx',\n\tsheetName: 'Sheet1',\n\tfirstRowAsHeader: true) ~> source1\nsource(output(\n\t\tSegment as string,\n\t\tCountry as string,\n\t\tProduct as string,\n\t\t{Discount Band} as string,\n\t\t{Units Sold} as string,\n\t\t{Manufacturing Price} as string,\n\t\t{Sale Price} as string,\n\t\t{Gross Sales} as string,\n\t\tDiscounts as string,\n\t\t{ Sales} as string,\n\t\tCOGS as string,\n\t\tProfit as string,\n\t\tDate as string,\n\t\t{Month Number} as string,\n\t\t{Month Name} as string,\n\t\tYear as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2"
 		}
 	}
 }

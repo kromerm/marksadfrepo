@@ -11,7 +11,7 @@
 			"sheetName": "Sheet1",
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Financial Sample.xlsx",
+				"fileName": "FinancialSample.xlsx",
 				"folderPath": "SampleData",
 				"container": "mycontainer"
 			},
