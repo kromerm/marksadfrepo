@@ -1,0 +1,39 @@
+{
+	"name": "salesXLS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "currencysales1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "currencysales.xlsx",
+				"folderPath": "SampleData",
+				"container": "mycontainer"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "SalesID",
+				"type": "String"
+			},
+			{
+				"name": "Amounts",
+				"type": "String"
+			},
+			{
+				"name": "Quantity",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			}
+		]
+	}
+}
