@@ -1,0 +1,87 @@
+{
+	"name": "financialsXLS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Financial Sample.xlsx",
+				"folderPath": "SampleData",
+				"container": "mycontainer"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Segment",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "Product",
+				"type": "String"
+			},
+			{
+				"name": "Discount Band",
+				"type": "String"
+			},
+			{
+				"name": "Units Sold",
+				"type": "String"
+			},
+			{
+				"name": "Manufacturing Price",
+				"type": "String"
+			},
+			{
+				"name": "Sale Price",
+				"type": "String"
+			},
+			{
+				"name": "Gross Sales",
+				"type": "String"
+			},
+			{
+				"name": "Discounts",
+				"type": "String"
+			},
+			{
+				"name": " Sales",
+				"type": "String"
+			},
+			{
+				"name": "COGS",
+				"type": "String"
+			},
+			{
+				"name": "Profit",
+				"type": "String"
+			},
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "Month Number",
+				"type": "String"
+			},
+			{
+				"name": "Month Name",
+				"type": "String"
+			},
+			{
+				"name": "Year",
+				"type": "String"
+			}
+		]
+	}
+}
