@@ -1,0 +1,19 @@
+{
+	"name": "AzureFunction1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "https://makfunc.azurewebsites.net",
+			"functionKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "mysec12345",
+				"secretVersion": ""
+			}
+		}
+	}
+}
