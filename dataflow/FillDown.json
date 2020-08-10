@@ -1,12 +1,30 @@
 {
-	"name": "dataflow15",
+	"name": "FillDown",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
 			"sinks": [],
-			"transformations": [],
-			"script": ""
+			"transformations": [
+				{
+					"name": "Window1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				}
+			],
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn1 window(over(dummy),\n\tasc(movie, true),\n\tstartRowOffset: -1L,\n\tendRowOffset: 0L,\n\tRating2 = first(coalesce(Rating))) ~> Window1\nsource1 derive(dummy = 1) ~> DerivedColumn1\nWindow1 derive(Rating = iif(isNull(Rating),Rating2,Rating)) ~> DerivedColumn2"
 		}
 	}
 }
