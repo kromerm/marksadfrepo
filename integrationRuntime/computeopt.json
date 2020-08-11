@@ -1,0 +1,16 @@
+{
+	"name": "computeopt",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "AutoResolve",
+				"dataFlowProperties": {
+					"computeType": "ComputeOptimized",
+					"coreCount": 16,
+					"timeToLive": 0
+				}
+			}
+		}
+	}
+}
