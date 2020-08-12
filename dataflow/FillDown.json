@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesD2",
+						"referenceName": "SQLProducts_new",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -24,7 +24,7 @@
 					"name": "DerivedColumn2"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nDerivedColumn1 window(over(dummy),\n\tasc(movie, true),\n\tstartRowOffset: -1L,\n\tendRowOffset: 0L,\n\tRating2 = first(coalesce(Rating))) ~> Window1\nsource1 derive(dummy = 1) ~> DerivedColumn1\nWindow1 derive(Rating = iif(isNull(Rating),Rating2,Rating)) ~> DerivedColumn2"
+			"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nDerivedColumn1 window(over(dummy),\n\tasc(ProductID, true),\n\tstartRowOffset: -1L,\n\tendRowOffset: 0L,\n\tSellEndDate2 = first(coalesce(SellEndDate))) ~> Window1\nsource1 derive(dummy = 1) ~> DerivedColumn1\nWindow1 derive(SellEndDate = iif(isNull(SellEndDate),SellEndDate2,SellEndDate)) ~> DerivedColumn2"
 		}
 	}
 }
