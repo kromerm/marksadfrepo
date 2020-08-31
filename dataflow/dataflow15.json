@@ -1,0 +1,27 @@
+{
+	"name": "dataflow15",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "genericfolder",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "ConditionalSplit1"
+				}
+			],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\twildcardPaths:['loan.csv']) ~> source1\nsource1 derive(each(match(type == 'string'), $$ = toUpper($$))) ~> DerivedColumn1\nDerivedColumn1 split(ERROR_FUNCTION(''),\n\tdisjoint: false) ~> ConditionalSplit1@(, )"
+		}
+	}
+}
