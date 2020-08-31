@@ -6,15 +6,29 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "RetailSalesCSV",
+						"referenceName": "RetailSalesTransformedCSV",
 						"type": "DatasetReference"
 					},
 					"name": "RetailSalesSource"
+				},
+				{
+					"dataset": {
+						"referenceName": "RetailProductsCSV",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "source(output(\n\t\tstoreId as short,\n\t\tproductCode as string,\n\t\tquantity as short,\n\t\tlogQuantity as double,\n\t\tadvertising as boolean,\n\t\tprice as short,\n\t\tweekStarting as date,\n\t\tid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> RetailSalesSource"
+			"transformations": [
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "Join2"
+				}
+			],
+			"script": "source(output(\n\t\tstoreId as short,\n\t\tproductCode as string,\n\t\tquantity as short,\n\t\tlogQuantity as double,\n\t\tadvertising as boolean,\n\t\tprice as double,\n\t\tweekStarting as date,\n\t\tid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> RetailSalesSource\nsource(output(\n\t\tid as string,\n\t\tproductCode as string,\n\t\tbasePrice as string,\n\t\twholeSaleCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nJoin2 join(joinType:'inner',\n\tbroadcast: 'auto')~> Join1\nRetailSalesSource join(joinType:'inner',\n\tbroadcast: 'auto')~> Join2"
 		}
 	}
 }

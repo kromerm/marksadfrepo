@@ -1,5 +1,5 @@
 {
-	"name": "WranglingDataFlow5",
+	"name": "PQRetailSales",
 	"properties": {
 		"type": "WranglingDataFlow",
 		"typeProperties": {
@@ -9,6 +9,14 @@
 					"script": "",
 					"dataset": {
 						"referenceName": "RetailSalesCSV",
+						"type": "DatasetReference"
+					}
+				},
+				{
+					"name": "RetailProductsCSV",
+					"script": "",
+					"dataset": {
+						"referenceName": "RetailProductsCSV",
 						"type": "DatasetReference"
 					}
 				}
@@ -22,7 +30,8 @@
 					},
 					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['retailsalesreadyformodel.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> Sink1"
 				}
-			]
+			],
+			"script": "section Section1;\r\nshared RetailSalesCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/RetailSales.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared RetailProductsCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/Products.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = RetailSalesCSV,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each [advertising] = \"1\"),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Filtered rows\", {{\"price\", type number}})\r\nin\r\n  #\"Changed column type\";\r\n"
 		}
 	}
 }
