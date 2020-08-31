@@ -1,12 +1,20 @@
 {
-	"name": "dataflow15",
+	"name": "RetailSales",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "RetailSalesCSV",
+						"type": "DatasetReference"
+					},
+					"name": "RetailSalesSource"
+				}
+			],
 			"sinks": [],
 			"transformations": [],
-			"script": ""
+			"script": "source(output(\n\t\tstoreId as short,\n\t\tproductCode as string,\n\t\tquantity as short,\n\t\tlogQuantity as double,\n\t\tadvertising as boolean,\n\t\tprice as short,\n\t\tweekStarting as date,\n\t\tid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> RetailSalesSource"
 		}
 	}
 }

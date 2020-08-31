@@ -1,0 +1,28 @@
+{
+	"name": "WranglingDataFlow5",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "RetailSalesCSV",
+					"script": "",
+					"dataset": {
+						"referenceName": "RetailSalesCSV",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"sinks": [
+				{
+					"name": "Sink1",
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['retailsalesreadyformodel.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> Sink1"
+				}
+			]
+		}
+	}
+}

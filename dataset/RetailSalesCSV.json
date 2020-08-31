@@ -1,0 +1,57 @@
+{
+	"name": "RetailSalesCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "RetailSales.csv",
+				"folderPath": "SampleData",
+				"container": "mycontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "storeId",
+				"type": "String"
+			},
+			{
+				"name": "productCode",
+				"type": "String"
+			},
+			{
+				"name": "quantity",
+				"type": "String"
+			},
+			{
+				"name": "logQuantity",
+				"type": "String"
+			},
+			{
+				"name": "advertising",
+				"type": "String"
+			},
+			{
+				"name": "price",
+				"type": "String"
+			},
+			{
+				"name": "weekStarting",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			}
+		]
+	}
+}
