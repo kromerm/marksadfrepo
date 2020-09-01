@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "MoviesD2",
+						"referenceName": "Parquet4",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -24,12 +24,9 @@
 			"transformations": [
 				{
 					"name": "DerivedColumn1"
-				},
-				{
-					"name": "shapeShifter"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive({my bad __ Co$$!!!umn} = 1) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\teach(match(true()),\n\t\t\tregexReplace($$,`[^a-zA-Z0-9]`,'') = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> shapeShifter\nshapeShifter sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string,\n\t\tmyjsoncol as (genreArray as string[], newtitle as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> source1\nsource1 derive(myjsoncol = @(genreArray=split(genres,'|'),\n\t\tnewtitle=title + '_new')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tpartitionFileNames:['mark.parquet'],\n\tpartitionBy('hash', 1)) ~> sink1"
 		}
 	}
 }
