@@ -26,10 +26,10 @@
 					"name": "AlterRow1"
 				},
 				{
-					"name": "SetRating"
+					"name": "CleanName"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as decimal(38,0),\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as decimal(38,0),\n\t\tRating as decimal(38,0),\n\t\tRottenTomato as decimal(38,0)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\ttableName: 'newmovies',\n\tschemaName: 'public',\n\tstore: 'snowflake') ~> source1\nsource1 alterRow(updateIf(year == 1986),\n\tdeleteIf(year < 1980)) ~> AlterRow1\nAlterRow1 derive(Rating = 10) ~> SetRating\nSetRating sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['movie','title'],\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\tmovie as decimal(38,0),\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as decimal(38,0),\n\t\tRating as decimal(38,0),\n\t\tRottenTomato as decimal(38,0)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table',\n\ttableName: 'newmovies',\n\tschemaName: 'public',\n\tstore: 'snowflake') ~> source1\nsource1 alterRow(deleteIf(year < 1980),\n\tupdateIf(instr(title,'(') > 0)) ~> AlterRow1\nAlterRow1 derive(title = left(title,instr(title,'(')-2)) ~> CleanName\nCleanName sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['movie'],\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }

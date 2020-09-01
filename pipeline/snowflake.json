@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SnowETL",
+				"name": "SnowflakeActivity",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "LoadSnowflakeMovies",
+						"referenceName": "SnowflakeAnalytics",
 						"type": "DataFlowReference"
 					},
 					"compute": {
