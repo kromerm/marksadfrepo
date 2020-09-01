@@ -9,6 +9,7 @@
 		"type": "SnowflakeTable",
 		"schema": [],
 		"typeProperties": {
+			"schema": "public",
 			"table": "newmovies"
 		}
 	}
