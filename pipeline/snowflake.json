@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow4",
+				"name": "SnowETL",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
