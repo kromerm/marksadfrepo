@@ -1,6 +1,31 @@
 {
 	"name": "snowflake",
 	"properties": {
+		"activities": [
+			{
+				"name": "dataflow4",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "LoadSnowflakeMovies",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			}
+		],
 		"annotations": []
 	}
 }
