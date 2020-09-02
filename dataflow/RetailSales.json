@@ -19,9 +19,21 @@
 					"name": "Products"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
-			"script": "source(output(\n\t\tstoreId as short,\n\t\tproductCode as string,\n\t\tquantity as short,\n\t\tlogQuantity as double,\n\t\tadvertising as boolean,\n\t\tprice as double,\n\t\tweekStarting as date,\n\t\tid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> RetailSalesSource\nsource(output(\n\t\tid as string,\n\t\tproductCode as string,\n\t\tbasePrice as string,\n\t\twholeSaleCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Products"
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Lookup1"
+				}
+			],
+			"script": "source(output(\n\t\tstoreId as short,\n\t\tproductCode as string,\n\t\tquantity as short,\n\t\tlogQuantity as double,\n\t\tadvertising as boolean,\n\t\tprice as double,\n\t\tweekStarting as date,\n\t\tid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> RetailSalesSource\nsource(output(\n\t\tid as string,\n\t\tproductCode as string,\n\t\tbasePrice as string,\n\t\twholeSaleCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Products\nRetailSalesSource, Products lookup(RetailSalesSource@productCode == Products@productCode,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tquantity,\n\t\tlogQuantity,\n\t\tadvertising,\n\t\tprice,\n\t\tweekStarting,\n\t\tproductCode = Products@productCode,\n\t\tbasePrice,\n\t\twholeSaleCost\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
