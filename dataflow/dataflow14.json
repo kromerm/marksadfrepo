@@ -1,0 +1,27 @@
+{
+	"name": "dataflow14",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "JsonFolder",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Flatten1"
+				}
+			],
+			"script": "source(output(\n\t\tmovies as (genres as string[], rating as short, title as string, year as short)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['output/json/movies.json']) ~> source1\nsource1 derive(movies = @({genres }=movies.genres,\n\t\trating=movies.rating+1,\n\t\ttitle=movies.title,\n\t\tyear=movies.year)) ~> DerivedColumn1\nDerivedColumn1 foldDown(mapColumn(\n\t\tmovies\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1"
+		}
+	}
+}
