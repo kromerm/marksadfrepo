@@ -1,9 +1,9 @@
 {
-	"name": "parttest",
+	"name": "Hierarchical",
 	"properties": {
 		"activities": [
 			{
-				"name": "partdata",
+				"name": "Hierarchical",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,11 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SQLPerf3",
+						"referenceName": "Hierarchical",
 						"type": "DataFlowReference"
-					},
-					"staging": {
-						"folderPath": "mycontainer/staging"
 					},
 					"compute": {
 						"coreCount": 8,
