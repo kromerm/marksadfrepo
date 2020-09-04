@@ -1,0 +1,361 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"AzureBlobStorage1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/RetailSalesPipe')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PQRetailSales",
+						"type": "ExecuteWranglingDataflow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "PQRetailSales",
+								"type": "DataFlowReference"
+							}
+						}
+					},
+					{
+						"name": "RetailSales",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "PQRetailSales",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "RetailSales",
+								"type": "DataFlowReference"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/PQRetailSales')]",
+				"[concat(variables('factoryId'), '/dataflows/RetailSales')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PQRetailSales')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "RetailSalesCSV",
+							"script": "",
+							"dataset": {
+								"referenceName": "RetailSalesCSV",
+								"type": "DatasetReference"
+							}
+						},
+						{
+							"name": "RetailProductsCSV",
+							"script": "",
+							"dataset": {
+								"referenceName": "RetailProductsCSV",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"sinks": [
+						{
+							"name": "Sink1",
+							"dataset": {
+								"referenceName": "folderout",
+								"type": "DatasetReference"
+							},
+							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['retailsalesreadyformodel.csv'],\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sink1"
+						}
+					],
+					"script": "section Section1;\r\nshared RetailSalesCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/RetailSales.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared RetailProductsCSV = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/Products.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = RetailSalesCSV,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each [advertising] = \"1\"),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Filtered rows\", {{\"price\", type number}})\r\nin\r\n  #\"Changed column type\";\r\n"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RetailSalesCSV')]",
+				"[concat(variables('factoryId'), '/datasets/RetailProductsCSV')]",
+				"[concat(variables('factoryId'), '/datasets/folderout')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RetailSales')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "RetailSalesTransformedCSV",
+								"type": "DatasetReference"
+							},
+							"name": "RetailSalesSource"
+						},
+						{
+							"dataset": {
+								"referenceName": "RetailProductsCSV",
+								"type": "DatasetReference"
+							},
+							"name": "Products"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "folderout",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Lookup1"
+						}
+					],
+					"script": "source(output(\n\t\tstoreId as short,\n\t\tproductCode as string,\n\t\tquantity as short,\n\t\tlogQuantity as double,\n\t\tadvertising as boolean,\n\t\tprice as double,\n\t\tweekStarting as date,\n\t\tid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> RetailSalesSource\nsource(output(\n\t\tid as string,\n\t\tproductCode as string,\n\t\tbasePrice as string,\n\t\twholeSaleCost as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> Products\nRetailSalesSource, Products lookup(RetailSalesSource@productCode == Products@productCode,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nLookup1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['retailsalesfinal.csv'],\n\tmapColumn(\n\t\tquantity,\n\t\tlogQuantity,\n\t\tadvertising,\n\t\tprice,\n\t\tweekStarting,\n\t\tproductCode = {Products@productCode},\n\t\tbasePrice,\n\t\twholeSaleCost\n\t),\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RetailSalesTransformedCSV')]",
+				"[concat(variables('factoryId'), '/datasets/RetailProductsCSV')]",
+				"[concat(variables('factoryId'), '/datasets/folderout')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RetailSalesCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "RetailSales.csv",
+						"folderPath": "SampleData",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "storeId",
+						"type": "String"
+					},
+					{
+						"name": "productCode",
+						"type": "String"
+					},
+					{
+						"name": "quantity",
+						"type": "String"
+					},
+					{
+						"name": "logQuantity",
+						"type": "String"
+					},
+					{
+						"name": "advertising",
+						"type": "String"
+					},
+					{
+						"name": "price",
+						"type": "String"
+					},
+					{
+						"name": "weekStarting",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RetailProductsCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Products.csv",
+						"folderPath": "SampleData",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "productCode",
+						"type": "String"
+					},
+					{
+						"name": "basePrice",
+						"type": "String"
+					},
+					{
+						"name": "wholeSaleCost",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/folderout')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "output/demoout1",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RetailSalesTransformedCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlobStorage1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "retailsalesreadyformodel.csv",
+						"folderPath": "output/demoout1",
+						"container": "mycontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "storeId",
+						"type": "String"
+					},
+					{
+						"name": "productCode",
+						"type": "String"
+					},
+					{
+						"name": "quantity",
+						"type": "String"
+					},
+					{
+						"name": "logQuantity",
+						"type": "String"
+					},
+					{
+						"name": "advertising",
+						"type": "String"
+					},
+					{
+						"name": "price",
+						"type": "String"
+					},
+					{
+						"name": "weekStarting",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		}
+	]
+}
