@@ -1,0 +1,20 @@
+{
+	"name": "moviesparquet_input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MoviesADLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "movies",
+				"fileSystem": "mycontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
