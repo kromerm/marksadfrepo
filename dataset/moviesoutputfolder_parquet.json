@@ -5,12 +5,13 @@
 			"referenceName": "MoviesADLS",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "movies/output",
-				"container": "mycontainer"
+				"folderPath": "movies",
+				"fileSystem": "mycontainer"
 			},
 			"compressionCodec": "snappy"
 		},
