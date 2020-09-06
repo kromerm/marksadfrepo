@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "movies",
+				"folderPath": "movies/output",
 				"fileSystem": "mycontainer"
 			},
 			"compressionCodec": "snappy"
