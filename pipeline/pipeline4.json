@@ -15,8 +15,35 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "movies",
+							"wildcardFileName": "*.parquet"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "moviesparquet_input",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "moviesoutputfolder_parquet",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
