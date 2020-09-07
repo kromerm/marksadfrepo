@@ -2,7 +2,7 @@
 	"name": "moviesparquet_input",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "MoviesADLS",
+			"referenceName": "AzureDataLakeStorage4",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
