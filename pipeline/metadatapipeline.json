@@ -1,6 +1,7 @@
 {
 	"name": "metadatapipeline",
 	"properties": {
+		"description": "Sample metadata checker rules",
 		"activities": [
 			{
 				"name": "metadataChecker",
@@ -20,32 +21,13 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"filename": "'SampleData/moviesDB.csv'",
-							"columns": "'movie,title'"
+							"columns": "'movie,title'",
+							"dbname": "'products'"
 						}
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
-				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "metadataChecker",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "metacheck",
-					"value": {
-						"value": "@string(activity('metadataChecker').output.runStatus.metrics.sink1.rowsWritten)",
-						"type": "Expression"
 					}
 				}
 			}

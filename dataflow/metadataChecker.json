@@ -1,6 +1,7 @@
 {
 	"name": "metadataChecker",
 	"properties": {
+		"description": "Sample metadata checker rules",
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
