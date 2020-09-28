@@ -1,0 +1,27 @@
+{
+	"name": "findNulls",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "CreateColumnArray"
+				},
+				{
+					"name": "LookForNULLs"
+				}
+			],
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(cols = array(columns())) ~> CreateColumnArray\nCreateColumnArray split(contains(cols,isNull(#item)),\n\tdisjoint: false) ~> LookForNULLs@(good, bad)"
+		}
+	}
+}
