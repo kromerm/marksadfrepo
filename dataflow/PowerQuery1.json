@@ -23,7 +23,7 @@
 					"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['markPQ1.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> Sink1"
 				}
 			],
-			"script": "section Section1;\r\nshared MoviesD2 = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/moviesDB.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = MoviesD2,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each ([year] = \"1980\")),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Filtered rows\", {{\"Rating\", Int64.Type}})\r\nin\r\n  #\"Changed column type\";\r\n"
+			"script": "section Section1;\r\nshared MoviesD2 = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://makadf001.blob.core.windows.net/mycontainer/SampleData/moviesDB.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = MoviesD2,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each [year] = \"1980\"),\r\n  #\"Changed column type\" = Table.TransformColumnTypes(#\"Filtered rows\", {{\"Rating\", Int64.Type}}),\r\n  #\"Duplicated column\" = Table.DuplicateColumn(#\"Changed column type\", \"movie\", \"movie - Copy\")\r\nin\r\n  #\"Duplicated column\";\r\n"
 		}
 	}
 }
