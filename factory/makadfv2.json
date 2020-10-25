@@ -1,0 +1,9 @@
+{
+	"name": "makadfv2",
+	"properties": {
+		"globalConfigurations": {
+			"dataFlowRuntimeVersion": ""
+		}
+	},
+	"location": "EastUS"
+}
