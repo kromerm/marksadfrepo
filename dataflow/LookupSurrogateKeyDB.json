@@ -9,16 +9,14 @@
 						"referenceName": "EmployeeFiles",
 						"type": "DatasetReference"
 					},
-					"name": "EmpFile",
-					"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile"
+					"name": "EmpFile"
 				},
 				{
 					"dataset": {
 						"referenceName": "DimEmp",
 						"type": "DatasetReference"
 					},
-					"name": "DimEmp",
-					"script": "source(output(\n\t\tmaxval as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tquery: 'select MAX(surrogatekey) as maxval from dbo.dimemp',\n\tformat: 'query') ~> DimEmp"
+					"name": "DimEmp"
 				}
 			],
 			"sinks": [
@@ -27,28 +25,27 @@
 						"referenceName": "CADOutput1",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"script": "AddSKtoMaxVal sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+					"name": "sink1"
+				},
+				{
+					"name": "sink2"
 				}
 			],
 			"transformations": [
 				{
-					"name": "SurrogateKey1",
-					"script": "JoinToAddMaxVal keyGenerate(output(surrogatekey as long),\n\tstartAt: 1L) ~> SurrogateKey1"
+					"name": "SurrogateKey1"
 				},
 				{
-					"name": "AddSKtoMaxVal",
-					"script": "AlterRow1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal"
+					"name": "AddSKtoMaxVal"
 				},
 				{
-					"name": "JoinToAddMaxVal",
-					"script": "EmpFile, DimEmp join(1 == 1,\n\tjoinType:'cross',\n\tbroadcast: 'none')~> JoinToAddMaxVal"
+					"name": "AlterRow1"
 				},
 				{
-					"name": "AlterRow1",
-					"script": "SurrogateKey1 alterRow() ~> AlterRow1"
+					"name": "DerivedColumn1"
 				}
-			]
+			],
+			"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile\nsource(output(\n\t\tmaxval as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'select 12 as maxval from dbo.dimemp',\n\tformat: 'query') ~> DimEmp\nEmpFile keyGenerate(output(surrogatekey as long),\n\tstartAt: 1L) ~> SurrogateKey1\nAlterRow1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal\nDerivedColumn1 alterRow() ~> AlterRow1\nSurrogateKey1 derive(column1 = surrogatekey + toInteger(sink2#outputs().maxval)) ~> DerivedColumn1\nAddSKtoMaxVal sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1\nDimEmp sink(mapColumn(\n\t\tmaxval\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tkeys:['maxval'],\n\tstore: 'cache',\n\tformat: 'inline',\n\tsaveOrder: 1) ~> sink2"
 		}
 	}
 }

@@ -5,15 +5,19 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "",
+				"fileName": "EmployeeDay1.csv",
+				"folderPath": "SampleData/Emps",
 				"container": "mycontainer"
 			},
 			"columnDelimiter": ",",
-			"firstRowAsHeader": true
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
 		},
 		"schema": [
 			{
