@@ -2,7 +2,7 @@
 	"name": "makadfv2",
 	"properties": {
 		"globalConfigurations": {
-			"dataFlowRuntimeVersion": ""
+			"dataFlowRuntimeVersion": "Candidate"
 		}
 	},
 	"location": "EastUS"
