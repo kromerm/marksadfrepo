@@ -27,8 +27,12 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT MAX(surrogatekey) as maxid from DimEmp',\n\tformat: 'query') ~> MaxIDLookup\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> regionLookup"
+			"transformations": [
+				{
+					"name": "CurrateValues"
+				}
+			],
+			"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT MAX(surrogatekey) as maxid from DimEmp',\n\tformat: 'query') ~> MaxIDLookup\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> regionLookup\nregionLookup derive(regionCode = case (\r\n    year=='1980','PNW',\r\n    year=='1981', 'NER',\r\n    year=='1982', 'SER',\r\n    year=='1983', 'MDW'\r\n),\n\t\tregionName = case (\r\n    year=='1980','Pacific Northwest',\r\n    year=='1981', 'Northeast',\r\n    year=='1982', 'Southeast',\r\n    year=='1983', 'Midwest'\r\n)) ~> CurrateValues"
 		}
 	}
 }
