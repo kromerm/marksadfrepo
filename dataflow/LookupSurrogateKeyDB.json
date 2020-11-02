@@ -10,29 +10,11 @@
 						"type": "DatasetReference"
 					},
 					"name": "EmpFile"
-				},
-				{
-					"dataset": {
-						"referenceName": "DimEmp",
-						"type": "DatasetReference"
-					},
-					"name": "DimEmp"
 				}
 			],
-			"sinks": [
-				{
-					"name": "sink2"
-				}
-			],
-			"transformations": [
-				{
-					"name": "SurrogateKey1"
-				},
-				{
-					"name": "AddSKtoMaxVal"
-				}
-			],
-			"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile\nsource(output(\n\t\tmaxval as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'select 12 as maxval from dbo.dimemp',\n\tformat: 'query',\n\tpartitionPredicates: [],\n\tpartitionBy('external', 0)) ~> DimEmp\nEmpFile keyGenerate(output(surrogatekey as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 derive(surrogatekey = toInteger(surrogatekey) + toInteger(maxval)) ~> AddSKtoMaxVal\nDimEmp sink(mapColumn(\n\t\tmaxval\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tkeys:['maxval'],\n\tstore: 'cache',\n\tformat: 'inline',\n\tsaveOrder: 0) ~> sink2"
+			"sinks": [],
+			"transformations": [],
+			"script": "source(output(\n\t\tEmpID as string,\n\t\tRegion as string,\n\t\tStatus as string,\n\t\tFunction as string,\n\t\tLevel as string,\n\t\tRole as string,\n\t\tStartDate as string,\n\t\tEndDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['SampleData/Emps/today/*.csv']) ~> EmpFile"
 		}
 	}
 }
