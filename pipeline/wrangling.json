@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "WranglingDataFlow5",
+				"name": "PQBugBash2",
 				"type": "ExecuteWranglingDataflow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "WranglingDataFlow5",
+						"referenceName": "PQBugBash2",
 						"type": "DataFlowReference"
 					}
 				}
