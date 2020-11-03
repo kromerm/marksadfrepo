@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "moviesoutnew.parquet",
 				"folderPath": "SampleData/movies",
 				"container": "mycontainer"
 			},

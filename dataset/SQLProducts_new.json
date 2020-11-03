@@ -94,7 +94,7 @@
 			}
 		],
 		"typeProperties": {
-			"tableName": "[SalesLT].[Product]"
+			"tableName": "[dbo].[DimProducts]"
 		}
 	}
 }
