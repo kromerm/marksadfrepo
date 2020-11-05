@@ -1,0 +1,20 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SQLProducts_new",
+						"type": "DatasetReference"
+					},
+					"name": "GenericInput"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "parameters{\n\tPrimaryKey as string ('Id'),\n\tColumns as string ('Name,Place')\n}\nsource(output(\n\t\tId as integer,\n\t\tName as string,\n\t\tPlace as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> GenericInput"
+		}
+	}
+}
