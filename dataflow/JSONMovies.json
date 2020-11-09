@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "JSONSource"
+				},
+				{
+					"dataset": {
+						"referenceName": "MoviesD2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -19,6 +26,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -26,7 +36,7 @@
 					"name": "Derivedcolumn1"
 				}
 			],
-			"script": "source(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> JSONSource\nJSONSource derive(movies = @(genres=movies.genres,\n\t\tmovieid=movies.movieid,\n\t\trating=movies.rating,\n\t\ttitle=movies.title,\n\t\tyear=movies.year)) ~> Derivedcolumn1\nDerivedcolumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tmapColumn(\n\t\tmovies,\n\t\tcast = movies,\n\t\tgenres,\n\t\ttitle,\n\t\tyear\n\t),\n\tpartitionBy('hash', 1)) ~> sink1"
+			"script": "source(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> JSONSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nJSONSource derive(column1 = sink2#lookup('Caught').title) ~> Derivedcolumn1\nDerivedcolumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tmapColumn(\n\t\tmovies,\n\t\tcast = movies,\n\t\tgenres,\n\t\ttitle,\n\t\tyear\n\t),\n\tpartitionBy('hash', 1),\n\tsaveOrder: 2) ~> sink1\nsource1 sink(mapColumn(\n\t\tyear,\n\t\ttitle\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tkeys:['title'],\n\tstore: 'cache',\n\tformat: 'inline',\n\tsaveOrder: 1) ~> sink2"
 		}
 	}
 }
