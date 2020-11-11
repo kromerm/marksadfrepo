@@ -9,14 +9,14 @@
 						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "NewSource"
 				},
 				{
 					"dataset": {
-						"referenceName": "dummysource",
+						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
+					"name": "DatabaseTable"
 				}
 			],
 			"sinks": [
@@ -25,28 +25,21 @@
 						"referenceName": "junktable",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
-				},
-				{
-					"dataset": {
-						"referenceName": "junktable",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
+					"name": "WriteToDatabaseTable"
 				}
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1"
+					"name": "KeepJust99991231"
 				},
 				{
-					"name": "Select1"
+					"name": "UpdateALLTrue"
 				},
 				{
-					"name": "DerivedColumn2"
+					"name": "ExistsFromBottomRow"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource2 derive(id = 1) ~> DerivedColumn1\nsource1 select(mapColumn(\n\t\tid = movie,\n\t\tname = title,\n\t\tgenres\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 derive(name = left(name,5)) ~> DerivedColumn2\nDerivedColumn2 sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 2) ~> sink1\nDerivedColumn1 sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['alter table junk add genres nvarchar(255)'],\n\tmapColumn(\n\t\tname = id,\n\t\tid\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1) ~> sink2"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> NewSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DatabaseTable\nDatabaseTable filter(ERROR_FUNCTION('')) ~> KeepJust99991231\nExistsFromBottomRow alterRow(updateIf(true())) ~> UpdateALLTrue\nNewSource, KeepJust99991231 exists(NewSource@movie == ERROR_FUNCTION(''),\n\tnegate:false,\n\tbroadcast: 'auto')~> ExistsFromBottomRow\nUpdateALLTrue sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1,\n\terrorHandlingOption: 'stopOnFirstError') ~> WriteToDatabaseTable"
 		}
 	}
 }
