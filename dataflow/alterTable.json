@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "junktable",
+						"referenceName": "moviestage2",
 						"type": "DatasetReference"
 					},
 					"name": "WriteToDatabaseTable"
@@ -39,7 +39,7 @@
 					"name": "ExistsFromBottomRow"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> NewSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DatabaseTable\nDatabaseTable filter(ERROR_FUNCTION('')) ~> KeepJust99991231\nExistsFromBottomRow alterRow(updateIf(true())) ~> UpdateALLTrue\nNewSource, KeepJust99991231 exists(NewSource@movie == ERROR_FUNCTION(''),\n\tnegate:false,\n\tbroadcast: 'auto')~> ExistsFromBottomRow\nUpdateALLTrue sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1,\n\terrorHandlingOption: 'stopOnFirstError') ~> WriteToDatabaseTable"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> NewSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DatabaseTable\nDatabaseTable filter(year == '1999') ~> KeepJust99991231\nExistsFromBottomRow alterRow(updateIf(true())) ~> UpdateALLTrue\nNewSource, KeepJust99991231 exists(NewSource@movie == DatabaseTable@movie,\n\tnegate:false,\n\tbroadcast: 'auto')~> ExistsFromBottomRow\nUpdateALLTrue sink(input(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer,\n\t\t{Rotton Tomato} as string,\n\t\tdateOfETL as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['movie'],\n\tformat: 'table',\n\tmapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1,\n\terrorHandlingOption: 'stopOnFirstError') ~> WriteToDatabaseTable"
 		}
 	}
 }
