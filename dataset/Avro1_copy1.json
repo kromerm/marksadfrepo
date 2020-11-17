@@ -1,0 +1,19 @@
+{
+	"name": "Avro1_copy1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Avro",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output/avro",
+				"container": "mycontainer"
+			}
+		},
+		"schema": {}
+	}
+}
