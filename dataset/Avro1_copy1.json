@@ -12,7 +12,8 @@
 				"type": "AzureBlobStorageLocation",
 				"folderPath": "output/avro",
 				"container": "mycontainer"
-			}
+			},
+			"avroCompressionCodec": "snappy"
 		},
 		"schema": {}
 	}
