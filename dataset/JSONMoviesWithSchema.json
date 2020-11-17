@@ -18,28 +18,17 @@
 		"schema": {
 			"type": "object",
 			"properties": {
-				"movies": {
-					"type": "object",
-					"properties": {
-						"genres": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"movieid": {
-							"type": "string"
-						},
-						"rating": {
-							"type": "string"
-						},
-						"title": {
-							"type": "string"
-						},
-						"year": {
-							"type": "string"
-						}
-					}
+				"title": {
+					"type": "string"
+				},
+				"year": {
+					"type": "integer"
+				},
+				"cast": {
+					"type": "array"
+				},
+				"genres": {
+					"type": "array"
 				}
 			}
 		}
