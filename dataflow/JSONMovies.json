@@ -16,13 +16,13 @@
 						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "MoviesFlat"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Avro1",
+						"referenceName": "JsonFolder",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -30,10 +30,13 @@
 			],
 			"transformations": [
 				{
-					"name": "Derivedcolumn1"
+					"name": "CreateStruct"
+				},
+				{
+					"name": "Join1"
 				}
 			],
-			"script": "source(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> JSONSource\nsource(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\tRottenTomato as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nJSONSource derive(column1 = sink2#lookup('Caught').title) ~> Derivedcolumn1\nDerivedcolumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tmapColumn(\n\t\tmovies,\n\t\tcast = movies,\n\t\tgenres,\n\t\ttitle,\n\t\tyear\n\t),\n\tpartitionBy('hash', 1),\n\tsaveOrder: 1) ~> sink1"
+			"script": "source(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> JSONSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> MoviesFlat\nJSONSource derive(MoviesStruct = @(title=title,\n\t\tyear=year,\n\t\tcast=cast,\n\t\tgenres=genres)) ~> CreateStruct\nCreateStruct join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tpartitionBy('hash', 1),\n\tsaveOrder: 1) ~> sink1"
 		}
 	}
 }
