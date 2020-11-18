@@ -33,16 +33,19 @@
 					"name": "CreateStruct"
 				},
 				{
-					"name": "Join1"
-				},
-				{
 					"name": "Select1"
 				},
 				{
 					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				},
+				{
+					"name": "Lookup1"
 				}
 			],
-			"script": "source(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> JSONSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> MoviesFlat\nJSONSource derive(MoviesStruct = @(title=title,\n\t\tyear=year,\n\t\tcast=cast,\n\t\tgenres=genres)) ~> CreateStruct\nCreateStruct, MoviesFlat join(JSONSource@title == MoviesFlat@title,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1 select(mapColumn(\n\t\teach(match(name == 'MoviesStruct' || name == 'Rating'))\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 derive() ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tpartitionBy('hash', 1),\n\tsaveOrder: 1) ~> sink1"
+			"script": "source(output(\n\t\ttitle as string,\n\t\tyear as string,\n\t\tcast as string[],\n\t\tgenres as string[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> JSONSource\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> MoviesFlat\nJSONSource derive(MoviesStruct = @(title=title,\n\t\tyear=year,\n\t\tcast=cast,\n\t\tgenres=genres)) ~> CreateStruct\nDerivedColumn1 select(mapColumn(\n\t\teach(match(name == 'MoviesStruct' || name == 'Rating'))\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nLookup1 derive(each(MoviesStruct, patternMatch(`title` ), $$+'_tx' = $$)) ~> DerivedColumn1\nMoviesFlat derive(each(match(type == 'string'), $$ = trim($$))) ~> DerivedColumn2\nCreateStruct, DerivedColumn2 lookup(JSONSource@title == DerivedColumn2@title,\n\tmultiple: true,\n\tbroadcast: 'auto')~> Lookup1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['myoutputfile.avro'],\n\tpartitionBy('hash', 1),\n\tsaveOrder: 1) ~> sink1"
 		}
 	}
 }
