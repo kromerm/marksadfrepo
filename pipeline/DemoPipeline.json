@@ -1,9 +1,9 @@
 {
-	"name": "MovieDemoPipeline",
+	"name": "DemoPipeline",
 	"properties": {
 		"activities": [
 			{
-				"name": "ExecuteMovieDemoDataFlow",
+				"name": "ExecuteDemoDataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -18,10 +18,11 @@
 						"referenceName": "summaryStats",
 						"type": "DataFlowReference"
 					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
+					"integrationRuntime": {
+						"referenceName": "dataflowcluster",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],
