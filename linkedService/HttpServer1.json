@@ -1,13 +1,13 @@
 {
 	"name": "HttpServer1",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "http://www.yahoo.com",
+			"url": "http://worldtimeapi.org/api/ip",
 			"enableServerCertificateValidation": false,
 			"authenticationType": "Anonymous"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
