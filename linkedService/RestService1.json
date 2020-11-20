@@ -1,0 +1,12 @@
+{
+	"name": "RestService1",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "http://worldtimeapi.org/api/ip\"",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
