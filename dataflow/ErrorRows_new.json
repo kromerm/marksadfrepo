@@ -18,7 +18,11 @@
 						"referenceName": "junktable",
 						"type": "DatasetReference"
 					},
-					"name": "WriteToDatabase"
+					"name": "WriteToDatabase",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
@@ -26,7 +30,7 @@
 					"name": "TypeCast"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(movie = toInteger(movie)) ~> TypeCast\nTypeCast sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tname = title,\n\t\tid = movie\n\t),\n\terrorHandlingOption: 'stopOnFirstError') ~> WriteToDatabase"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(movie = toInteger(movie)) ~> TypeCast\nTypeCast sink(input(\n\t\tid as integer,\n\t\tgenres as string,\n\t\tname as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['set identity_insert junk on'],\n\tpostSQLs:['set identity_insert junk off'],\n\tmapColumn(\n\t\tname = title,\n\t\tid = movie,\n\t\tgenres\n\t),\n\terrorHandlingOption: 'allErrors',\n\toutputRejectedData: true,\n\trejectedData_container: 'mycontainer',\n\trejectedData_folderPath: 'errors',\n\ttransactionCommit: 'single',\n\treportSuccessOnError: true) ~> WriteToDatabase"
 		}
 	}
 }
