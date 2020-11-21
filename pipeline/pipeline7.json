@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "SQLPerf1",
+						"referenceName": "ErrorRows_new",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
