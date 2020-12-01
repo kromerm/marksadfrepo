@@ -52,15 +52,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow2",
-						"type": "DataFlowReference",
-						"parameters": {
-							"mycount": {
-								"value": "'@{length(variables('countoffiles'))}'",
-								"type": "Expression"
-							}
-						}
-					}
+						"referenceName": "storeDataTypes",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			},
 			{

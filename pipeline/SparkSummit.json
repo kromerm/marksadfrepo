@@ -172,16 +172,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow2",
-						"type": "DataFlowReference",
-						"parameters": {
-							"mycount": "'2'"
-						}
+						"referenceName": "storeDataTypes",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
+					},
+					"traceLevel": "Fine"
 				}
 			},
 			{
