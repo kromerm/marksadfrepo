@@ -6,22 +6,19 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "JsonFolder",
+						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
-				},
-				{
-					"dataset": {
-						"referenceName": "JsonOutput",
-						"type": "DatasetReference"
-					},
-					"name": "source2"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "source(output(\n\t\tjson as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine',\n\twildcardPaths:['output/json/debug.json']) ~> source1\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source2"
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tlimit: 1) ~> source1\nsource1 derive(each(match(type == 'string'), $$ = 'string'),\n\t\teach(match(type=='integer'), $$ = 'integer'),\n\t\teach(match(type == 'short'), $$ = 'short'),\n\t\teach(match(type == 'complex'), $$ = 'complex'),\n\t\teach(match(type == 'array'), $$ = 'array'),\n\t\teach(match(type == 'float'), $$ = 'float'),\n\t\teach(match(type == 'date'), $$ = 'date'),\n\t\teach(match(type == 'timestamp'), $$ = 'timestamp'),\n\t\teach(match(type == 'boolean'), $$ = 'boolean'),\n\t\teach(match(type == 'double'), $$ = 'double')) ~> DerivedColumn1"
 		}
 	}
 }
