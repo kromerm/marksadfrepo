@@ -18,13 +18,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "RankMovies",
+						"referenceName": "SQLPerf2",
 						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],
