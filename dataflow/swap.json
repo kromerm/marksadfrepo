@@ -1,5 +1,5 @@
 {
-	"name": "FillDown",
+	"name": "swap",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -15,16 +15,16 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "Window1"
+					"name": "Window"
 				},
 				{
 					"name": "DerivedColumn1"
 				},
 				{
-					"name": "DerivedColumn2"
+					"name": "SurrogateKey1"
 				}
 			],
-			"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nDerivedColumn1 window(over(dummy),\n\tasc(ProductID, true),\n\tstartRowOffset: -1L,\n\tendRowOffset: 0L,\n\tSellEndDate2 = first(coalesce(SellEndDate))) ~> Window1\nsource1 derive(dummy = 1) ~> DerivedColumn1\nWindow1 derive(SellEndDate = iif(isNull(SellEndDate),SellEndDate2,SellEndDate)) ~> DerivedColumn2"
+			"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source1\nSurrogateKey1 window(over(category),\n\tasc(sk, true),\n\tstartRowOffset: -1L,\n\tendRowOffset: 0L,\n\tsk2 = first(sk)) ~> Window\nsource1 derive(category = 'prods') ~> DerivedColumn1\nDerivedColumn1 keyGenerate(output(sk as long),\n\tstartAt: 1L) ~> SurrogateKey1"
 		}
 	}
 }
