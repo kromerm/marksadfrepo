@@ -6,40 +6,23 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Loans2",
-						"type": "DatasetReference"
-					},
-					"name": "CSVs"
-				},
-				{
-					"dataset": {
-						"referenceName": "moviesParquet2",
-						"type": "DatasetReference"
-					},
-					"name": "Parquets"
-				},
-				{
-					"dataset": {
-						"referenceName": "JSONMoviesWithSchema",
+						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
 					"name": "JSONs"
-				},
+				}
+			],
+			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Avro1",
+						"referenceName": "ParquetPart",
 						"type": "DatasetReference"
 					},
-					"name": "Avros"
+					"name": "sink1"
 				}
 			],
-			"sinks": [],
-			"transformations": [
-				{
-					"name": "DerivedColumn1"
-				}
-			],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> CSVs\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~> Parquets\nsource(output(\n\t\tmovies as (genres as string[], movieid as string, rating as string, title as string, year as string)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> JSONs\nsource(output(\n\t\tmovies as (movieid as string, title as string, genres as string[], year as string, rating as string),\n\t\tcast as string[],\n\t\tgenres as string[],\n\t\ttitle as string,\n\t\tyear as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> Avros\nAvros derive(year = toInteger(year)) ~> DerivedColumn1"
+			"transformations": [],
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> JSONs\nJSONs sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tpartitionBy('key',\n\t\t0,\n\t\tyear,\n\t\tRating\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
