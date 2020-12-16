@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "RankMovies",
+						"referenceName": "DataLakeETL1_LoadData2Lake",
 						"type": "DataFlowReference"
 					},
 					"compute": {
