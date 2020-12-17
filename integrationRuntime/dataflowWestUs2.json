@@ -1,0 +1,16 @@
+{
+	"name": "dataflowWestUs2",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "West US 2",
+				"dataFlowProperties": {
+					"computeType": "General",
+					"coreCount": 80,
+					"timeToLive": 240
+				}
+			}
+		}
+	}
+}
