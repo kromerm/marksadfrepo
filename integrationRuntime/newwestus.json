@@ -1,0 +1,16 @@
+{
+	"name": "newwestus",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "West US",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 80,
+					"timeToLive": 240
+				}
+			}
+		}
+	}
+}
