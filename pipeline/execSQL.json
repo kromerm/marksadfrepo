@@ -40,7 +40,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@activity('execSQL').output.runStatus.metrics.sink1.rowsWritten > 0",
+						"value": "@activity('execSQL').output.runStatus.metrics.sink1.rowsWritten",
 						"type": "Expression"
 					}
 				}
