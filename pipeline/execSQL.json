@@ -25,6 +25,25 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "execSQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('execSQL').output.runStatus.metrics.sink1.rowsWritten > 0",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"annotations": []
