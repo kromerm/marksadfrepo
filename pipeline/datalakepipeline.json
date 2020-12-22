@@ -45,17 +45,19 @@
 						"type": "AvroSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"wildcardFileName": "*.avro"
 						}
 					},
 					"sink": {
-						"type": "AvroSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
+							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "AvroWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -76,7 +78,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Avro1",
+						"referenceName": "folderout",
 						"type": "DatasetReference"
 					}
 				]
@@ -104,7 +106,8 @@
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
+					},
+					"traceLevel": "Fine"
 				}
 			},
 			{

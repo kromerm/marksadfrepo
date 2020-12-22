@@ -1,9 +1,9 @@
 {
-	"name": "execUSQL",
+	"name": "execSQL",
 	"properties": {
 		"activities": [
 			{
-				"name": "execPostCodesUSQL",
+				"name": "execSQL",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,9 +16,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "USQL",
+						"referenceName": "SQLPerf1",
 						"type": "DataFlowReference"
-					}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],

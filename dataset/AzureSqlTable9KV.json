@@ -1,8 +1,8 @@
 {
-	"name": "loansDB",
+	"name": "AzureSqlTable9KV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase4",
+			"referenceName": "AzureSqlDatabase5KV",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "loanstest"
+			"table": "loans"
 		}
 	}
 }
