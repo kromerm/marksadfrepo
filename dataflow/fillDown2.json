@@ -9,7 +9,7 @@
 						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
+					"name": "source"
 				}
 			],
 			"sinks": [],
@@ -27,7 +27,7 @@
 					"name": "Select1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource2 derive(dummy = 1,\n\t\tRating = iif(Rating==1,iif(title=='Fawlty Towers',2,toInteger(null())),Rating)) ~> DerivedColumn\nSurrogateKey window(over(dummy),\n\tasc(sk, true),\n\tRating2 = coalesce(Rating, last(Rating, true()))) ~> Window1\nDerivedColumn keyGenerate(output(sk as long),\n\tstartAt: 1L) ~> SurrogateKey\nWindow1 select(mapColumn(\n\t\ttitle,\n\t\tRating,\n\t\tRating2\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source\nsource derive(dummy = 1) ~> DerivedColumn\nSurrogateKey window(over(dummy),\n\tasc(sk, true),\n\tRating2 = coalesce(Rating, last(Rating, true()))) ~> Window1\nDerivedColumn keyGenerate(output(sk as long),\n\tstartAt: 1L) ~> SurrogateKey\nWindow1 select(mapColumn(\n\t\ttitle,\n\t\tRating,\n\t\tRating2\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1"
 		}
 	}
 }
