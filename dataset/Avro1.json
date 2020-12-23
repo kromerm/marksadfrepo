@@ -13,6 +13,7 @@
 				"folderPath": "output/avro",
 				"container": "mycontainer"
 			}
-		}
+		},
+		"schema": {}
 	}
 }
