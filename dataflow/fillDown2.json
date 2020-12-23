@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "SQLProducts_new",
+						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
 					"name": "source2"
@@ -15,19 +15,19 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "DerivedColumn2"
+					"name": "DerivedColumn"
 				},
 				{
 					"name": "Window1"
 				},
 				{
-					"name": "SurrogateKey2"
+					"name": "SurrogateKey"
 				},
 				{
 					"name": "Select1"
 				}
 			],
-			"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> source2\nsource2 derive(Color = iif(Color == 'Silver',toString(null()),Color),\n\t\tdummy = 1) ~> DerivedColumn2\nSurrogateKey2 window(over(dummy),\n\tasc(lookup_sk, true),\n\tvalue = iifNull(last(Color),first(Color),last(Color))) ~> Window1\nDerivedColumn2 keyGenerate(output(lookup_sk as long),\n\tstartAt: 1L) ~> SurrogateKey2\nWindow1 select(mapColumn(\n\t\tProductID,\n\t\tColor,\n\t\tvalue\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource2 derive(dummy = 1,\n\t\tRating = iif(Rating==1,iif(title=='Fawlty Towers',2,toInteger(null())),Rating)) ~> DerivedColumn\nSurrogateKey window(over(dummy),\n\tasc(sk, true),\n\tRating2 = coalesce(Rating, last(Rating, true()))) ~> Window1\nDerivedColumn keyGenerate(output(sk as long),\n\tstartAt: 1L) ~> SurrogateKey\nWindow1 select(mapColumn(\n\t\ttitle,\n\t\tRating,\n\t\tRating2\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1"
 		}
 	}
 }
