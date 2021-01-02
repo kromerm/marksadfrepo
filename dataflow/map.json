@@ -18,7 +18,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(mymap = map(columnNames(),upper(#item))) ~> DerivedColumn1"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(mymap = map(columnNames(),upper(#item)),\n\t\tmyindex = mapIndex(columnNames(),#index),\n\t\tmyreduce = reduce(columnNames(), 'myNewCol', #acc + #item, #result)) ~> DerivedColumn1"
 		}
 	}
 }
