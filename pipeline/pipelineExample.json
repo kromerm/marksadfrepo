@@ -83,7 +83,13 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "If Condition1",
+						"activity": "DataMasking",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Slowly Changing Dimensions",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -101,25 +107,6 @@
 					"url": "http://www.yahoo.com",
 					"method": "GET"
 				}
-			},
-			{
-				"name": "If Condition1",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "DataMasking",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Slowly Changing Dimensions",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": []
 			},
 			{
 				"name": "Slowly Changing Dimensions",
@@ -141,10 +128,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "SCDType1withHash",
-						"type": "DataFlowReference"
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
