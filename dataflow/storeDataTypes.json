@@ -12,13 +12,21 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "source(output(\n\t\tmovies as (movieid as string, title as string, genres as string[], year as string, rating as string),\n\t\tcast as string[],\n\t\tgenres as string[],\n\t\ttitle as string,\n\t\tyear as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tlimit: 1) ~> source1\nsource1 derive(each(match(type == 'string'), $$ = 'string'),\n\t\teach(match(type=='integer'), $$ = 'integer'),\n\t\teach(match(type == 'short'), $$ = 'short'),\n\t\teach(match(type == 'complex'), $$ = 'complex'),\n\t\teach(match(type == 'array'), $$ = 'array'),\n\t\teach(match(type == 'float'), $$ = 'float'),\n\t\teach(match(type == 'date'), $$ = 'date'),\n\t\teach(match(type == 'timestamp'), $$ = 'timestamp'),\n\t\teach(match(type == 'boolean'), $$ = 'boolean'),\n\t\teach(match(type == 'double'), $$ = 'double')) ~> DerivedColumn1"
+			"script": "source(output(\n\t\tmovies as (movieid as string, title as string, genres as string[], year as string, rating as string),\n\t\tcast as string[],\n\t\tgenres as string[],\n\t\ttitle as string,\n\t\tyear as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tlimit: 1) ~> source1\nsource1 derive(each(match(type=='string'), $$ = 'string'),\n\t\teach(match(type=='integer'), $$ = 'integer'),\n\t\teach(match(type=='short'), $$ = 'short'),\n\t\teach(match(type=='complex'), $$ = 'complex'),\n\t\teach(match(type=='array'), $$ = 'array'),\n\t\teach(match(type=='float'), $$ = 'float'),\n\t\teach(match(type=='date'), $$ = 'date'),\n\t\teach(match(type=='timestamp'), $$ = 'timestamp'),\n\t\teach(match(type=='boolean'), $$ = 'boolean'),\n\t\teach(match(type=='double'), $$ = 'double')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
