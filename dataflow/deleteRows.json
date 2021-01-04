@@ -26,7 +26,7 @@
 					"name": "AlterRow1"
 				}
 			],
-			"script": "parameters{\n\tmovieName as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> sourceSQLDatabase\nsourceSQLDatabase alterRow(deleteIf(title==$movieName)) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tkeys:['movie'],\n\tformat: 'table',\n\tpartitionBy('roundRobin', 2)) ~> deleteRows"
+			"script": "parameters{\n\tmovieName as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> sourceSQLDatabase\nsourceSQLDatabase alterRow(deleteIf($movieName=='Toy Story')) ~> AlterRow1\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:true,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpartitionBy('roundRobin', 2),\n\terrorHandlingOption: 'stopOnFirstError') ~> deleteRows"
 		}
 	}
 }
