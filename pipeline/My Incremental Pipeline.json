@@ -167,11 +167,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "deleteRows",
-						"type": "DataFlowReference",
-						"parameters": {
-							"movieName": "'Toy Story'"
-						}
+						"referenceName": "JSONMovies",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
@@ -295,7 +292,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": "http://www.yahoo.com",
-					"method": "POST"
+					"method": "GET"
 				}
 			}
 		],
