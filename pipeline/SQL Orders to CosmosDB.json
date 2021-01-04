@@ -25,7 +25,8 @@
 						"linkedService": {
 							"referenceName": "AzureBlobStorage1",
 							"type": "LinkedServiceReference"
-						}
+						},
+						"folderPath": "mycontainer"
 					},
 					"compute": {
 						"coreCount": 8,
