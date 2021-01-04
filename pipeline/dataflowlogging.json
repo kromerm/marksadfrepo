@@ -22,7 +22,10 @@
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
+					},
+					"traceLevel": "Fine",
+					"runConcurrently": true,
+					"continueOnError": true
 				}
 			},
 			{
@@ -72,7 +75,8 @@
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
+					},
+					"traceLevel": "Fine"
 				}
 			},
 			{
@@ -95,7 +99,10 @@
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
-					}
+					},
+					"traceLevel": "Fine",
+					"runConcurrently": true,
+					"continueOnError": true
 				}
 			},
 			{
@@ -121,7 +128,8 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": "select count(*) as myrowcount from dbo.movies",
-						"queryTimeout": "02:00:00"
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "AzureSqlTable1",
