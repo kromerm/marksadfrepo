@@ -9,7 +9,7 @@
 						"referenceName": "MoviesD2",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "source"
 				}
 			],
 			"sinks": [
@@ -29,7 +29,7 @@
 					"name": "Select1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(upperCase = map(columnNames(),upper(#item)),\n\t\tlistIndexes = mapIndex(columnNames(),#index),\n\t\tstringagg = reduce(array(toString(columns())), 'stringarray:', #acc + #item, #result),\n\t\tsortarray = sort(map(columnNames(),lower(#item)), compare(#item1, #item2)),\n\t\tsliceArray = slice(array(toString(columns())),:sizeOfColumnsArray-2),\n\t\tfindElements = find(columnNames(),left(toString(#item),1)=='R'),\n\t\tfilterElements = filter(columnNames(),left(toString(#item),1)=='R'),\n\t\tsizeOfColumnsArray := size(array(toString(columns())))) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\teach(match(origin=='DerivedColumn1'))\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source\nsource derive(upperCase = map(columnNames(),upper(#item)),\n\t\tlistIndexes = mapIndex(columnNames(),#index),\n\t\tstringagg = reduce(array(toString(columns())), 'stringarray:', #acc + #item, #result),\n\t\tsortarray = sort(map(columnNames(),lower(#item)), compare(#item1, #item2)),\n\t\tsliceArray = slice(array(toString(columns())),:sizeOfColumnsArray-2),\n\t\tfindElements = find(columnNames(),left(toString(#item),1)=='R'),\n\t\tfilterElements = filter(columnNames(),left(toString(#item),1)=='R'),\n\t\tsizeOfColumnsArray := size(array(toString(columns())))) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\teach(match(origin=='DerivedColumn1'))\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
