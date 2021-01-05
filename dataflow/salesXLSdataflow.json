@@ -26,7 +26,15 @@
 					"name": "source2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "folderout",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Lookup2"
@@ -35,7 +43,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "source(output(\n\t\tSalesID as double,\n\t\tAmounts as double,\n\t\tQuantity as double,\n\t\tCountry as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source\nsource(output(\n\t\tSegment as string,\n\t\tCountry as string,\n\t\tProduct as string,\n\t\t{Discount Band} as string,\n\t\t{Units Sold} as double,\n\t\t{Manufacturing Price} as double,\n\t\t{Sale Price} as double,\n\t\t{Gross Sales} as double,\n\t\tDiscounts as double,\n\t\t{ Sales} as double,\n\t\tCOGS as double,\n\t\tProfit as double,\n\t\tDate as date,\n\t\t{Month Number} as double,\n\t\t{Month Name} as string,\n\t\tYear as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'excel',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData',\n\tfileName: 'FinancialSample.xlsx',\n\tsheetName: 'Sheet1',\n\tfirstRowAsHeader: true) ~> source1\nsource(output(\n\t\tSegment as string,\n\t\tCountry as string,\n\t\tProduct as string,\n\t\t{Discount Band} as string,\n\t\t{Units Sold} as double,\n\t\t{Manufacturing Price} as double,\n\t\t{Sale Price} as double,\n\t\t{Gross Sales} as double,\n\t\tDiscounts as double,\n\t\t{ Sales} as double,\n\t\tCOGS as double,\n\t\tProfit as double,\n\t\tDate as date,\n\t\t{Month Number} as double,\n\t\t{Month Name} as string,\n\t\tYear as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source2\nsource1, DerivedColumn1 lookup(source1@Country == DerivedColumn1@Country,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup2\nsource derive(Country = 'Germany') ~> DerivedColumn1"
+			"script": "source(output(\n\t\tSalesID as double,\n\t\tAmounts as double,\n\t\tQuantity as double,\n\t\tCountry as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source\nsource(output(\n\t\tSegment as string,\n\t\tCountry as string,\n\t\tProduct as string,\n\t\t{Discount Band} as string,\n\t\t{Units Sold} as double,\n\t\t{Manufacturing Price} as double,\n\t\t{Sale Price} as double,\n\t\t{Gross Sales} as double,\n\t\tDiscounts as double,\n\t\t{ Sales} as double,\n\t\tCOGS as double,\n\t\tProfit as double,\n\t\tDate as date,\n\t\t{Month Number} as double,\n\t\t{Month Name} as string,\n\t\tYear as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'excel',\n\tcontainer: 'mycontainer',\n\tfolderPath: 'SampleData',\n\tfileName: 'FinancialSample.xlsx',\n\tsheetName: 'Sheet1',\n\tfirstRowAsHeader: true) ~> source1\nsource(output(\n\t\tSegment as string,\n\t\tCountry as string,\n\t\tProduct as string,\n\t\t{Discount Band} as string,\n\t\t{Units Sold} as double,\n\t\t{Manufacturing Price} as double,\n\t\t{Sale Price} as double,\n\t\t{Gross Sales} as double,\n\t\tDiscounts as double,\n\t\t{ Sales} as double,\n\t\tCOGS as double,\n\t\tProfit as double,\n\t\tDate as date,\n\t\t{Month Number} as double,\n\t\t{Month Name} as string,\n\t\tYear as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource1, DerivedColumn1 lookup(source1@Country == DerivedColumn1@Country,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup2\nsource derive(Country = 'Germany') ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
