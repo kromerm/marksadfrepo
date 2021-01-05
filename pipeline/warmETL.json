@@ -19,10 +19,11 @@
 						"referenceName": "warmCluster",
 						"type": "DataFlowReference"
 					},
-					"integrationRuntime": {
-						"referenceName": "smallcluster",
-						"type": "IntegrationRuntimeReference"
-					}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			},
 			{
@@ -42,10 +43,11 @@
 						"referenceName": "warmCluster",
 						"type": "DataFlowReference"
 					},
-					"integrationRuntime": {
-						"referenceName": "myDataFlowCluster",
-						"type": "IntegrationRuntimeReference"
-					}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],

@@ -19,9 +19,9 @@
 						"referenceName": "MyLoansDemo1",
 						"type": "DataFlowReference"
 					},
-					"integrationRuntime": {
-						"referenceName": "dataflowcluster",
-						"type": "IntegrationRuntimeReference"
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
 					"traceLevel": "Fine"
 				}
