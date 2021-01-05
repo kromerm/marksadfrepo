@@ -12,7 +12,11 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "CreateDummyValue"
@@ -24,7 +28,7 @@
 					"name": "Sort1"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(dummy = 1) ~> CreateDummyValue\nCreateDummyValue window(over(dummy),\n\tasc(movie, true),\n\tid = sum(iif(Rating == 1, 1, 0))) ~> Window1\nWindow1 sort(asc(movie, true)) ~> Sort1"
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\tRottenTomato as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(dummy = 1) ~> CreateDummyValue\nCreateDummyValue window(over(dummy),\n\tasc(movie, true),\n\tid = sum(iif(Rating == 1, 1, 0))) ~> Window1\nWindow1 sort(asc(movie, true)) ~> Sort1\nSort1 sink(skipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tkeys:['title'],\n\tstore: 'cache',\n\tformat: 'inline',\n\tsaveOrder: 1) ~> sink1"
 		}
 	}
 }
