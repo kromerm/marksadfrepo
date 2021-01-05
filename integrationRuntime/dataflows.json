@@ -1,0 +1,16 @@
+{
+	"name": "dataflows",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "AutoResolve",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 80,
+					"timeToLive": 240
+				}
+			}
+		}
+	}
+}
