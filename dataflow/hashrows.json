@@ -23,10 +23,19 @@
 			],
 			"transformations": [
 				{
-					"name": "HashRows"
+					"name": "HashALLCols"
+				},
+				{
+					"name": "Select1"
+				},
+				{
+					"name": "HashAllBut1Col"
+				},
+				{
+					"name": "Merge"
 				}
 			],
-			"script": "parameters{\n\tcols as string ('movies,title,genres')\n}\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(hashrow1 = sha2(256,columns()),\n\t\thashrow2 = sha2(256,byNames(split($cols,',')))) ~> HashRows\nHashRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "parameters{\n\tcols as string ('movies,title,genres')\n}\nsource(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(hashrow1 = md5(columns('Select1')),\n\t\thashrow2 = sha2(256,byNames(split($cols,',')))) ~> HashALLCols\nsource1 select(mapColumn(\n\t\tmovie,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 derive(myhash = array(columns())) ~> HashAllBut1Col\nHashALLCols, HashAllBut1Col union(byName: true)~> Merge\nMerge sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
