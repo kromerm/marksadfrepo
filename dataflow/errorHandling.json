@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "folderout",
+						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					},
 					"name": "errorRows"
@@ -36,7 +36,7 @@
 					"name": "checkForNulls"
 				}
 			],
-			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(movie = toInteger(movie),\n\t\tnewtitle = toInteger(title)) ~> typeConversions\ntypeConversions split(isNull(movie) || isNull(newtitle),\n\tdisjoint: false) ~> checkForNulls@(errorRows, goodRows)\ncheckForNulls@errorRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['errorRows.csv'],\n\tpartitionBy('hash', 1)) ~> errorRows\ncheckForNulls@goodRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['goodRows.csv'],\n\tpartitionBy('hash', 1)) ~> goodRows"
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\tRottenTomato as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(movie = toInteger(movie),\n\t\tnewtitle = toInteger(title)) ~> typeConversions\ntypeConversions split(isNull(movie) || isNull(newtitle),\n\tdisjoint: false) ~> checkForNulls@(errorRows, goodRows)\ncheckForNulls@errorRows sink(input(\n\t\tAddressID as integer,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tStateProvince as string,\n\t\tCountryRegion as string,\n\t\tPostalCode as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpartitionBy('hash', 1),\n\terrorHandlingOption: 'allErrors',\n\toutputRejectedData: true,\n\ttransactionCommit: 'single',\n\treportSuccessOnError: true) ~> errorRows\ncheckForNulls@goodRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['goodRows.csv'],\n\tpartitionBy('hash', 1)) ~> goodRows"
 		}
 	}
 }

@@ -9,8 +9,10 @@
 						"referenceName": "movie_dataflow_source1",
 						"type": "DatasetReference"
 					},
-					"name": "FileSource",
-					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> FileSource"
+					"name": "FileSource"
+				},
+				{
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -19,20 +21,27 @@
 						"referenceName": "ParquetStage",
 						"type": "DatasetReference"
 					},
-					"name": "StageData",
-					"script": "DerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('roundRobin', 10),\n\tfilePattern:'movies[n].parquet',\n\ttruncate:true) ~> StageData"
+					"name": "StageData"
+				},
+				{
+					"name": "sink1"
 				}
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1",
-					"script": "Select1 derive(dateOfETL = currentDate()) ~> DerivedColumn1"
+					"name": "DerivedColumn1"
 				},
 				{
-					"name": "Select1",
-					"script": "FileSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato = {Rotton Tomato}\n\t))~> Select1"
+					"name": "Select1"
+				},
+				{
+					"name": "Exists1"
+				},
+				{
+					"name": "DerivedColumn2"
 				}
-			]
+			],
+			"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as integer,\n\t\tRating as integer,\n\t\t{Rotton Tomato} as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> FileSource\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nSelect1 derive(dateOfETL = currentDate()) ~> DerivedColumn1\nFileSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato = {Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Select1\nsource1 exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),\n\tnegate:false,\n\tbroadcast: 'auto')~> Exists1\nExists1 derive(column1 = ERROR_FUNCTION('')) ~> DerivedColumn2\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tfilePattern:'movies[n].parquet',\n\ttruncate: true,\n\tmapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato,\n\t\tdateOfETL\n\t),\n\tpartitionBy('roundRobin', 10)) ~> StageData\nDerivedColumn2 sink(skipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
